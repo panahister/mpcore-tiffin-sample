@@ -51,7 +51,7 @@ Storefront runs both.
 | **6. Transport** | REST in seven services, gRPC in three, both in one; Problem Details and rich gRPC status | every scenario |
 | **7. Security** | Bearer tokens on every request; deny by default; roles from Keycloak; an audience per service | S0 |
 | | **A service's own identity** (new in `0.9.1`): Ordering calls Restaurants and Payments, Access calls Keycloak's administration | S0, S1, S10 |
-| | **The tenant of a call** (MP Core's next version): Ordering names the city of the order in `x-tenant-id`; Payments and Restaurants believe it from Ordering only | S1 and every scenario that orders: Payments' audit trail names the city |
+| | **The tenant of a call** (new in `0.9.2`): Ordering names the city of the order in `x-tenant-id`; Payments and Restaurants believe it from Ordering only | S1 and every scenario that orders: Payments' audit trail names the city |
 | | Behind a gateway | S0 asks through the edge; **the scenarios call the services directly** |
 | **8. Business audit** | Business actions and entity changes, with the actor, the city and the request | S1, S6, S10, S11 |
 | **9. Language** | 78 texts in English, Persian and Turkish; failures over REST and gRPC, and stored notifications, in the caller's language | S2, S6, S8, S11, S13; `NotificationTests` |

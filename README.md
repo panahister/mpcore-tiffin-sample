@@ -23,7 +23,7 @@ two cities that never see each other, and fifteen scenarios that prove what is c
 </div>
 
 > **State: work in progress.** Everything on this page was run; the section [What is not here yet](#what-is-not-here-yet)
-> says what was not. Tiffin is built with MP Core `0.9.1` from nuget.org.
+> says what was not. Tiffin is built with MP Core `0.9.2` from nuget.org.
 
 A tiffin is the lunch box that the dabbawalas of Mumbai carry from a kitchen to a desk, some two hundred
 thousand a day, by hand and by train, with next to no box lost. This sample is about the same thing:
@@ -106,7 +106,7 @@ topics, for whoever wants to read it. When a step fails, the steps before it are
 You need the .NET SDK `10.0.400`, Docker with 10 GB of memory, `jq`, `curl` and `grpcurl`. On a Mac with
 Apple Silicon also `brew install protobuf grpc`, or Rosetta.
 
-Tiffin uses MP Core `0.9.1`, from nuget.org. A clone of MP Core next to this repository is optional: when
+Tiffin uses MP Core `0.9.2`, from nuget.org. A clone of MP Core next to this repository is optional: when
 it is there, the build uses its source instead ([docs/running.md](docs/running.md)).
 
 ```bash
@@ -143,7 +143,7 @@ On 2026-09-28, on a Mac with Apple Silicon, against MP Core's source:
 | Scenario S11, the one that uses the store, with SeaweedFS | 33 checks passed |
 | Build | Release, warnings as errors: no warning |
 
-The same day, against MP Core `0.9.1` from nuget.org with an empty package cache: the 213 tests passed.
+The same day, against MP Core from nuget.org with an empty package cache, first `0.9.1` and then `0.9.2`: the 213 tests passed each time.
 
 And on GitHub, on Linux, on every change ([the workflow](.github/workflows/ci.yml)), first on 2026-09-28
 (run [36390966923](https://github.com/panahister/mpcore-tiffin-sample/actions/runs/36390966923)):
