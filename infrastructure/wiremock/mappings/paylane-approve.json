@@ -1,0 +1,30 @@
+{
+  "name": "approve",
+  "priority": 10,
+  "request": {
+    "method": "POST",
+    "urlPath": "/paylane/v1/authorizations",
+    "headers": {
+      "Idempotency-Key": {
+        "matches": ".+"
+      },
+      "X-Merchant-Id": {
+        "equalTo": "TIFFIN-01"
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "transformers": [
+      "response-template"
+    ],
+    "jsonBody": {
+      "status": "APPROVED",
+      "reference": "PLA-{{randomValue length=10 type='ALPHANUMERIC' uppercase=true}}",
+      "orderId": "{{jsonPath request.body '$.orderId'}}"
+    }
+  }
+}

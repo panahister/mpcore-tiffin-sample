@@ -1,0 +1,26 @@
+{
+  "name": "refund",
+  "priority": 10,
+  "request": {
+    "method": "POST",
+    "urlPath": "/paylane/v1/refunds",
+    "headers": {
+      "Idempotency-Key": {
+        "matches": ".+"
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "transformers": [
+      "response-template"
+    ],
+    "jsonBody": {
+      "status": "REFUNDED",
+      "reference": "PLR-{{randomValue length=10 type='ALPHANUMERIC' uppercase=true}}"
+    }
+  }
+}

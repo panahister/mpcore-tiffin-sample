@@ -1,0 +1,47 @@
+// The contract of the Dispatch service with the courier's app.
+syntax = "proto3";
+
+option csharp_namespace = "Tiffin.Dispatch.Api.Grpc";
+
+package tiffin.dispatch.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// What a courier does. Who the courier is comes from the token, never from a request.
+service Couriers {
+  rpc GoOnDuty (DutyRequest) returns (CourierReply);
+  rpc GoOffDuty (DutyRequest) returns (CourierReply);
+  // What the caller carries at the moment.
+  rpc GetMyDelivery (MyDeliveryRequest) returns (DeliveryReply);
+  // The caller handed the order over.
+  rpc CompleteDelivery (CompleteDeliveryRequest) returns (DeliveryReply);
+}
+
+message DutyRequest {}
+
+message MyDeliveryRequest {}
+
+message CompleteDeliveryRequest {
+  string order_id = 1; // UUID
+}
+
+message CourierReply {
+  string courier_id = 1;
+  string name = 2;
+  string city = 3;
+  bool on_duty = 4;
+  string carrying_order_id = 5; // empty when the courier carries nothing
+}
+
+message DeliveryReply {
+  string order_id = 1;
+  string order_number = 2;
+  string status = 3;
+  string restaurant_name = 4;
+  string recipient = 5;
+  string phone = 6;
+  string district = 7;
+  string line = 8;
+  google.protobuf.Timestamp assigned_on = 9;
+  google.protobuf.Timestamp completed_on = 10;
+}

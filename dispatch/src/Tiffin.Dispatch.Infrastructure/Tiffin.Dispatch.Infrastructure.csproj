@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../Tiffin.Dispatch.Application/Tiffin.Dispatch.Application.csproj" />
+    <PackageReference Include="MPCore.Persistence.EntityFrameworkCore.PostgreSql" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Messaging.Wolverine" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Resilience.Http" Version="$(MPCoreVersion)" />
+    <!-- The inbox: a request that the broker delivers twice is carried out once (ADR-013). -->
+    <PackageReference Include="MPCore.Idempotency.EntityFrameworkCore.PostgreSql" Version="$(MPCoreVersion)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,21 @@
+{
+  "class": "OrderingMessages",
+  "languages": ["en", "fa", "tr"],
+  "messages": {
+    "ordering.order_not_found": ["There is no such order.", "چنین سفارشی وجود ندارد.", "Böyle bir sipariş yok."],
+    "ordering.customer_required": ["Sign in as a customer of a city to order.", "برای سفارش به‌عنوان مشتری یک شهر وارد شوید.", "Sipariş vermek için bir şehrin müşterisi olarak oturum açın."],
+    "ordering.restaurant_not_found": ["There is no such restaurant in your city.", "چنین رستورانی در شهر شما وجود ندارد.", "Şehrinizde böyle bir restoran yok."],
+    "ordering.total_changed": ["The order now costs {total} {currency}. Look at it again and confirm.", "مبلغ سفارش اکنون {total} {currency} است. دوباره نگاه کنید و تأیید کنید.", "Sipariş artık {total} {currency} tutuyor. Tekrar bakın ve onaylayın."],
+    "ordering.refused_by_restaurant": ["The restaurant cannot take this order: {detail}", "رستوران نمی‌تواند این سفارش را بپذیرد: {detail}", "Restoran bu siparişi alamıyor: {detail}"],
+    "ordering.restaurants_unavailable": ["The menus cannot be reached at the moment. Try again shortly.", "در حال حاضر به منوها دسترسی نیست. کمی بعد دوباره تلاش کنید.", "Menülere şu anda ulaşılamıyor. Kısa süre sonra tekrar deneyin."],
+    "ordering.payments_unavailable": ["Payments cannot be reached at the moment. Nothing was charged. Try again shortly.", "در حال حاضر به پرداخت دسترسی نیست. مبلغی کسر نشده است. کمی بعد دوباره تلاش کنید.", "Ödemelere şu anda ulaşılamıyor. Hiçbir ücret alınmadı. Kısa süre sonra tekrar deneyin."],
+    "ordering.payment_token_refused": ["The card's token was refused. Enter the card again.", "توکن کارت پذیرفته نشد. کارت را دوباره وارد کنید.", "Kartın belirteci reddedildi. Kartı tekrar girin."],
+    "ordering.order_empty": ["An order has at least one item.", "سفارش باید دست‌کم یک قلم داشته باشد.", "Bir siparişte en az bir ürün bulunur."],
+    "ordering.not_awaiting_payment": ["Order {order_number} does not wait for its payment ({status}).", "سفارش {order_number} در انتظار پرداخت نیست ({status}).", "{order_number} numaralı sipariş ödeme beklemiyor ({status})."],
+    "ordering.not_awaiting_restaurant": ["Order {order_number} does not wait for the restaurant ({status}).", "سفارش {order_number} در انتظار رستوران نیست ({status}).", "{order_number} numaralı sipariş restoranı beklemiyor ({status})."],
+    "ordering.not_awaiting_courier": ["Order {order_number} does not wait for a courier ({status}).", "سفارش {order_number} در انتظار پیک نیست ({status}).", "{order_number} numaralı sipariş kurye beklemiyor ({status})."],
+    "ordering.not_on_its_way": ["Order {order_number} is not on its way ({status}).", "سفارش {order_number} در راه نیست ({status}).", "{order_number} numaralı sipariş yolda değil ({status})."],
+    "ordering.cannot_be_cancelled": ["Order {order_number} can no longer be cancelled ({status}).", "سفارش {order_number} دیگر قابل لغو نیست ({status}).", "{order_number} numaralı sipariş artık iptal edilemez ({status})."],
+    "ordering.already_cooking": ["The restaurant already cooks order {order_number}; it can no longer be cancelled ({status}).", "رستوران در حال آماده‌سازی سفارش {order_number} است و دیگر قابل لغو نیست ({status}).", "Restoran {order_number} numaralı siparişi hazırlıyor; artık iptal edilemez ({status})."]
+  }
+}

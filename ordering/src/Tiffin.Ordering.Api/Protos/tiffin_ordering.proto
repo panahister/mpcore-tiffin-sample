@@ -1,0 +1,39 @@
+// The contract of the Ordering service over gRPC, for the apps of the platform. REST offers the same
+// and more; an app that already speaks gRPC to the platform reads an order here.
+syntax = "proto3";
+
+option csharp_namespace = "Tiffin.Ordering.Api.Grpc";
+
+package tiffin.ordering.v1;
+
+import "google/protobuf/timestamp.proto";
+
+service Orders {
+  // One order, for the customer who placed it.
+  rpc GetOrder (GetOrderRequest) returns (OrderReply);
+}
+
+message GetOrderRequest {
+  string order_id = 1; // UUID
+}
+
+message OrderReply {
+  string order_id = 1;
+  string order_number = 2;
+  string status = 3;
+  string restaurant_name = 4;
+  string total = 5;       // a decimal number, written with a point
+  string currency = 6;
+  string cancellation_reason = 7;
+  string courier_name = 8;
+  bool refunded = 9;
+  google.protobuf.Timestamp placed_on = 10;
+  repeated OrderLineMessage lines = 11;
+}
+
+message OrderLineMessage {
+  string code = 1;
+  string name = 2;
+  int32 quantity = 3;
+  string unit_price = 4;
+}

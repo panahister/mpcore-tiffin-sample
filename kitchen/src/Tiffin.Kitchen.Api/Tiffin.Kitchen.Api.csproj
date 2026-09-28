@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <!-- scripts/setup.sh writes the addresses of the dependencies here, outside the repository. -->
+    <UserSecretsId>tiffin-kitchen</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Tiffin.Kitchen.Application/Tiffin.Kitchen.Application.csproj" />
+    <ProjectReference Include="../Tiffin.Kitchen.Infrastructure/Tiffin.Kitchen.Infrastructure.csproj" />
+    <PackageReference Include="MPCore.Hosting" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Localization" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Messaging.Wolverine" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Security.Abstractions" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Security.AspNetCore" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Tenancy.Abstractions" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Validation.FluentValidation" Version="$(MPCoreVersion)" />
+    <!-- Design-time only: `dotnet ef migrations` with this project as the startup project. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11" PrivateAssets="all" />
+    <PackageReference Include="MPCore.Transport.Http" Version="$(MPCoreVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.2.3" />
+    <PackageReference Include="MPCore.Observability.Prometheus" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Messaging.Wolverine.RabbitMQ" Version="$(MPCoreVersion)" />
+    <!-- The second broker, added by hand: what Restaurants says happened is read from the stream. -->
+    <PackageReference Include="MPCore.Messaging.Wolverine.Kafka" Version="$(MPCoreVersion)" />
+  </ItemGroup>
+</Project>

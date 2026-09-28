@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="media.sign_in_required" xml:space="preserve">
+    <value>به‌عنوان عضو یک شهر وارد شوید.</value>
+  </data>
+  <data name="media.file_not_found" xml:space="preserve">
+    <value>چنین فایلی وجود ندارد.</value>
+  </data>
+  <data name="media.not_the_owner" xml:space="preserve">
+    <value>فقط فرستنده‌ی فایل می‌تواند آن را تغییر دهد.</value>
+  </data>
+  <data name="media.nothing_arrived" xml:space="preserve">
+    <value>هنوز چیزی به انبار نرسیده است. فایل را بفرستید و سپس تأیید کنید.</value>
+  </data>
+  <data name="media.upload_window_closed" xml:space="preserve">
+    <value>زمان ارسال این فایل گذشته است. دوباره آن را اعلام کنید.</value>
+  </data>
+  <data name="media.store_unavailable" xml:space="preserve">
+    <value>در حال حاضر به انبار فایل‌ها دسترسی نیست. کمی بعد دوباره تلاش کنید.</value>
+  </data>
+  <data name="media.purpose_unknown" xml:space="preserve">
+    <value>پلتفرم برای {purpose} فایلی نگه نمی‌دارد.</value>
+  </data>
+  <data name="media.type_not_allowed" xml:space="preserve">
+    <value>فایل {purpose} باید یکی از {allowed} باشد؛ {type} نیست.</value>
+  </data>
+  <data name="media.size_not_allowed" xml:space="preserve">
+    <value>فایل {purpose} باید بین ۱ تا {maximum} بایت باشد؛ {size} نیست.</value>
+  </data>
+  <data name="media.file_not_pending" xml:space="preserve">
+    <value>این فایل قبلاً تأیید شده است ({state}).</value>
+  </data>
+  <data name="media.not_what_was_announced" xml:space="preserve">
+    <value>آنچه رسید با آنچه اعلام شده بود یکی نیست: {announced} اعلام شده بود و {arrived} رسید.</value>
+  </data>
+</root>

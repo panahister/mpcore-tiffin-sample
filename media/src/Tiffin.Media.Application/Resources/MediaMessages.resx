@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="media.sign_in_required" xml:space="preserve">
+    <value>Sign in as somebody of a city.</value>
+  </data>
+  <data name="media.file_not_found" xml:space="preserve">
+    <value>There is no such file.</value>
+  </data>
+  <data name="media.not_the_owner" xml:space="preserve">
+    <value>Only who sent a file changes it.</value>
+  </data>
+  <data name="media.nothing_arrived" xml:space="preserve">
+    <value>Nothing has arrived in the store yet. Send the file, then confirm.</value>
+  </data>
+  <data name="media.upload_window_closed" xml:space="preserve">
+    <value>The time to send this file has passed. Announce it again.</value>
+  </data>
+  <data name="media.store_unavailable" xml:space="preserve">
+    <value>The store of files cannot be reached at the moment. Try again shortly.</value>
+  </data>
+  <data name="media.purpose_unknown" xml:space="preserve">
+    <value>The platform has no files for {purpose}.</value>
+  </data>
+  <data name="media.type_not_allowed" xml:space="preserve">
+    <value>A file for {purpose} is one of {allowed}; {type} is not.</value>
+  </data>
+  <data name="media.size_not_allowed" xml:space="preserve">
+    <value>A file for {purpose} has between 1 and {maximum} bytes; {size} is not.</value>
+  </data>
+  <data name="media.file_not_pending" xml:space="preserve">
+    <value>The file has already been confirmed ({state}).</value>
+  </data>
+  <data name="media.not_what_was_announced" xml:space="preserve">
+    <value>What arrived is not what was announced: {announced} were announced, {arrived} arrived.</value>
+  </data>
+</root>

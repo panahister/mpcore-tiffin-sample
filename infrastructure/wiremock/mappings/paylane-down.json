@@ -1,0 +1,24 @@
+{
+  "name": "down",
+  "priority": 1,
+  "request": {
+    "method": "POST",
+    "urlPath": "/paylane/v1/authorizations",
+    "headers": {
+      "Idempotency-Key": {
+        "matches": ".+"
+      },
+      "X-Merchant-Id": {
+        "equalTo": "TIFFIN-01"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$[?(@.paymentToken == 'tok_psp_down')]"
+      }
+    ]
+  },
+  "response": {
+    "status": 503
+  }
+}

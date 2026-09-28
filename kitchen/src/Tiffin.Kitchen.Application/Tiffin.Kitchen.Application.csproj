@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../Tiffin.Kitchen.Domain/Tiffin.Kitchen.Domain.csproj" />
+    <PackageReference Include="MPCore.Application" Version="$(MPCoreVersion)" />
+    <!-- Abstraction packages only. A handler declares its ports here: repository and unit of work,
+         message publisher, current actor, tenant. Entity Framework, Npgsql, Wolverine, a broker SDK
+         or anything from Infrastructure must never reach the Application layer. -->
+    <PackageReference Include="MPCore.Persistence.Abstractions" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Messaging.Abstractions" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Security.Abstractions" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Tenancy.Abstractions" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Audit.Abstractions" Version="$(MPCoreVersion)" />
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.11" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- The table the message files are written from: scripts/tools/resx.py. -->
+    <None Include="Resources/messages.json" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../Tiffin.Ordering.Application/Tiffin.Ordering.Application.csproj" />
+    <PackageReference Include="MPCore.Persistence.EntityFrameworkCore.PostgreSql" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Messaging.Wolverine" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Resilience.Http" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Audit.EntityFrameworkCore.PostgreSql" Version="$(MPCoreVersion)" />
+    <!-- Request idempotency (Idempotency-Key) and the consumer inbox, stored in this context (ADR-013). -->
+    <PackageReference Include="MPCore.Idempotency.EntityFrameworkCore.PostgreSql" Version="$(MPCoreVersion)" />
+    <!-- The client of the Payments service, generated from a copy of its contract. -->
+    <PackageReference Include="Grpc.Net.Client" Version="2.83.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.33.6" />
+    <PackageReference Include="Grpc.Tools" Version="2.83.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="Protos/tiffin_payments.proto" GrpcServices="Client" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../Tiffin.Tracking.Application/Tiffin.Tracking.Application.csproj" />
+    <PackageReference Include="MPCore.Caching.Memory" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Persistence.EntityFrameworkCore.PostgreSql" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Messaging.Wolverine" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Resilience.Http" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Persistence.Timescale" Version="$(MPCoreVersion)" />
+    <!-- The inbox: an event that is read twice is handled once (ADR-013). -->
+    <PackageReference Include="MPCore.Idempotency.EntityFrameworkCore.PostgreSql" Version="$(MPCoreVersion)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+  </ItemGroup>
+</Project>

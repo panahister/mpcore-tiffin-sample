@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="tracking.sign_in_required" xml:space="preserve">
+    <value>به‌عنوان عضو یک شهر وارد شوید.</value>
+  </data>
+  <data name="tracking.delivery_not_found" xml:space="preserve">
+    <value>چنین تحویلی برای شما وجود ندارد.</value>
+  </data>
+  <data name="tracking.not_your_delivery" xml:space="preserve">
+    <value>سفارش {order_number} را پیک دیگری حمل می‌کند.</value>
+  </data>
+  <data name="tracking.delivery_has_arrived" xml:space="preserve">
+    <value>سفارش {order_number} رسیده است و دیگر دنبال نمی‌شود.</value>
+  </data>
+  <data name="tracking.position_not_on_earth" xml:space="preserve">
+    <value>عرض جغرافیایی باید بین ‎-90 و 90 و طول جغرافیایی بین ‎-180 و 180 باشد.</value>
+  </data>
+</root>

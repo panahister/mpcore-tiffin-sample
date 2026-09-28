@@ -1,0 +1,109 @@
+# Builds and tests the nine services on every push and pull request, against MP Core's source, then
+# starts the dependencies and the services and runs every scenario against them: once with each store
+# of the Media service, and with the edge's check of tokens off and on.
+# It publishes nothing and deploys nothing.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      mpcore_source:
+        description: "Where MP Core comes from: Local (its repository's main branch) or NuGet (nuget.org)"
+        type: choice
+        options: [Local, NuGet]
+        default: Local
+      scenarios:
+        description: "Also start the dependencies and the services, and run every scenario"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_NOLOGO: "true"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  MPCORE_SOURCE: ${{ inputs.mpcore_source || 'Local' }}
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: mpcore-tiffin-sample
+      # Directory.Build.targets looks for MP Core next to this repository.
+      - uses: actions/checkout@v7
+        if: env.MPCORE_SOURCE == 'Local'
+        with:
+          repository: ${{ github.repository_owner }}/mpcore
+          path: mpcore
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: mpcore-tiffin-sample/global.json
+      - name: The message files are what their tables say
+        working-directory: mpcore-tiffin-sample
+        run: scripts/tools/messages.sh --check
+      - name: Build and test (warnings are errors)
+        working-directory: mpcore-tiffin-sample
+        run: scripts/test.sh --configuration Release -p:MPCoreSource=$MPCORE_SOURCE --logger "trx;LogFileName=results.trx"
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results
+          path: "**/results.trx"
+
+  scenarios:
+    # On every change; by hand, only when asked for.
+    if: github.event_name != 'workflow_dispatch' || inputs.scenarios
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # The store behind Media, and whether the edge verifies tokens as well (docs/variations.md).
+          - { media_store: rustfs, edge_auth: "off" }
+          - { media_store: seaweedfs, edge_auth: keycloak }
+    name: scenarios (${{ matrix.media_store }}, edge ${{ matrix.edge_auth }})
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: mpcore-tiffin-sample
+      - uses: actions/checkout@v7
+        if: env.MPCORE_SOURCE == 'Local'
+        with:
+          repository: ${{ github.repository_owner }}/mpcore
+          path: mpcore
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: mpcore-tiffin-sample/global.json
+      - name: Install grpcurl
+        run: |
+          curl -sSL https://github.com/fullstorydev/grpcurl/releases/download/v1.9.3/grpcurl_1.9.3_linux_x86_64.tar.gz | tar -xz -C "$RUNNER_TEMP" grpcurl
+          sudo install "$RUNNER_TEMP/grpcurl" /usr/local/bin/grpcurl
+      - name: Start the dependencies
+        working-directory: mpcore-tiffin-sample
+        run: MEDIA_STORE=${{ matrix.media_store }} EDGE_AUTH=${{ matrix.edge_auth }} scripts/up.sh && scripts/setup.sh
+      - name: Start the services
+        working-directory: mpcore-tiffin-sample
+        run: TIFFIN_BIND=0.0.0.0 DOTNET_ARGS="--configuration Release -p:MPCoreSource=$MPCORE_SOURCE" scripts/run.sh all
+      - name: Run every scenario
+        working-directory: mpcore-tiffin-sample
+        run: MEDIA_STORE=${{ matrix.media_store }} scripts/scenarios.sh
+      - name: Upload the services' logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: service-logs-${{ matrix.media_store }}
+          path: mpcore-tiffin-sample/tmp/logs

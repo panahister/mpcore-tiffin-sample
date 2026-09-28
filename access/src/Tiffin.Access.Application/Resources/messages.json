@@ -1,0 +1,14 @@
+{
+  "class": "AccessMessages",
+  "languages": ["en", "fa", "tr"],
+  "messages": {
+    "access.admin_required": ["Sign in as an admin of a city, or of the platform.", "به‌عنوان مدیر یک شهر یا مدیر پلتفرم وارد شوید.", "Bir şehrin veya platformun yöneticisi olarak oturum açın."],
+    "access.city_required": ["Name the city you mean.", "شهر مورد نظر را نام ببرید.", "Kastettiğiniz şehri belirtin."],
+    "access.person_not_found": ["There is no such person in this city.", "چنین شخصی در این شهر وجود ندارد.", "Bu şehirde böyle bir kişi yok."],
+    "access.grant_not_found": ["There is no such decision in this city.", "چنین تصمیمی در این شهر وجود ندارد.", "Bu şehirde böyle bir karar yok."],
+    "access.directory_unavailable": ["The identity provider cannot be reached at the moment. Try again shortly.", "در حال حاضر به سامانه‌ی هویت دسترسی نیست. کمی بعد دوباره تلاش کنید.", "Kimlik sağlayıcısına şu anda ulaşılamıyor. Kısa süre sonra tekrar deneyin."],
+    "access.role_unknown": ["{role} is not a role of the platform.", "{role} جزو نقش‌های پلتفرم نیست.", "{role} platformun bir rolü değil."],
+    "access.role_not_yours_to_give": ["The role {role} is not yours to give or to take away.", "دادن یا گرفتن نقش {role} در اختیار شما نیست.", "{role} rolünü vermek veya almak sizin yetkinizde değil."],
+    "access.own_roles": ["Nobody changes their own roles.", "هیچ‌کس نقش‌های خودش را تغییر نمی‌دهد.", "Hiç kimse kendi rollerini değiştiremez."]
+  }
+}

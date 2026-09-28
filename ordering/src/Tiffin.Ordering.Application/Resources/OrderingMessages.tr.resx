@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ordering.order_not_found" xml:space="preserve">
+    <value>Böyle bir sipariş yok.</value>
+  </data>
+  <data name="ordering.customer_required" xml:space="preserve">
+    <value>Sipariş vermek için bir şehrin müşterisi olarak oturum açın.</value>
+  </data>
+  <data name="ordering.restaurant_not_found" xml:space="preserve">
+    <value>Şehrinizde böyle bir restoran yok.</value>
+  </data>
+  <data name="ordering.total_changed" xml:space="preserve">
+    <value>Sipariş artık {total} {currency} tutuyor. Tekrar bakın ve onaylayın.</value>
+  </data>
+  <data name="ordering.refused_by_restaurant" xml:space="preserve">
+    <value>Restoran bu siparişi alamıyor: {detail}</value>
+  </data>
+  <data name="ordering.restaurants_unavailable" xml:space="preserve">
+    <value>Menülere şu anda ulaşılamıyor. Kısa süre sonra tekrar deneyin.</value>
+  </data>
+  <data name="ordering.payments_unavailable" xml:space="preserve">
+    <value>Ödemelere şu anda ulaşılamıyor. Hiçbir ücret alınmadı. Kısa süre sonra tekrar deneyin.</value>
+  </data>
+  <data name="ordering.payment_token_refused" xml:space="preserve">
+    <value>Kartın belirteci reddedildi. Kartı tekrar girin.</value>
+  </data>
+  <data name="ordering.order_empty" xml:space="preserve">
+    <value>Bir siparişte en az bir ürün bulunur.</value>
+  </data>
+  <data name="ordering.not_awaiting_payment" xml:space="preserve">
+    <value>{order_number} numaralı sipariş ödeme beklemiyor ({status}).</value>
+  </data>
+  <data name="ordering.not_awaiting_restaurant" xml:space="preserve">
+    <value>{order_number} numaralı sipariş restoranı beklemiyor ({status}).</value>
+  </data>
+  <data name="ordering.not_awaiting_courier" xml:space="preserve">
+    <value>{order_number} numaralı sipariş kurye beklemiyor ({status}).</value>
+  </data>
+  <data name="ordering.not_on_its_way" xml:space="preserve">
+    <value>{order_number} numaralı sipariş yolda değil ({status}).</value>
+  </data>
+  <data name="ordering.cannot_be_cancelled" xml:space="preserve">
+    <value>{order_number} numaralı sipariş artık iptal edilemez ({status}).</value>
+  </data>
+  <data name="ordering.already_cooking" xml:space="preserve">
+    <value>Restoran {order_number} numaralı siparişi hazırlıyor; artık iptal edilemez ({status}).</value>
+  </data>
+</root>

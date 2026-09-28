@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 4,
+  "organization": "Tiffin",
+  "component": "Payments",
+  "productName": "Tiffin.Payments",
+  "shape": "service",
+  "messaging": "rabbitmq",
+  "transport": "grpc",
+  "businessAudit": "postgresql",
+  "cache": "none",
+  "timeseries": "none",
+  "aiTooling": "both",
+  "mpcoreVersion": "0.9.0",
+  "templateVersion": "0.9.0",
+  "cliVersion": "0.9.0",
+  "generatedAtUtc": "2026-09-27T21:25:05.590372+00:00"
+}

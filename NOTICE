@@ -1,0 +1,17 @@
+Tiffin, the MP Core microservices sample
+Copyright (c) The MP Core contributors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Tiffin, PayLane and the people named in the scenarios are fictional. Every user name, password and
+client secret in this repository belongs to containers on a developer's machine and to nothing else.
+
+The sample builds on MP Core and, through it, on these open-source projects, each under its own licence:
+Wolverine and JasperFx (MIT), Entity Framework Core and ASP.NET Core (MIT), Npgsql (PostgreSQL Licence),
+FluentValidation (Apache-2.0), OpenTelemetry .NET (Apache-2.0), Polly (BSD-3-Clause), gRPC for .NET
+(Apache-2.0), StackExchange.Redis (MIT), Confluent.Kafka (Apache-2.0), RabbitMQ .NET client
+(Apache-2.0 / MPL-2.0), the AWS SDK for .NET (Apache-2.0). Its tests use xUnit (Apache-2.0) and NetArchTest (MIT).
+
+The containers it starts are the official images of PostgreSQL, TimescaleDB, Apache Kafka, RabbitMQ,
+Redis, Keycloak, Apache APISIX, RustFS, SeaweedFS, WireMock, the OpenTelemetry Collector, Jaeger, Prometheus
+and Grafana, each under its own licence. None of them is distributed with this repository.

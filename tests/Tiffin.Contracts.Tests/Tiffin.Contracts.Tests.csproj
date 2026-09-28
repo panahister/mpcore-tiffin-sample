@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <!-- Test names read as sentences with underscores. -->
+    <NoWarn>$(NoWarn);CA1707</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- The only project in this repository that sees more than one service. The services themselves
+         share no assembly; this is where their contracts are held against each other. -->
+    <ProjectReference Include="../../access/src/Tiffin.Access.Api/Tiffin.Access.Api.csproj" />
+    <ProjectReference Include="../../media/src/Tiffin.Media.Api/Tiffin.Media.Api.csproj" />
+    <ProjectReference Include="../../restaurants/src/Tiffin.Restaurants.Api/Tiffin.Restaurants.Api.csproj" />
+    <ProjectReference Include="../../ordering/src/Tiffin.Ordering.Api/Tiffin.Ordering.Api.csproj" />
+    <ProjectReference Include="../../payments/src/Tiffin.Payments.Api/Tiffin.Payments.Api.csproj" />
+    <ProjectReference Include="../../kitchen/src/Tiffin.Kitchen.Api/Tiffin.Kitchen.Api.csproj" />
+    <ProjectReference Include="../../dispatch/src/Tiffin.Dispatch.Api/Tiffin.Dispatch.Api.csproj" />
+    <ProjectReference Include="../../tracking/src/Tiffin.Tracking.Api/Tiffin.Tracking.Api.csproj" />
+    <ProjectReference Include="../../notifications/src/Tiffin.Notifications.Api/Tiffin.Notifications.Api.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
+  </ItemGroup>
+</Project>

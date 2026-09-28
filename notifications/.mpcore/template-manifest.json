@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 4,
+  "organization": "Tiffin",
+  "component": "Notifications",
+  "productName": "Tiffin.Notifications",
+  "shape": "service",
+  "messaging": "kafka",
+  "transport": "rest",
+  "businessAudit": "none",
+  "cache": "none",
+  "timeseries": "none",
+  "aiTooling": "both",
+  "mpcoreVersion": "0.9.0",
+  "templateVersion": "0.9.0",
+  "cliVersion": "0.9.0",
+  "generatedAtUtc": "2026-09-27T23:34:26.301153+00:00"
+}

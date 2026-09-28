@@ -1,0 +1,20 @@
+{
+  "identities": [
+    {
+      "name": "tiffin-media",
+      "credentials": [
+        {
+          "accessKey": "tiffin-media",
+          "secretKey": "tiffin-media-lab"
+        }
+      ],
+      "actions": [
+        "Admin",
+        "Read",
+        "Write",
+        "List",
+        "Tagging"
+      ]
+    }
+  ]
+}

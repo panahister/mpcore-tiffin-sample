@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 4,
+  "organization": "Tiffin",
+  "component": "Ordering",
+  "productName": "Tiffin.Ordering",
+  "shape": "service",
+  "messaging": "kafka",
+  "transport": "both",
+  "businessAudit": "postgresql",
+  "cache": "none",
+  "timeseries": "none",
+  "aiTooling": "both",
+  "mpcoreVersion": "0.9.0",
+  "templateVersion": "0.9.0",
+  "cliVersion": "0.9.0",
+  "generatedAtUtc": "2026-09-27T21:24:59.905667+00:00"
+}

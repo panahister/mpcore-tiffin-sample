@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <!-- scripts/setup.sh writes the addresses of the dependencies here, outside the repository. -->
+    <UserSecretsId>tiffin-ordering</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Tiffin.Ordering.Application/Tiffin.Ordering.Application.csproj" />
+    <ProjectReference Include="../Tiffin.Ordering.Infrastructure/Tiffin.Ordering.Infrastructure.csproj" />
+    <PackageReference Include="MPCore.Hosting" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Localization" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Messaging.Wolverine" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Security.Abstractions" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Security.AspNetCore" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Tenancy.Abstractions" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Validation.FluentValidation" Version="$(MPCoreVersion)" />
+    <!-- Design-time only: `dotnet ef migrations` with this project as the startup project. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11" PrivateAssets="all" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.83.0" />
+    <PackageReference Include="Grpc.AspNetCore.HealthChecks" Version="2.83.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.83.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.83.0" PrivateAssets="all" />
+    <PackageReference Include="MPCore.Transport.Grpc" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Transport.Http" Version="$(MPCoreVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.2.3" />
+    <PackageReference Include="MPCore.Observability.Prometheus" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Messaging.Wolverine.Kafka" Version="$(MPCoreVersion)" />
+    <!-- The second broker, added by hand: requests and answers of the order process travel on queues. -->
+    <PackageReference Include="MPCore.Messaging.Wolverine.RabbitMQ" Version="$(MPCoreVersion)" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="Protos/platform_probe.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos/tiffin_ordering.proto" GrpcServices="Server" />
+  </ItemGroup>
+</Project>

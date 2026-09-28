@@ -1,0 +1,335 @@
+# Everything the Tiffin sample depends on, for a developer's machine. The nine services themselves
+# are NOT containerised: they run on the host, from an IDE or scripts/run.sh, so they can be debugged.
+#
+#   * every image is version-pinned and multi-arch (amd64 + arm64);
+#   * every service has a real healthcheck;
+#   * every port comes from the environment (infrastructure/.env), with a default that stays clear of
+#     the usual ports of a developer's own PostgreSQL, Redis or Kafka;
+#   * every credential here is a development value for a container on this machine, nothing else;
+#   * the observability stack has its own profile, so a light run does not pay for it.
+
+name: ${COMPOSE_PROJECT_NAME:-tiffin}
+
+x-restart: &restart
+  restart: unless-stopped
+
+services:
+
+  # One PostgreSQL server, one database per service that owns relational data (postgres/initdb). They
+  # share a server on a developer's machine to save memory; a service never reads another's database.
+  postgres:
+    image: postgres:17.6-alpine
+    <<: *restart
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-tiffin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tiffin}
+      POSTGRES_DB: tiffin_ordering
+    ports:
+      - "${POSTGRES_PORT:-35432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./postgres/initdb:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tiffin} -d tiffin_ordering"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  # The Tracking service keeps time series: TimescaleDB, a PostgreSQL extension, in a server of its own.
+  timescale:
+    image: timescale/timescaledb:2.17.2-pg17
+    <<: *restart
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-tiffin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tiffin}
+      POSTGRES_DB: tiffin_tracking
+    ports:
+      - "${TIMESCALE_PORT:-35433}:5432"
+    volumes:
+      - timescale-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tiffin} -d tiffin_tracking"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+
+  # The event stream: what happened, for whoever wants to know (KRaft, no ZooKeeper).
+  kafka:
+    image: apache/kafka:4.0.0
+    <<: *restart
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:${KAFKA_PORT:-39092}
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:${KAFKA_PORT:-39092}
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_NUM_PARTITIONS: 3
+      CLUSTER_ID: ${KAFKA_CLUSTER_ID:-5L6g3nShT-eMCtK--X86sw}
+    ports:
+      - "${KAFKA_PORT:-39092}:${KAFKA_PORT:-39092}"
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+      start_period: 30s
+
+  kafka-ui:
+    image: ghcr.io/kafbat/kafka-ui:v1.1.0
+    profiles: [tools]
+    <<: *restart
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      KAFKA_CLUSTERS_0_NAME: tiffin
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+    ports:
+      - "${KAFKA_UI_PORT:-38080}:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health | grep -q UP"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  # The work queue: what has to be done, by exactly one worker.
+  rabbitmq:
+    image: rabbitmq:4.1.4-management-alpine
+    <<: *restart
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-tiffin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-tiffin}
+    ports:
+      - "${RABBITMQ_PORT:-35672}:5672"
+      - "${RABBITMQ_UI_PORT:-35673}:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "check_running"]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+      start_period: 20s
+
+  redis:
+    image: redis:8.0-alpine
+    <<: *restart
+    command: ["redis-server", "--appendonly", "yes", "--save", "60", "1"]
+    ports:
+      - "${REDIS_PORT:-36379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
+  # The identity provider. Realm "tiffin" is imported at start from infrastructure/keycloak; its users,
+  # roles and the one client secret are development values, documented in the README.
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.3
+    <<: *restart
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USER:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KC_HEALTH_ENABLED: "true"
+      KC_HTTP_ENABLED: "true"
+      # A token names its issuer, and whoever verifies it compares. The services ask Keycloak at
+      # localhost, the edge asks it inside the compose network: both must be told the same name.
+      KC_HOSTNAME: http://localhost:${KEYCLOAK_PORT:-38180}
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+    ports:
+      - "${KEYCLOAK_PORT:-38180}:8080"
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import:ro
+    healthcheck:
+      # The image has no curl or wget; bash's /dev/tcp asks the management port's readiness probe.
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q '\"UP\"' <&3"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+
+  # PayLane, the payment provider, is fictional: WireMock plays it, from infrastructure/wiremock/mappings.
+  wiremock:
+    image: wiremock/wiremock:3.10.0
+    <<: *restart
+    command: ["--global-response-templating", "--disable-banner"]
+    volumes:
+      - ./wiremock/mappings:/home/wiremock/mappings:ro
+    ports:
+      - "${WIREMOCK_PORT:-38081}:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:8080/__admin/mappings >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+
+  # The edge: Apache APISIX ends TLS and routes to the services, which run on the host.
+  # Its routes are a file (standalone mode), written by scripts/up.sh from apisix/apisix.template.yaml.
+  apisix:
+    image: apache/apisix:3.18.0-debian
+    <<: *restart
+    environment:
+      APISIX_STAND_ALONE: "true"
+      BACKEND_HOST: ${BACKEND_HOST:-host.docker.internal}
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    volumes:
+      - ./apisix/config.yaml:/usr/local/apisix/conf/config.yaml:ro
+      - ./apisix/generated/apisix.yaml:/usr/local/apisix/conf/apisix.yaml:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "${GATEWAY_HTTPS_PORT:-39443}:9443"
+      - "${GATEWAY_HTTP_PORT:-39080}:9080"
+    healthcheck:
+      # The image has no curl: the listener is asked with the shell alone.
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/9080"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  # ------------------------------------------------------------ the store of the Media service (profiles)
+  # Media speaks the S3 API and nothing else, so the store behind it is a choice: MEDIA_STORE in
+  # infrastructure/.env, rustfs or seaweedfs. Both listen on the same port of this machine, and
+  # scripts/up.sh starts the one that was chosen. MinIO is deliberately absent: its open-source
+  # repository was archived in February 2026 and its last public image is no longer patched.
+  rustfs:
+    image: rustfs/rustfs:1.0.0
+    profiles: [media-rustfs]
+    <<: *restart
+    security_opt: ["no-new-privileges:true"]
+    environment:
+      RUSTFS_VOLUMES: /data
+      RUSTFS_ADDRESS: 0.0.0.0:9000
+      RUSTFS_CONSOLE_ENABLE: "false"
+      RUSTFS_ACCESS_KEY: ${MEDIA_S3_ACCESS_KEY:-tiffin-media}
+      RUSTFS_SECRET_KEY: ${MEDIA_S3_SECRET_KEY:-tiffin-media-lab}
+    ports:
+      - "${MEDIA_S3_PORT:-39000}:9000"
+    volumes:
+      - rustfs-data:/data
+    healthcheck:
+      test: ["CMD", "sh", "-ec", "curl -fsS http://127.0.0.1:9000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+
+  seaweedfs:
+    image: chrislusf/seaweedfs:4.47
+    profiles: [media-seaweedfs]
+    <<: *restart
+    command: ["server", "-dir=/data", "-s3", "-s3.port=8333", "-s3.config=/etc/seaweedfs/s3.json", "-volume.max=20", "-master.volumeSizeLimitMB=64"]
+    ports:
+      - "${MEDIA_S3_PORT:-39000}:8333"
+    volumes:
+      - seaweedfs-data:/data
+      - ./seaweedfs/s3.json:/etc/seaweedfs/s3.json:ro
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 8333 && wget -qO- http://127.0.0.1:9333/cluster/status >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  # ------------------------------------------------------------ observability (profile)
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.116.1
+    profiles: [observability]
+    <<: *restart
+    command: ["--config=/etc/otel/config.yaml"]
+    volumes:
+      - ./otel/config.yaml:/etc/otel/config.yaml:ro
+    ports:
+      - "${OTLP_GRPC_PORT:-34317}:4317"
+      - "${OTLP_HTTP_PORT:-34318}:4318"
+    # No container healthcheck: the image is distroless and has no shell to run one with.
+
+  prometheus:
+    image: prom/prometheus:v3.1.0
+    profiles: [observability]
+    <<: *restart
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.retention.time=6h
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "${PROMETHEUS_PORT:-39090}:9090"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:9090/-/healthy | grep -qi healthy"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+
+  grafana:
+    image: grafana/grafana:11.5.1
+    profiles: [observability]
+    <<: *restart
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "${GRAFANA_PORT:-33000}:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/api/health | grep -q '\"database\": *\"ok\"'"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.65.0
+    profiles: [observability]
+    <<: *restart
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "${JAEGER_UI_PORT:-36686}:16686"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:14269/ >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+
+volumes:
+  rustfs-data:
+  seaweedfs-data:
+  postgres-data:
+  timescale-data:
+  kafka-data:
+  rabbitmq-data:
+  redis-data:
+  prometheus-data:
+  grafana-data:

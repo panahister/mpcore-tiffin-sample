@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="access.admin_required" xml:space="preserve">
+    <value>Sign in as an admin of a city, or of the platform.</value>
+  </data>
+  <data name="access.city_required" xml:space="preserve">
+    <value>Name the city you mean.</value>
+  </data>
+  <data name="access.person_not_found" xml:space="preserve">
+    <value>There is no such person in this city.</value>
+  </data>
+  <data name="access.grant_not_found" xml:space="preserve">
+    <value>There is no such decision in this city.</value>
+  </data>
+  <data name="access.directory_unavailable" xml:space="preserve">
+    <value>The identity provider cannot be reached at the moment. Try again shortly.</value>
+  </data>
+  <data name="access.role_unknown" xml:space="preserve">
+    <value>{role} is not a role of the platform.</value>
+  </data>
+  <data name="access.role_not_yours_to_give" xml:space="preserve">
+    <value>The role {role} is not yours to give or to take away.</value>
+  </data>
+  <data name="access.own_roles" xml:space="preserve">
+    <value>Nobody changes their own roles.</value>
+  </data>
+</root>

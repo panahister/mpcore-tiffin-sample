@@ -1,0 +1,567 @@
+{
+  "realm": "tiffin",
+  "displayName": "Tiffin (development)",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "accessTokenLifespan": 1800,
+  "roles": {
+    "realm": [
+      {
+        "name": "customer",
+        "description": "Orders food"
+      },
+      {
+        "name": "restaurant-manager",
+        "description": "Keeps a restaurant's menu and accepts or refuses its orders"
+      },
+      {
+        "name": "courier",
+        "description": "Delivers"
+      },
+      {
+        "name": "city-admin",
+        "description": "Manages people, roles and restaurants of one city"
+      },
+      {
+        "name": "platform-admin",
+        "description": "Manages cities"
+      },
+      {
+        "name": "service",
+        "description": "A service of the platform, calling another"
+      }
+    ]
+  },
+  "groups": [
+    {
+      "name": "cities",
+      "subGroups": [
+        {
+          "name": "tehran",
+          "attributes": {
+            "tenant_id": [
+              "tehran"
+            ]
+          }
+        },
+        {
+          "name": "istanbul",
+          "attributes": {
+            "tenant_id": [
+              "istanbul"
+            ]
+          }
+        },
+        {
+          "name": "platform",
+          "attributes": {
+            "tenant_id": [
+              "platform"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "tiffin-app",
+      "name": "The Tiffin app (development)",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "protocol": "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "tiffin-access-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "tiffin-access",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "tiffin-media-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "tiffin-media",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "tiffin-restaurants-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "tiffin-restaurants",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "tiffin-ordering-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "tiffin-ordering",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "tiffin-kitchen-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "tiffin-kitchen",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "tiffin-tracking-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "tiffin-tracking",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "tiffin-notifications-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "tiffin-notifications",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "tiffin-dispatch-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "tiffin-dispatch",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "tenant",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "tenant_id",
+            "claim.name": "tenant_id",
+            "jsonType.label": "String",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "tiffin-edge",
+      "name": "The edge, when it verifies tokens (EDGE_AUTH=keycloak)",
+      "enabled": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "secret": "lab-only-edge-secret",
+      "protocol": "openid-connect"
+    },
+    {
+      "clientId": "tiffin-access-service",
+      "name": "The Access service, when it calls another service",
+      "enabled": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "secret": "lab-only-access-secret",
+      "protocol": "openid-connect",
+      "protocolMappers": []
+    },
+    {
+      "clientId": "tiffin-ordering-service",
+      "name": "The Ordering service, when it calls another service",
+      "enabled": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "secret": "lab-only-ordering-secret",
+      "protocol": "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "tiffin-payments-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "tiffin-payments",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "tiffin-restaurants-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "tiffin-restaurants",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "tiffin-kitchen-service",
+      "name": "The Kitchen service, when it calls another service",
+      "enabled": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "secret": "lab-only-kitchen-secret",
+      "protocol": "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "tiffin-restaurants-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "tiffin-restaurants",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "tiffin-dispatch-service",
+      "name": "The Dispatch service, when it calls another service",
+      "enabled": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "secret": "lab-only-dispatch-secret",
+      "protocol": "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "tiffin-tracking-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "tiffin-tracking",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "tiffin-notifications-service",
+      "name": "The Notifications service, when it calls another service",
+      "enabled": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "secret": "lab-only-notifications-secret",
+      "protocol": "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "tiffin-access-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "tiffin-access",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "sara",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Sara",
+      "lastName": "Ahmadi",
+      "email": "sara@tiffin.example",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "sara-lab",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-tiffin",
+        "customer"
+      ],
+      "groups": [
+        "/cities/tehran"
+      ]
+    },
+    {
+      "username": "reza",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Reza",
+      "lastName": "Karimi",
+      "email": "reza@tiffin.example",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "reza-lab",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-tiffin",
+        "customer"
+      ],
+      "groups": [
+        "/cities/tehran"
+      ]
+    },
+    {
+      "username": "mina",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Mina",
+      "lastName": "Rahimi",
+      "email": "mina@tiffin.example",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "mina-lab",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-tiffin",
+        "restaurant-manager"
+      ],
+      "groups": [
+        "/cities/tehran"
+      ]
+    },
+    {
+      "username": "omid",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Omid",
+      "lastName": "Sadeghi",
+      "email": "omid@tiffin.example",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "omid-lab",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-tiffin",
+        "courier"
+      ],
+      "groups": [
+        "/cities/tehran"
+      ]
+    },
+    {
+      "username": "ali",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Ali",
+      "lastName": "Moradi",
+      "email": "ali@tiffin.example",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "ali-lab",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-tiffin",
+        "city-admin"
+      ],
+      "groups": [
+        "/cities/tehran"
+      ]
+    },
+    {
+      "username": "elif",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Elif",
+      "lastName": "Yilmaz",
+      "email": "elif@tiffin.example",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "elif-lab",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-tiffin",
+        "customer"
+      ],
+      "groups": [
+        "/cities/istanbul"
+      ]
+    },
+    {
+      "username": "kemal",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Kemal",
+      "lastName": "Demir",
+      "email": "kemal@tiffin.example",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "kemal-lab",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-tiffin",
+        "restaurant-manager"
+      ],
+      "groups": [
+        "/cities/istanbul"
+      ]
+    },
+    {
+      "username": "deniz",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Deniz",
+      "lastName": "Kaya",
+      "email": "deniz@tiffin.example",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "deniz-lab",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-tiffin",
+        "city-admin"
+      ],
+      "groups": [
+        "/cities/istanbul"
+      ]
+    },
+    {
+      "username": "nora",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Nora",
+      "lastName": "Hashemi",
+      "email": "nora@tiffin.example",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "nora-lab",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-tiffin",
+        "platform-admin"
+      ],
+      "groups": [
+        "/cities/platform"
+      ]
+    },
+    {
+      "username": "service-account-tiffin-access-service",
+      "enabled": true,
+      "serviceAccountClientId": "tiffin-access-service",
+      "realmRoles": [
+        "default-roles-tiffin",
+        "service"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "manage-users",
+          "view-users",
+          "query-users",
+          "query-groups",
+          "view-realm"
+        ]
+      }
+    },
+    {
+      "username": "service-account-tiffin-ordering-service",
+      "enabled": true,
+      "serviceAccountClientId": "tiffin-ordering-service",
+      "realmRoles": [
+        "default-roles-tiffin",
+        "service"
+      ]
+    },
+    {
+      "username": "service-account-tiffin-kitchen-service",
+      "enabled": true,
+      "serviceAccountClientId": "tiffin-kitchen-service",
+      "realmRoles": [
+        "default-roles-tiffin",
+        "service"
+      ]
+    },
+    {
+      "username": "service-account-tiffin-dispatch-service",
+      "enabled": true,
+      "serviceAccountClientId": "tiffin-dispatch-service",
+      "realmRoles": [
+        "default-roles-tiffin",
+        "service"
+      ]
+    },
+    {
+      "username": "service-account-tiffin-notifications-service",
+      "enabled": true,
+      "serviceAccountClientId": "tiffin-notifications-service",
+      "realmRoles": [
+        "default-roles-tiffin",
+        "service"
+      ]
+    }
+  ]
+}

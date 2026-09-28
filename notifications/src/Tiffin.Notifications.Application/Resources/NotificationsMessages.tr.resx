@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="notifications.sign_in_required" xml:space="preserve">
+    <value>Bir şehrin üyesi olarak oturum açın.</value>
+  </data>
+  <data name="notifications.not_found" xml:space="preserve">
+    <value>Sizin için böyle bir bildirim yok.</value>
+  </data>
+  <data name="notifications.order_placed" xml:space="preserve">
+    <value>{restaurant} restoranındaki {order_number} numaralı siparişiniz alındı: {total} {currency}.</value>
+  </data>
+  <data name="notifications.order_out_for_delivery" xml:space="preserve">
+    <value>{courier}, {order_number} numaralı siparişinizle yolda.</value>
+  </data>
+  <data name="notifications.order_delivered" xml:space="preserve">
+    <value>{order_number} numaralı siparişiniz teslim edildi. Afiyet olsun.</value>
+  </data>
+  <data name="notifications.order_cancelled" xml:space="preserve">
+    <value>{order_number} numaralı siparişiniz iptal edildi.</value>
+  </data>
+  <data name="notifications.order_cancelled.cancelled-by-customer" xml:space="preserve">
+    <value>{order_number} numaralı siparişiniz isteğiniz üzerine iptal edildi. Çekilen tutar kartınıza iade edilir.</value>
+  </data>
+  <data name="notifications.order_cancelled.payment-declined" xml:space="preserve">
+    <value>{order_number} numaralı siparişiniz iptal edildi: bankanız ödemeyi reddetti. Hiçbir ücret alınmadı.</value>
+  </data>
+  <data name="notifications.order_cancelled.restaurant-refused" xml:space="preserve">
+    <value>{order_number} numaralı siparişiniz iptal edildi: restoran siparişi alamadı. Çekilen tutar kartınıza iade edilir.</value>
+  </data>
+  <data name="notifications.order_cancelled.no-courier" xml:space="preserve">
+    <value>{order_number} numaralı siparişiniz iptal edildi: boşta kurye yoktu. Çekilen tutar kartınıza iade edilir.</value>
+  </data>
+</root>

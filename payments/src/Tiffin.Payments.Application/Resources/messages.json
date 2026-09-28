@@ -1,0 +1,12 @@
+{
+  "class": "PaymentsMessages",
+  "languages": ["en", "fa", "tr"],
+  "messages": {
+    "payments.provider_unavailable": ["The payment provider cannot be reached at the moment.", "در حال حاضر به ارائه‌دهنده‌ی پرداخت دسترسی نیست.", "Ödeme sağlayıcısına şu anda ulaşılamıyor."],
+    "payments.amount_not_positive": ["An amount must be more than nothing; {amount} is not.", "مبلغ باید بیشتر از صفر باشد؛ {amount} نیست.", "Tutar sıfırdan büyük olmalıdır; {amount} değil."],
+    "payments.amount_invalid": ["The amount is not a number.", "مبلغ یک عدد نیست.", "Tutar bir sayı değil."],
+    "payments.order_id_invalid": ["The order's identifier is not a UUID.", "شناسه‌ی سفارش یک UUID معتبر نیست.", "Sipariş kimliği geçerli bir UUID değil."],
+    "payments.not_pending": ["The payment does not wait to be charged ({status}).", "این پرداخت در انتظار کسر نیست ({status}).", "Ödeme tahsil edilmeyi beklemiyor ({status})."],
+    "payments.not_charged": ["Nothing was charged that could be given back ({status}).", "مبلغی کسر نشده که برگردانده شود ({status}).", "İade edilebilecek bir tahsilat yok ({status})."]
+  }
+}

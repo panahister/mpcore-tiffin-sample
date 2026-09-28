@@ -1,0 +1,126 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+
+#nullable disable
+
+namespace Tiffin.Access.Infrastructure.Migrations
+{
+    /// <inheritdoc />
+    public partial class InitialAccess : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.EnsureSchema(
+                name: "audit");
+
+            migrationBuilder.EnsureSchema(
+                name: "access");
+
+            migrationBuilder.CreateTable(
+                name: "entries",
+                schema: "audit",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    OccurredAtUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ActorKind = table.Column<int>(type: "integer", nullable: false),
+                    ActorSubjectId = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ActorClientId = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ActorUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    TenantId = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    Module = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Category = table.Column<int>(type: "integer", nullable: false),
+                    EntityType = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    EntityId = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    Action = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Outcome = table.Column<int>(type: "integer", nullable: false),
+                    FailureDomain = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    FailureCode = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    Reason = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
+                    CorrelationId = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    OperationId = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    Changes = table.Column<string>(type: "jsonb", nullable: false),
+                    Metadata = table.Column<string>(type: "jsonb", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_entries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "grants",
+                schema: "access",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    City = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    PersonId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    PersonName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Role = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    Kind = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
+                    DecidedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    DecidedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    State = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
+                    AppliedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    Failure = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
+                    CreatedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ModifiedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_grants", x => x.Id);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_entries_ActorSubjectId",
+                schema: "audit",
+                table: "entries",
+                column: "ActorSubjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_entries_CorrelationId",
+                schema: "audit",
+                table: "entries",
+                column: "CorrelationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_entries_EntityType_EntityId",
+                schema: "audit",
+                table: "entries",
+                columns: new[] { "EntityType", "EntityId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_entries_OccurredAtUtc",
+                schema: "audit",
+                table: "entries",
+                column: "OccurredAtUtc");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_grants_city_decided",
+                schema: "access",
+                table: "grants",
+                columns: new[] { "City", "DecidedOnUtc" });
+
+            migrationBuilder.CreateIndex(
+                name: "ix_grants_city_person",
+                schema: "access",
+                table: "grants",
+                columns: new[] { "City", "PersonId" });
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "entries",
+                schema: "audit");
+
+            migrationBuilder.DropTable(
+                name: "grants",
+                schema: "access");
+        }
+    }
+}

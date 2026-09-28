@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="access.admin_required" xml:space="preserve">
+    <value>به‌عنوان مدیر یک شهر یا مدیر پلتفرم وارد شوید.</value>
+  </data>
+  <data name="access.city_required" xml:space="preserve">
+    <value>شهر مورد نظر را نام ببرید.</value>
+  </data>
+  <data name="access.person_not_found" xml:space="preserve">
+    <value>چنین شخصی در این شهر وجود ندارد.</value>
+  </data>
+  <data name="access.grant_not_found" xml:space="preserve">
+    <value>چنین تصمیمی در این شهر وجود ندارد.</value>
+  </data>
+  <data name="access.directory_unavailable" xml:space="preserve">
+    <value>در حال حاضر به سامانه‌ی هویت دسترسی نیست. کمی بعد دوباره تلاش کنید.</value>
+  </data>
+  <data name="access.role_unknown" xml:space="preserve">
+    <value>{role} جزو نقش‌های پلتفرم نیست.</value>
+  </data>
+  <data name="access.role_not_yours_to_give" xml:space="preserve">
+    <value>دادن یا گرفتن نقش {role} در اختیار شما نیست.</value>
+  </data>
+  <data name="access.own_roles" xml:space="preserve">
+    <value>هیچ‌کس نقش‌های خودش را تغییر نمی‌دهد.</value>
+  </data>
+</root>

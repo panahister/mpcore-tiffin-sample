@@ -1,0 +1,25 @@
+name: Defect
+description: The sample does not do what docs/business.md says, or a scenario fails
+labels: [defect]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to see it
+      description: The scenario (`scripts/scenarios.sh S8`) or the request, and the answer you got.
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: .NET SDK, operating system, and where MP Core came from (source or nuget.org)
+  - type: markdown
+    attributes:
+      value: A defect of MP Core itself belongs in MP Core's repository, where it is fixed.

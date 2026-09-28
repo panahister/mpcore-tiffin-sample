@@ -1,0 +1,81 @@
+<Project>
+  <!--
+    Where MP Core comes from, for every project in this repository.
+
+    The generated projects are left exactly as the template wrote them: every framework reference is
+    an ordinary `PackageReference Include="MPCore.X" Version="$(MPCoreVersion)"`. This file decides,
+    at evaluation time, what that reference resolves to.
+
+      MPCoreSource=NuGet             The package references are left alone and restored from nuget.org
+                                     (NuGet.Config). This is what a clone of this repository alone does.
+      MPCoreSource=Local             Each MPCore.* package reference is replaced by a ProjectReference
+                                     to ../mpcore/src/MPCore.X/MPCore.X.csproj. You debug into framework
+                                     code, and a framework fix is picked up on the next build. This is the
+                                     default when a clone of MP Core sits next to this repository.
+
+    Switch for one build:     dotnet build -p:MPCoreSource=NuGet
+    Point at another clone:   dotnet build -p:MPCoreRepositoryRoot=/path/to/mpcore/
+
+    Local mode cannot catch a packaging defect: it never builds a .nupkg. scripts/verify-against-packages.sh
+    builds and tests every backend against packed artifacts.
+
+    Directory.Build.targets is found by walking up from each project, and no generated project ships
+    one, so this file applies to every backend without editing any generated file.
+  -->
+  <PropertyGroup>
+    <MPCoreRepositoryRoot Condition="'$(MPCoreRepositoryRoot)' == ''">$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', 'mpcore'))</MPCoreRepositoryRoot>
+    <MPCoreRepositoryRoot>$([MSBuild]::EnsureTrailingSlash('$(MPCoreRepositoryRoot)'))</MPCoreRepositoryRoot>
+    <MPCoreSource Condition="'$(MPCoreSource)' == '' AND Exists('$(MPCoreRepositoryRoot)src')">Local</MPCoreSource>
+    <MPCoreSource Condition="'$(MPCoreSource)' == ''">NuGet</MPCoreSource>
+  </PropertyGroup>
+
+  <!--
+    The runtime packages that exist as projects under mpcore/src. MPCore.Cli and
+    MPCore.Templates are tools, never referenced by a project, and are deliberately absent.
+    A reference to an MPCore.* id that is not listed here fails the build (see the target below)
+    rather than silently falling through to a feed.
+  -->
+  <ItemGroup Condition="'$(MPCoreSource)' == 'Local'">
+    <_MPCoreRuntimePackage Include="MPCore.Application;MPCore.Audit.Abstractions;MPCore.Audit.EntityFrameworkCore.PostgreSql;MPCore.Caching.Abstractions;MPCore.Caching.Hybrid;MPCore.Caching.Memory;MPCore.Caching.Redis;MPCore.Domain;MPCore.Hosting;MPCore.Idempotency.EntityFrameworkCore.PostgreSql;MPCore.Localization;MPCore.Localization.EntityFrameworkCore.PostgreSql;MPCore.Messaging.Abstractions;MPCore.Messaging.Wolverine;MPCore.Messaging.Wolverine.Kafka;MPCore.Messaging.Wolverine.RabbitMQ;MPCore.Observability;MPCore.Observability.Prometheus;MPCore.Persistence.Abstractions;MPCore.Persistence.EntityFrameworkCore.PostgreSql;MPCore.Persistence.Timescale;MPCore.Resilience.Http;MPCore.Security.Abstractions;MPCore.Security.AspNetCore;MPCore.Tenancy.Abstractions;MPCore.Transport.Grpc;MPCore.Transport.Http;MPCore.Validation.FluentValidation" />
+
+    <!-- Intersection by identity, at evaluation time: references that are not MP Core, then the rest. -->
+    <_NonMPCorePackageReference Include="@(PackageReference)" Exclude="@(_MPCoreRuntimePackage)" />
+    <_MPCorePackageReference Include="@(PackageReference)" Exclude="@(_NonMPCorePackageReference)" />
+
+    <PackageReference Remove="@(_MPCorePackageReference)" />
+    <ProjectReference Include="@(_MPCorePackageReference->'$(MPCoreRepositoryRoot)src/%(Identity)/%(Identity).csproj')" />
+  </ItemGroup>
+
+  <Target Name="MPCoreValidateLocalSource"
+          BeforeTargets="CollectPackageReferences;ResolveProjectReferences"
+          Condition="'$(MPCoreSource)' == 'Local'">
+    <Error Condition="!Exists('$(MPCoreRepositoryRoot)src')"
+           Text="MPCoreSource=Local, but no MP Core source was found at '$(MPCoreRepositoryRoot)'. Clone mpcore next to this repository, pass -p:MPCoreRepositoryRoot=..., or build with -p:MPCoreSource=NuGet." />
+    <ItemGroup>
+      <_MPCoreUnknownReference Include="@(PackageReference)"
+                               Condition="$([System.String]::Copy('%(Identity)').StartsWith('MPCore.'))" />
+    </ItemGroup>
+    <Error Condition="'@(_MPCoreUnknownReference)' != ''"
+           Text="MPCoreSource=Local cannot map '@(_MPCoreUnknownReference)' to a project under '$(MPCoreRepositoryRoot)src'. Add it to _MPCoreRuntimePackage in Directory.Build.targets if it is a new runtime package." />
+  </Target>
+
+  <!--
+    Say which framework bits a build used. In Local mode the assembly version still reads as the
+    cohort declared in the MP Core repository, while the code is whatever is checked out there, so the commit
+    is the only honest identity. Printed once, by the host project.
+  -->
+  <Target Name="MPCoreReportSource"
+          AfterTargets="Build"
+          Condition="'$(MPCoreSource)' == 'Local' AND '$(UsingMicrosoftNETSdkWeb)' == 'true'">
+    <Exec Command="git -C &quot;$(MPCoreRepositoryRoot)&quot; describe --always --dirty --abbrev=7"
+          ConsoleToMSBuild="true" StandardOutputImportance="low" IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_MPCoreSourceRevision" />
+      <Output TaskParameter="ExitCode" PropertyName="_MPCoreSourceRevisionExit" />
+    </Exec>
+    <PropertyGroup Condition="'$(_MPCoreSourceRevisionExit)' != '0'">
+      <_MPCoreSourceRevision>a copy without a git history</_MPCoreSourceRevision>
+    </PropertyGroup>
+    <Message Importance="high"
+             Text="MP Core: Local source $(MPCoreRepositoryRoot) at $(_MPCoreSourceRevision) (declared cohort $(MPCoreVersion))" />
+  </Target>
+</Project>

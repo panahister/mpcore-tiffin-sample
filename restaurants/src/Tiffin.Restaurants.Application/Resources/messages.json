@@ -1,0 +1,55 @@
+{
+  "class": "RestaurantsMessages",
+  "languages": [
+    "en",
+    "fa",
+    "tr"
+  ],
+  "messages": {
+    "restaurants.not_found": [
+      "There is no such restaurant.",
+      "چنین رستورانی وجود ندارد.",
+      "Böyle bir restoran yok."
+    ],
+    "restaurants.not_the_manager": [
+      "Only the manager of a restaurant changes it.",
+      "فقط مدیر رستوران می‌تواند آن را تغییر دهد.",
+      "Bir restoranı yalnızca yöneticisi değiştirir."
+    ],
+    "restaurants.city_required": [
+      "Name a city, or sign in.",
+      "یک شهر را نام ببرید یا وارد شوید.",
+      "Bir şehir belirtin veya oturum açın."
+    ],
+    "restaurants.name_taken": [
+      "This city already has a restaurant named {restaurant}.",
+      "در این شهر رستورانی به نام {restaurant} وجود دارد.",
+      "Bu şehirde {restaurant} adında bir restoran zaten var."
+    ],
+    "restaurants.price_not_positive": [
+      "The price of {code} must be more than nothing; {price} is not.",
+      "قیمت {code} باید بیشتر از صفر باشد؛ {price} نیست.",
+      "{code} fiyatı sıfırdan büyük olmalıdır; {price} değil."
+    ],
+    "restaurants.menu_empty": [
+      "{restaurant} has nothing to sell yet, so it cannot open.",
+      "{restaurant} هنوز چیزی برای فروش ندارد و نمی‌تواند باز شود.",
+      "{restaurant} henüz satacak bir şeye sahip değil, bu yüzden açılamaz."
+    ],
+    "restaurants.closed": [
+      "{restaurant} is closed.",
+      "{restaurant} بسته است.",
+      "{restaurant} kapalı."
+    ],
+    "restaurants.item_not_on_sale": [
+      "{restaurant} does not sell {code} at the moment.",
+      "{restaurant} در حال حاضر {code} را نمی‌فروشد.",
+      "{restaurant} şu anda {code} satmıyor."
+    ],
+    "restaurants.currency_unknown": [
+      "The platform does not settle in {currency}.",
+      "پلتفرم با {currency} تسویه نمی‌کند.",
+      "Platform {currency} ile ödeme yapmıyor."
+    ]
+  }
+}

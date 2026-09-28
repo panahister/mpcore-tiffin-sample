@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../Tiffin.Restaurants.Application/Tiffin.Restaurants.Application.csproj" />
+    <PackageReference Include="MPCore.Caching.Redis" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Persistence.EntityFrameworkCore.PostgreSql" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Messaging.Wolverine" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Resilience.Http" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Audit.EntityFrameworkCore.PostgreSql" Version="$(MPCoreVersion)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+  </ItemGroup>
+</Project>

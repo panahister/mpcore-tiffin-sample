@@ -1,0 +1,30 @@
+// A copy of the contract of the Payments service, which owns it: payments/src/Tiffin.Payments.Api/Protos.
+// tests/Tiffin.Contracts.Tests holds this copy to the original.
+syntax = "proto3";
+
+option csharp_namespace = "Tiffin.Ordering.Infrastructure.Payments";
+
+package tiffin.payments.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// References for cards. Called by services of the platform only, each as itself.
+service PaymentIntents {
+  // Takes the token the payment provider gave the customer's app for a card, and answers with a
+  // reference. The token stays here; whoever asked keeps the reference.
+  rpc CreateIntent (CreateIntentRequest) returns (CreateIntentReply);
+}
+
+message CreateIntentRequest {
+  string order_id = 1;       // UUID
+  string customer_id = 2;    // the subject of the customer's token
+  string city = 3;           // the tenant: a service's own token names none
+  string payment_token = 4;
+  string amount = 5;         // a decimal number, written with a point: money is never a float
+  string currency = 6;       // ISO 4217
+}
+
+message CreateIntentReply {
+  string payment_intent_id = 1;                 // UUID
+  google.protobuf.Timestamp expires_on = 2;     // unused by then, the reference is void and the token erased
+}

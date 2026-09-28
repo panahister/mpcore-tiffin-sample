@@ -1,0 +1,30 @@
+# ---- .NET ----
+bin/
+obj/
+TestResults/
+*.user
+*.suo
+*.binlog
+.vs/
+.idea/
+.vscode/
+artifacts/
+
+# ---- local environment (never committed) ----
+infrastructure/.env
+infrastructure/apisix/generated/
+.env
+*.pfx
+*.p12
+*.key
+*.pem
+secrets.json
+**/appsettings.*.Local.json
+
+# ---- output ----
+*.log
+tmp/
+.DS_Store
+
+# ---- python, for the scripts that draw the diagrams ----
+__pycache__/

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 4,
+  "organization": "Tiffin",
+  "component": "Restaurants",
+  "productName": "Tiffin.Restaurants",
+  "shape": "service",
+  "messaging": "kafka",
+  "transport": "rest",
+  "businessAudit": "postgresql",
+  "cache": "redis",
+  "timeseries": "none",
+  "aiTooling": "both",
+  "mpcoreVersion": "0.9.0",
+  "templateVersion": "0.9.0",
+  "cliVersion": "0.9.0",
+  "generatedAtUtc": "2026-09-27T21:24:54.444444+00:00"
+}

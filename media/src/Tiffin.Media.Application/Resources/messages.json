@@ -1,0 +1,17 @@
+{
+  "class": "MediaMessages",
+  "languages": ["en", "fa", "tr"],
+  "messages": {
+    "media.sign_in_required": ["Sign in as somebody of a city.", "به‌عنوان عضو یک شهر وارد شوید.", "Bir şehrin üyesi olarak oturum açın."],
+    "media.file_not_found": ["There is no such file.", "چنین فایلی وجود ندارد.", "Böyle bir dosya yok."],
+    "media.not_the_owner": ["Only who sent a file changes it.", "فقط فرستنده‌ی فایل می‌تواند آن را تغییر دهد.", "Bir dosyayı yalnızca göndereni değiştirir."],
+    "media.nothing_arrived": ["Nothing has arrived in the store yet. Send the file, then confirm.", "هنوز چیزی به انبار نرسیده است. فایل را بفرستید و سپس تأیید کنید.", "Depoya henüz bir şey ulaşmadı. Dosyayı gönderin, sonra onaylayın."],
+    "media.upload_window_closed": ["The time to send this file has passed. Announce it again.", "زمان ارسال این فایل گذشته است. دوباره آن را اعلام کنید.", "Bu dosyayı gönderme süresi doldu. Dosyayı yeniden bildirin."],
+    "media.store_unavailable": ["The store of files cannot be reached at the moment. Try again shortly.", "در حال حاضر به انبار فایل‌ها دسترسی نیست. کمی بعد دوباره تلاش کنید.", "Dosya deposuna şu anda ulaşılamıyor. Kısa süre sonra tekrar deneyin."],
+    "media.purpose_unknown": ["The platform has no files for {purpose}.", "پلتفرم برای {purpose} فایلی نگه نمی‌دارد.", "Platform {purpose} için dosya tutmuyor."],
+    "media.type_not_allowed": ["A file for {purpose} is one of {allowed}; {type} is not.", "فایل {purpose} باید یکی از {allowed} باشد؛ {type} نیست.", "{purpose} için bir dosya {allowed} türlerinden biridir; {type} değil."],
+    "media.size_not_allowed": ["A file for {purpose} has between 1 and {maximum} bytes; {size} is not.", "فایل {purpose} باید بین ۱ تا {maximum} بایت باشد؛ {size} نیست.", "{purpose} için bir dosya 1 ile {maximum} bayt arasındadır; {size} değil."],
+    "media.file_not_pending": ["The file has already been confirmed ({state}).", "این فایل قبلاً تأیید شده است ({state}).", "Dosya zaten onaylandı ({state})."],
+    "media.not_what_was_announced": ["What arrived is not what was announced: {announced} were announced, {arrived} arrived.", "آنچه رسید با آنچه اعلام شده بود یکی نیست: {announced} اعلام شده بود و {arrived} رسید.", "Ulaşan, bildirilenle aynı değil: {announced} bildirildi, {arrived} ulaştı."]
+  }
+}

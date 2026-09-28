@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ordering.order_not_found" xml:space="preserve">
+    <value>There is no such order.</value>
+  </data>
+  <data name="ordering.customer_required" xml:space="preserve">
+    <value>Sign in as a customer of a city to order.</value>
+  </data>
+  <data name="ordering.restaurant_not_found" xml:space="preserve">
+    <value>There is no such restaurant in your city.</value>
+  </data>
+  <data name="ordering.total_changed" xml:space="preserve">
+    <value>The order now costs {total} {currency}. Look at it again and confirm.</value>
+  </data>
+  <data name="ordering.refused_by_restaurant" xml:space="preserve">
+    <value>The restaurant cannot take this order: {detail}</value>
+  </data>
+  <data name="ordering.restaurants_unavailable" xml:space="preserve">
+    <value>The menus cannot be reached at the moment. Try again shortly.</value>
+  </data>
+  <data name="ordering.payments_unavailable" xml:space="preserve">
+    <value>Payments cannot be reached at the moment. Nothing was charged. Try again shortly.</value>
+  </data>
+  <data name="ordering.payment_token_refused" xml:space="preserve">
+    <value>The card's token was refused. Enter the card again.</value>
+  </data>
+  <data name="ordering.order_empty" xml:space="preserve">
+    <value>An order has at least one item.</value>
+  </data>
+  <data name="ordering.not_awaiting_payment" xml:space="preserve">
+    <value>Order {order_number} does not wait for its payment ({status}).</value>
+  </data>
+  <data name="ordering.not_awaiting_restaurant" xml:space="preserve">
+    <value>Order {order_number} does not wait for the restaurant ({status}).</value>
+  </data>
+  <data name="ordering.not_awaiting_courier" xml:space="preserve">
+    <value>Order {order_number} does not wait for a courier ({status}).</value>
+  </data>
+  <data name="ordering.not_on_its_way" xml:space="preserve">
+    <value>Order {order_number} is not on its way ({status}).</value>
+  </data>
+  <data name="ordering.cannot_be_cancelled" xml:space="preserve">
+    <value>Order {order_number} can no longer be cancelled ({status}).</value>
+  </data>
+  <data name="ordering.already_cooking" xml:space="preserve">
+    <value>The restaurant already cooks order {order_number}; it can no longer be cancelled ({status}).</value>
+  </data>
+</root>
