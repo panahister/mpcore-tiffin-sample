@@ -1,5 +1,5 @@
 # OpenTelemetry Collector.
-# Receives OTLP from the three backends, exports traces to Jaeger and metrics to Prometheus.
+# Receives OTLP from the nine services, exports traces to Jaeger and metrics to Prometheus.
 receivers:
   otlp:
     protocols:
