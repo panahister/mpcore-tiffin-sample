@@ -13,7 +13,8 @@ two cities that never see each other, and fifteen scenarios that prove what is c
 [![.NET](https://img.shields.io/badge/.NET-10-512bd4)](global.json)
 
 [Run it](#run-it) ·
-[The journey of one order](#the-journey-of-one-order) ·
+[One order](#one-order-through-six-services) ·
+[Why MP Core](#why-mp-core-in-this-platform) ·
 [Architecture](docs/architecture.md) ·
 [The business](docs/business.md) ·
 [What MP Core does here](docs/mpcore-coverage.md) ·
@@ -21,6 +22,11 @@ two cities that never see each other, and fifteen scenarios that prove what is c
 [What building it found](docs/findings.md)
 
 </div>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/system-dark.svg">
+  <img alt="Tiffin: customers, restaurants, couriers and city admins reach nine services through Apache APISIX. Each service has its own database; RabbitMQ carries the order's requests and answers, Apache Kafka what happened. Keycloak, PayLane, RustFS or SeaweedFS, PostgreSQL, TimescaleDB and Redis stand beside them" src="docs/images/system-light.svg" width="100%">
+</picture>
 
 > **State: work in progress.** Everything on this page was run; the section [What is not here yet](#what-is-not-here-yet)
 > says what was not. Tiffin is built with MP Core `0.9.2` from nuget.org.
@@ -72,34 +78,61 @@ business: [docs/architecture.md](docs/architecture.md) says what the generator w
 agree on is a message or a contract file, stated by each in its own code, and one test project holds the
 copies together: [tests/Tiffin.Contracts.Tests](tests/Tiffin.Contracts.Tests).
 
-## The journey of one order
+## One order, through six services
 
-```text
-sara's app ──POST /v1/orders──▶ Ordering ──asks the price──▶ Restaurants      (REST, as itself)
-                                   │      ──hands over the card's token──▶ Payments   (gRPC, as itself)
-                                   │
-                                   ▼  202 Accepted: the order has an identity, and nothing else is known
-   Ordering ──payment-requested──▶ Payments ──▶ PayLane         the card is charged, its token erased
-   Ordering ◀──payment-authorized── Payments
-   Ordering ──preparation-requested──▶ Kitchen                   mina accepts: ready in 25 minutes
-   Ordering ◀──order-accepted── Kitchen
-   Ordering ──courier-requested──▶ Dispatch                      omid has waited longest
-   Ordering ◀──courier-assigned── Dispatch ──delivery-assigned──▶ (stream) ──▶ Tracking
-                                   omid's app ──positions──▶ Tracking          sara sees where he is
-   Dispatch ──delivery-completed──▶ (stream) ──▶ Ordering, Tracking            delivered
-   Ordering ──order-placed, order-out-for-delivery, order-delivered──▶ (stream) ──▶ Notifications
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/order-journey-dark.svg">
+  <img alt="The eight steps of an order across Ordering, Payments, the Kitchen, Dispatch, Tracking and Notifications, what MP Core guarantees at each, and what is taken back when a step fails" src="docs/images/order-journey-light.svg" width="100%">
+</picture>
 
-Requests and answers travel on RabbitMQ queues, one reader each. What happened is written to Kafka
-topics, for whoever wants to read it. When a step fails, the steps before it are taken back:
+The customer is told "accepted" (HTTP 202) the moment the order has an identity; whether the card has the
+money, the restaurant will cook and a courier is free is answered afterwards, by the service that knows.
+Ordering is the only one that knows the whole: an *orchestration-based saga* (Hector Garcia-Molina and
+Kenneth Salem, 1987; Chris Richardson, 2018). Requests and answers travel on RabbitMQ, one queue per
+contract and one reader each; what happened is written to Kafka, for whoever wants to read it
+([docs/architecture.md](docs/architecture.md)).
 
-| What fails | What is taken back |
-|---|---|
-| The bank refuses the card | nothing was done yet; the order is cancelled |
-| The restaurant refuses | Payments gives the money back |
-| No courier is free | the Kitchen is told to stop, Payments gives the money back |
-| The payment provider does not answer, for good | the order is told, and cancelled; the request waits in the dead-letter queue |
-| The customer cancels before the restaurant cooks | the Kitchen is told to stop, Payments gives the money back |
+## The city travels with the work
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/city-dark.svg">
+  <img alt="The city is the tenant. It travels from the token to the request, to a message and to a call between services, into every row and every record of the audit trail; what belongs to one city does not exist for the other" src="docs/images/city-light.svg" width="100%">
+</picture>
+
+Two cities share one platform, and neither can see the other. The city is written into the token by
+Keycloak, and from there MP Core carries it: into the header of every message (`0.9.1`) and of every call
+one service makes to another as itself (`0.9.2`), and into every record of the audit trail. Tiffin found
+both gaps by running, and both were closed in MP Core, not worked around here
+([docs/findings.md](docs/findings.md), T-01 and T-05).
+
+## When something is down
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/failure-dark.svg">
+  <img alt="Five cases: a service asked while a customer waits, a service asked by a message, a reader of the stream, the payment provider, and six orders for one courier; for each, what the customer sees, what waits, and what MP Core does" src="docs/images/failure-light.svg" width="100%">
+</picture>
+
+Scenario S14 stops Restaurants, the Kitchen and Notifications in the middle of an order, and checks that the
+customer is told, that a request waits in its queue for six seconds and more, and that a reader of the
+stream catches up. Every case in the picture is a scenario of `scripts/scenarios.sh`.
+
+## Why MP Core, in this platform
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/why-mpcore-dark.svg">
+  <img alt="Nine guarantees the platform needs: for each, what every team builds and proves without MP Core, the line Tiffin wrote with it, and the scenario that proves it; and the code counted: 3,322 lines of Tiffin's business against 5,016 lines in MP Core's 28 packages" src="docs/images/why-mpcore-light.svg" width="100%">
+</picture>
+
+Nine services need the same guarantees nine times: the city on every message and every call, a token of
+their own, a step of the saga and its message in one commit, an order sent twice, a message delivered
+twice, a race for the last courier, a rule answered in the customer's language. Without a framework, each
+team builds them, and proves them again. In Tiffin each of those is one line, or nothing at all, and the
+scenario in the last column proves it against the running system.
+
+**How the code was counted.** Lines of C# that are neither blank, nor comments, nor a brace alone;
+migrations, `bin` and `obj` left out. Tiffin: the `Domain` and `Application` projects of the nine services.
+MP Core: the `src` of its 28 runtime packages at `0.9.2`; its tests are another 6,876 lines, 478 tests, run
+against PostgreSQL, TimescaleDB and Redis. The hosts and adapters of Tiffin are another 4,986 lines.
 
 ## Run it
 
@@ -170,7 +203,11 @@ code was broken on purpose and the check was seen to fail: [docs/findings.md](do
 | Kubernetes | | fits by standard, not run |
 | Ceph, Amazon S3 as the store of Media | | fit by standard, not run. RustFS and SeaweedFS were run |
 | Traces across the nine services | | the exporters are configured and off; not looked at |
+| Skills for AI agents at the root | a task given at the root finds the service it belongs to, as in Storefront | not written; each service carries MP Core's ten |
 
 ## Licence
 
-[Apache-2.0](LICENSE). Tiffin, PayLane and the people named in the scenarios are fictional.
+[Apache-2.0](LICENSE) and [NOTICE](NOTICE). Tiffin, PayLane and the people named in the scenarios are
+fictional. The names and marks of the products in the pictures belong to their owners and are used only to
+name those products. The pictures are drawn by `scripts/diagrams/tiffin.py` with the kit Storefront draws its
+own with.
