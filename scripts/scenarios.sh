@@ -247,7 +247,7 @@ check "$(jq -r .cancellationReason <<<"$LAST")" restaurant-refused "why"
 if refunded "$S2_ORDER" "$SARA"; then ok "the money went back"; else bad "the order was not refunded"; fi
 check "$(paylane refunds "$S2_ORDER")" 1 "the provider was asked to refund, times"
 check "$(psql_in tiffin_payments "select \"Status\" from payments.payments where \"OrderId\" = '$S2_ORDER'")" Refunded "the payment"
-LANG_HEADER=fa api POST "$KITCHEN/v1/kitchen/tickets/$S2_ORDER/accept" "$MINA" '{"readyInMinutes":20}'
+LANG_HEADER=zh-CN api POST "$KITCHEN/v1/kitchen/tickets/$S2_ORDER/accept" "$MINA" '{"readyInMinutes":20}'
 expect 422 "mina changes her mind and accepts after all"; check "$(code)" TICKET_NOT_PENDING "rule K1"
 fi
 
@@ -347,7 +347,7 @@ reaches "$S7_SECOND" "$SARA" Paid "a second order"
 wait_ticket "$MINA" "$S7_SECOND" Pending
 api POST "$KITCHEN/v1/kitchen/tickets/$S7_SECOND/accept" "$MINA" '{"readyInMinutes":30}'
 wait_for "$S7_SECOND" "$SARA" Accepted OutForDelivery Cancelled
-LANG_HEADER=fa api POST "$ORDERING/v1/orders/$S7_SECOND/cancel" "$SARA" '{}'
+LANG_HEADER=zh-CN api POST "$ORDERING/v1/orders/$S7_SECOND/cancel" "$SARA" '{}'
 expect 422 "sara cancels after the restaurant accepted"; say "$(jq -r .detail <<<"$LAST")"
 if [ "$ORDER_STATUS" = OutForDelivery ] || wait_for "$S7_SECOND" "$SARA" OutForDelivery; then
   grpc "$DISPATCH" tiffin.dispatch.v1.Couriers/CompleteDelivery "$OMID" "{\"order_id\":\"$S7_SECOND\"}"
@@ -389,7 +389,7 @@ say "How often two orders reached for the courier at the same moment is told by 
 grpc "$DISPATCH" tiffin.dispatch.v1.Couriers/CompleteDelivery "$OMID" "{\"order_id\":\"$lost\"}"
 check "$GRPC_CODE" NotFound "omid completes an order he never carried"
 grpc "$DISPATCH" tiffin.dispatch.v1.Couriers/CompleteDelivery "$OMID" "{\"order_id\":\"$carried\"}"; check "$GRPC_CODE" OK "omid hands over the one he carries"
-LANG_HEADER=fa grpc "$DISPATCH" tiffin.dispatch.v1.Couriers/CompleteDelivery "$OMID" "{\"order_id\":\"$carried\"}"
+LANG_HEADER=zh-CN grpc "$DISPATCH" tiffin.dispatch.v1.Couriers/CompleteDelivery "$OMID" "{\"order_id\":\"$carried\"}"
 check "$GRPC_CODE" FailedPrecondition "and hands it over again"; say "$(sed -n 's/^ *Message: *//p' <<<"$LAST" | head -1)"
 fi
 
@@ -456,7 +456,7 @@ if applied "$ALI" "$(jq -r .grantId <<<"$LAST")"; then ok "the identity provider
 check "$(claim "$(token_for reza)" '.realm_access.roles | map(select(. == "courier")) | length')" 0 "reza signs in again: times the role is in his token"
 
 say "What is not an admin's to give."
-LANG_HEADER=fa api PUT "$ACCESS/v1/access/people/$REZA_ID/roles/city-admin" "$ALI"
+LANG_HEADER=zh-CN api PUT "$ACCESS/v1/access/people/$REZA_ID/roles/city-admin" "$ALI"
 expect 422 "ali makes reza an admin of the city"; check "$(code)" ROLE_NOT_YOURS_TO_GIVE "rule A2"; say "$(jq -r .detail <<<"$LAST")"
 api PUT "$ACCESS/v1/access/people/$ALI_ID/roles/courier" "$ALI"; expect 422 "ali gives himself a role"; check "$(code)" OWN_ROLES "rule A3"
 api PUT "$ACCESS/v1/access/people/$REZA_ID/roles/platform-admin" "$ALI"; expect 422 "ali makes reza an admin of the platform"; check "$(code)" ROLE_UNKNOWN "rule A1"
@@ -509,7 +509,7 @@ api GET "$MEDIA/v1/media/$S11_PICTURE"; expect 401 "and somebody who is not sign
 api DELETE "$MEDIA/v1/media/$S11_PICTURE" "$SARA"; expect 403 "sara deletes mina's picture"; check "$(code)" NOT_THE_OWNER "refused as"
 
 say "What a file may be is decided by what it is for."
-LANG_HEADER=fa announce "$MINA" restaurant-picture application/pdf 2000; expect 422 "a PDF as the picture of a restaurant"; check "$(code)" TYPE_NOT_ALLOWED "rule M2"; say "$(jq -r .detail <<<"$LAST")"
+LANG_HEADER=zh-CN announce "$MINA" restaurant-picture application/pdf 2000; expect 422 "a PDF as the picture of a restaurant"; check "$(code)" TYPE_NOT_ALLOWED "rule M2"; say "$(jq -r .detail <<<"$LAST")"
 announce "$MINA" restaurant-picture image/png 6000000; expect 422 "a picture of six megabytes"; check "$(code)" SIZE_NOT_ALLOWED "rule M3"
 announce "$MINA" holiday-video video/mp4 2000; expect 422 "a holiday video"; check "$(code)" PURPOSE_UNKNOWN "rule M1"
 announce "$MINA" restaurant-picture image/png 10; expect 201 "mina announces ten bytes"
@@ -553,7 +553,7 @@ api GET "$TRACKING/v1/tracking/deliveries/$S12_ORDER" "$REZA"; expect 404 "reza 
 api GET "$TRACKING/v1/tracking/deliveries/$S12_ORDER" "$ELIF"; expect 404 "elif, of Istanbul"
 api GET "$TRACKING/v1/tracking/deliveries/$S12_ORDER" "$MINA"; expect 403 "mina, who cooked it"
 api POST "$TRACKING/v1/tracking/deliveries/$S12_ORDER/positions" "$SARA" '{"latitude":35.7,"longitude":51.4}'; expect 403 "sara says where the courier is"
-LANG_HEADER=fa api POST "$TRACKING/v1/tracking/deliveries/$S12_ORDER/positions" "$OMID" '{"latitude":135.7,"longitude":51.4}'
+LANG_HEADER=zh-CN api POST "$TRACKING/v1/tracking/deliveries/$S12_ORDER/positions" "$OMID" '{"latitude":135.7,"longitude":51.4}'
 expect 422 "omid's app says he is at latitude 135"; check "$(code)" POSITION_NOT_ON_EARTH "rule T3"
 grpc "$DISPATCH" tiffin.dispatch.v1.Couriers/CompleteDelivery "$OMID" "{\"order_id\":\"$S12_ORDER\"}"; check "$GRPC_CODE" OK "omid hands the order over"
 arrived() {
@@ -594,8 +594,8 @@ told() { # told TOKEN ORDER_ID COUNT  → the customer has this many notificatio
 about() { jq -r --arg id "$S13_ORDER" --arg k "$1" '.items[] | select(.orderId == $id and .messageKey == $k) | .text' <<<"$LAST"; }
 if told "$SARA" "$S13_ORDER" 3; then ok "sara was told three things about her order"; else bad "sara has $(jq -r --arg id "$S13_ORDER" '[.items[]? | select(.orderId == $id)] | length' <<<"$LAST") notification(s) about it, expected 3"; fi
 check "$(about notifications.order_out_for_delivery)" "Omid Sadeghi is on the way with your order $NUMBER." "in English, which she did not ask for and is told by default"
-LANG_HEADER=fa api GET "$NOTIFICATIONS/v1/notifications?size=200" "$SARA"
-check "$(about notifications.order_out_for_delivery)" "Omid Sadeghi با سفارش $NUMBER شما در راه است." "the same notification, asked for in Persian"
+LANG_HEADER=zh-CN api GET "$NOTIFICATIONS/v1/notifications?size=200" "$SARA"
+check "$(about notifications.order_out_for_delivery)" "Omid Sadeghi 正带着您的订单 $NUMBER 在路上。" "the same notification, asked for in Simplified Chinese (zh-CN)"
 LANG_HEADER="de, tr;q=0.8, en;q=0.5" api GET "$NOTIFICATIONS/v1/notifications?size=200" "$SARA"
 check "$(about notifications.order_delivered)" "$NUMBER numaralı siparişiniz teslim edildi. Afiyet olsun." "asked for in German, then Turkish, then English: the first the service has"
 FIRST_ID=$(jq -r --arg id "$S13_ORDER" '[.items[] | select(.orderId == $id)][0].notificationId' <<<"$LAST")
@@ -612,9 +612,9 @@ place "$SARA" "$TEHRAN_RESTAURANT" DIZI 1 450000 tok_insufficient_funds; S13_DEC
 reaches "$S13_DECLINED" "$SARA" Cancelled "an order the bank refuses"
 S13_ORDER="$S13_DECLINED"
 if told "$SARA" "$S13_DECLINED" 2; then ok "sara was told that it was received, and that it was cancelled"; else bad "sara was not told of the cancellation"; fi
-LANG_HEADER=fa api GET "$NOTIFICATIONS/v1/notifications?size=200" "$SARA"
+LANG_HEADER=zh-CN api GET "$NOTIFICATIONS/v1/notifications?size=200" "$SARA"
 say "$(about notifications.order_cancelled.payment-declined)"
-check "$(about notifications.order_cancelled.payment-declined | grep -c 'مبلغی کسر نشده است')" 1 "the cancellation says why, and that nothing was charged"
+check "$(about notifications.order_cancelled.payment-declined | grep -c '未扣任何款项')" 1 "the cancellation says why, and that nothing was charged"
 check "$(psql_in tiffin_notifications "select count(*) from idempotency.processed_messages" | awk '{print ($1 > 0) ? "yes" : "no"}')" yes "the inbox remembers what was read from the stream"
 fi
 
@@ -635,7 +635,7 @@ free_courier "$OMID"
 say "Restaurants is asked while the customer waits. It is stopped."
 if stop_service restaurants; then ok "Restaurants is down"; else bad "Restaurants could not be stopped"; fi
 BEFORE="$(orders_in_tehran)"; PAYMENTS_BEFORE="$(psql_in tiffin_payments 'select count(*) from payments.payments')"
-LANG_HEADER=fa place "$SARA" "$TEHRAN_RESTAURANT" DIZI 1 450000 tok_ok
+LANG_HEADER=zh-CN place "$SARA" "$TEHRAN_RESTAURANT" DIZI 1 450000 tok_ok
 expect 503 "sara orders"; check "$(code)" RESTAURANTS_UNAVAILABLE "she is told"; say "$(jq -r .detail <<<"$LAST")"
 check "$(( $(orders_in_tehran) - BEFORE ))" 0 "orders that were stored"
 check "$(( $(psql_in tiffin_payments 'select count(*) from payments.payments') - PAYMENTS_BEFORE ))" 0 "cards that were handed to Payments"

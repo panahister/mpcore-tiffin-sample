@@ -13,21 +13,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="payments.provider_unavailable" xml:space="preserve">
-    <value>در حال حاضر به ارائه‌دهنده‌ی پرداخت دسترسی نیست.</value>
+    <value>暂时无法连接支付服务商。</value>
   </data>
   <data name="payments.amount_not_positive" xml:space="preserve">
-    <value>مبلغ باید بیشتر از صفر باشد؛ {amount} نیست.</value>
+    <value>金额必须大于零；{amount} 不是。</value>
   </data>
   <data name="payments.amount_invalid" xml:space="preserve">
-    <value>مبلغ یک عدد نیست.</value>
+    <value>金额不是数字。</value>
   </data>
   <data name="payments.order_id_invalid" xml:space="preserve">
-    <value>شناسه‌ی سفارش یک UUID معتبر نیست.</value>
+    <value>订单标识不是 UUID。</value>
   </data>
   <data name="payments.not_pending" xml:space="preserve">
-    <value>این پرداخت در انتظار کسر نیست ({status}).</value>
+    <value>该付款不在等待扣款（{status}）。</value>
   </data>
   <data name="payments.not_charged" xml:space="preserve">
-    <value>مبلغی کسر نشده که برگردانده شود ({status}).</value>
+    <value>没有可以退回的已扣款项（{status}）。</value>
   </data>
 </root>

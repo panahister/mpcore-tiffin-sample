@@ -13,36 +13,36 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="notifications.sign_in_required" xml:space="preserve">
-    <value>به‌عنوان عضو یک شهر وارد شوید.</value>
+    <value>请以某个城市的用户身份登录。</value>
   </data>
   <data name="notifications.not_found" xml:space="preserve">
-    <value>چنین اعلانی برای شما وجود ندارد.</value>
+    <value>没有您的这条通知。</value>
   </data>
   <data name="notifications.order_placed" xml:space="preserve">
-    <value>سفارش {order_number} شما از {restaurant} دریافت شد: {total} {currency}.</value>
+    <value>您在 {restaurant} 的订单 {order_number} 已收到：{total} {currency}。</value>
   </data>
   <data name="notifications.order_out_for_delivery" xml:space="preserve">
-    <value>{courier} با سفارش {order_number} شما در راه است.</value>
+    <value>{courier} 正带着您的订单 {order_number} 在路上。</value>
   </data>
   <data name="notifications.order_delivered" xml:space="preserve">
-    <value>سفارش {order_number} شما تحویل داده شد. نوش جان.</value>
+    <value>您的订单 {order_number} 已送达，请慢用。</value>
   </data>
   <data name="notifications.order_cancelled" xml:space="preserve">
-    <value>سفارش {order_number} شما لغو شد.</value>
+    <value>您的订单 {order_number} 已取消。</value>
   </data>
   <data name="notifications.order_cancelled.cancelled-by-customer" xml:space="preserve">
-    <value>سفارش {order_number} به درخواست شما لغو شد. مبلغ کسرشده به کارت شما برمی‌گردد.</value>
+    <value>您的订单 {order_number} 已按您的要求取消。已扣款项将退回您的卡。</value>
   </data>
   <data name="notifications.order_cancelled.payment-declined" xml:space="preserve">
-    <value>سفارش {order_number} لغو شد: بانک شما پرداخت را نپذیرفت. مبلغی کسر نشده است.</value>
+    <value>您的订单 {order_number} 已取消：您的银行拒绝了付款。未扣任何款项。</value>
   </data>
   <data name="notifications.order_cancelled.restaurant-refused" xml:space="preserve">
-    <value>سفارش {order_number} لغو شد: رستوران نتوانست آن را بپذیرد. مبلغ کسرشده به کارت شما برمی‌گردد.</value>
+    <value>您的订单 {order_number} 已取消：餐厅无法接单。已扣款项将退回您的卡。</value>
   </data>
   <data name="notifications.order_cancelled.restaurant-did-not-answer" xml:space="preserve">
-    <value>سفارش {order_number} لغو شد: رستوران به‌موقع پاسخ نداد. مبلغ کسرشده به کارت شما برمی‌گردد.</value>
+    <value>您的订单 {order_number} 已取消：餐厅未能及时回复。已扣款项将退回您的卡。</value>
   </data>
   <data name="notifications.order_cancelled.no-courier" xml:space="preserve">
-    <value>سفارش {order_number} لغو شد: هیچ پیکی آزاد نبود. مبلغ کسرشده به کارت شما برمی‌گردد.</value>
+    <value>您的订单 {order_number} 已取消：没有空闲的骑手。已扣款项将退回您的卡。</value>
   </data>
 </root>

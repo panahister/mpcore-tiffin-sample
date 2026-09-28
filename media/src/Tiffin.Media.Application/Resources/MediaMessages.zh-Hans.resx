@@ -13,36 +13,36 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="media.sign_in_required" xml:space="preserve">
-    <value>به‌عنوان عضو یک شهر وارد شوید.</value>
+    <value>请以某个城市的用户身份登录。</value>
   </data>
   <data name="media.file_not_found" xml:space="preserve">
-    <value>چنین فایلی وجود ندارد.</value>
+    <value>没有这个文件。</value>
   </data>
   <data name="media.not_the_owner" xml:space="preserve">
-    <value>فقط فرستنده‌ی فایل می‌تواند آن را تغییر دهد.</value>
+    <value>只有上传文件的人才能更改它。</value>
   </data>
   <data name="media.nothing_arrived" xml:space="preserve">
-    <value>هنوز چیزی به انبار نرسیده است. فایل را بفرستید و سپس تأیید کنید.</value>
+    <value>存储中还没有收到任何内容。请先发送文件，再确认。</value>
   </data>
   <data name="media.upload_window_closed" xml:space="preserve">
-    <value>زمان ارسال این فایل گذشته است. دوباره آن را اعلام کنید.</value>
+    <value>发送此文件的时间已过。请重新登记。</value>
   </data>
   <data name="media.store_unavailable" xml:space="preserve">
-    <value>در حال حاضر به انبار فایل‌ها دسترسی نیست. کمی بعد دوباره تلاش کنید.</value>
+    <value>暂时无法连接文件存储，请稍后再试。</value>
   </data>
   <data name="media.purpose_unknown" xml:space="preserve">
-    <value>پلتفرم برای {purpose} فایلی نگه نمی‌دارد.</value>
+    <value>平台没有用于 {purpose} 的文件。</value>
   </data>
   <data name="media.type_not_allowed" xml:space="preserve">
-    <value>فایل {purpose} باید یکی از {allowed} باشد؛ {type} نیست.</value>
+    <value>用于 {purpose} 的文件应为 {allowed} 之一；{type} 不是。</value>
   </data>
   <data name="media.size_not_allowed" xml:space="preserve">
-    <value>فایل {purpose} باید بین ۱ تا {maximum} بایت باشد؛ {size} نیست.</value>
+    <value>用于 {purpose} 的文件应在 1 到 {maximum} 字节之间；{size} 不在此范围内。</value>
   </data>
   <data name="media.file_not_pending" xml:space="preserve">
-    <value>این فایل قبلاً تأیید شده است ({state}).</value>
+    <value>该文件已经确认过了（{state}）。</value>
   </data>
   <data name="media.not_what_was_announced" xml:space="preserve">
-    <value>آنچه رسید با آنچه اعلام شده بود یکی نیست: {announced} اعلام شده بود و {arrived} رسید.</value>
+    <value>收到的内容与登记的不符：登记了 {announced}，收到了 {arrived}。</value>
   </data>
 </root>

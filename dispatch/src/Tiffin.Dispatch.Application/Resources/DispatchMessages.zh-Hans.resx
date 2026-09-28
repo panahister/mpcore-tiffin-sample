@@ -13,27 +13,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="dispatch.courier_required" xml:space="preserve">
-    <value>به‌عنوان پیک یک شهر وارد شوید.</value>
+    <value>请以城市骑手身份登录。</value>
   </data>
   <data name="dispatch.not_on_the_roster" xml:space="preserve">
-    <value>شما هنوز شروع به کار نکرده‌اید.</value>
+    <value>您还没有上过班。</value>
   </data>
   <data name="dispatch.delivery_not_found" xml:space="preserve">
-    <value>چنین تحویلی برای شما وجود ندارد.</value>
+    <value>没有您的这笔配送。</value>
   </data>
   <data name="dispatch.order_id_invalid" xml:space="preserve">
-    <value>شناسه‌ی سفارش یک UUID معتبر نیست.</value>
+    <value>订单标识不是 UUID。</value>
   </data>
   <data name="dispatch.courier_not_free" xml:space="preserve">
-    <value>پیک در حال حمل یک سفارش است یا سر کار نیست.</value>
+    <value>该骑手已在配送一笔订单，或未在上班。</value>
   </data>
   <data name="dispatch.courier_is_carrying" xml:space="preserve">
-    <value>پیش از پایان کار، سفارشی را که حمل می‌کنید تحویل دهید.</value>
+    <value>下班前请先交付您正在配送的订单。</value>
   </data>
   <data name="dispatch.not_your_delivery" xml:space="preserve">
-    <value>سفارش {order_number} را پیک دیگری حمل می‌کند.</value>
+    <value>订单 {order_number} 由其他人配送。</value>
   </data>
   <data name="dispatch.already_completed" xml:space="preserve">
-    <value>سفارش {order_number} قبلاً تحویل داده شده است.</value>
+    <value>订单 {order_number} 已经交付。</value>
   </data>
 </root>

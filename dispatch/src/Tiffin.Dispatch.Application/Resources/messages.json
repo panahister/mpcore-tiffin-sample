@@ -1,14 +1,14 @@
 {
   "class": "DispatchMessages",
-  "languages": ["en", "fa", "tr"],
+  "languages": ["en", "zh-Hans", "tr"],
   "messages": {
-    "dispatch.courier_required": ["Sign in as a courier of a city.", "به‌عنوان پیک یک شهر وارد شوید.", "Bir şehrin kuryesi olarak oturum açın."],
-    "dispatch.not_on_the_roster": ["You have not been on duty yet.", "شما هنوز شروع به کار نکرده‌اید.", "Henüz göreve başlamadınız."],
-    "dispatch.delivery_not_found": ["There is no such delivery for you.", "چنین تحویلی برای شما وجود ندارد.", "Sizin için böyle bir teslimat yok."],
-    "dispatch.order_id_invalid": ["The order's identifier is not a UUID.", "شناسه‌ی سفارش یک UUID معتبر نیست.", "Sipariş kimliği geçerli bir UUID değil."],
-    "dispatch.courier_not_free": ["The courier already carries an order, or is not on duty.", "پیک در حال حمل یک سفارش است یا سر کار نیست.", "Kurye zaten bir sipariş taşıyor veya görevde değil."],
-    "dispatch.courier_is_carrying": ["Hand over the order you carry before you go off duty.", "پیش از پایان کار، سفارشی را که حمل می‌کنید تحویل دهید.", "Görevi bırakmadan önce taşıdığınız siparişi teslim edin."],
-    "dispatch.not_your_delivery": ["Order {order_number} is carried by somebody else.", "سفارش {order_number} را پیک دیگری حمل می‌کند.", "{order_number} numaralı siparişi başka biri taşıyor."],
-    "dispatch.already_completed": ["Order {order_number} has already been handed over.", "سفارش {order_number} قبلاً تحویل داده شده است.", "{order_number} numaralı sipariş zaten teslim edildi."]
+    "dispatch.courier_required": ["Sign in as a courier of a city.", "请以城市骑手身份登录。", "Bir şehrin kuryesi olarak oturum açın."],
+    "dispatch.not_on_the_roster": ["You have not been on duty yet.", "您还没有上过班。", "Henüz göreve başlamadınız."],
+    "dispatch.delivery_not_found": ["There is no such delivery for you.", "没有您的这笔配送。", "Sizin için böyle bir teslimat yok."],
+    "dispatch.order_id_invalid": ["The order's identifier is not a UUID.", "订单标识不是 UUID。", "Sipariş kimliği geçerli bir UUID değil."],
+    "dispatch.courier_not_free": ["The courier already carries an order, or is not on duty.", "该骑手已在配送一笔订单，或未在上班。", "Kurye zaten bir sipariş taşıyor veya görevde değil."],
+    "dispatch.courier_is_carrying": ["Hand over the order you carry before you go off duty.", "下班前请先交付您正在配送的订单。", "Görevi bırakmadan önce taşıdığınız siparişi teslim edin."],
+    "dispatch.not_your_delivery": ["Order {order_number} is carried by somebody else.", "订单 {order_number} 由其他人配送。", "{order_number} numaralı siparişi başka biri taşıyor."],
+    "dispatch.already_completed": ["Order {order_number} has already been handed over.", "订单 {order_number} 已经交付。", "{order_number} numaralı sipariş zaten teslim edildi."]
   }
 }

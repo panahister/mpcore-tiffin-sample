@@ -70,9 +70,9 @@ public sealed class NotificationTests
 
     [Theory]
     [InlineData("en", "Your order TFN-260928-ABC123 at Dizi Sara was received: 900000 IRR.")]
-    [InlineData("fa", "سفارش TFN-260928-ABC123 شما از Dizi Sara دریافت شد: 900000 IRR.")]
+    [InlineData("zh-Hans", "您在 Dizi Sara 的订单 TFN-260928-ABC123 已收到：900000 IRR。")]
     [InlineData("tr", "Dizi Sara restoranındaki TFN-260928-ABC123 numaralı siparişiniz alındı: 900000 IRR.")]
-    [InlineData("fa-IR", "سفارش TFN-260928-ABC123 شما از Dizi Sara دریافت شد: 900000 IRR.")]
+    [InlineData("zh-CN", "您在 Dizi Sara 的订单 TFN-260928-ABC123 已收到：900000 IRR。")]
     [InlineData("de", "Your order TFN-260928-ABC123 at Dizi Sara was received: 900000 IRR.")]
     public async Task The_sentence_is_made_when_it_is_read_in_the_language_of_who_reads(string language, string sentence)
     {
@@ -111,12 +111,13 @@ public sealed class NotificationTests
         [
             "notifications.order_placed", "notifications.order_out_for_delivery", "notifications.order_delivered", "notifications.order_cancelled",
             "notifications.order_cancelled.payment-declined", "notifications.order_cancelled.restaurant-refused",
-            "notifications.order_cancelled.no-courier", "notifications.order_cancelled.cancelled-by-customer"
+            "notifications.order_cancelled.no-courier", "notifications.order_cancelled.cancelled-by-customer",
+            "notifications.order_cancelled.restaurant-did-not-answer"
         ];
 
         foreach (var key in keys)
         {
-            var texts = new[] { "en", "fa", "tr" }.Select(l => catalog.Render(key, values, CultureInfo.GetCultureInfo(l))).ToList();
+            var texts = new[] { "en", "zh-Hans", "tr" }.Select(l => catalog.Render(key, values, CultureInfo.GetCultureInfo(l))).ToList();
             Assert.All(texts, text => Assert.DoesNotContain("{", text, StringComparison.Ordinal));
             Assert.Equal(3, texts.Distinct().Count());
         }

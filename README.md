@@ -55,7 +55,7 @@ everything that makes that hard is here, in code that runs.
 | A time series | Positions of couriers in a TimescaleDB hypertable, compressed and expired by policy | S12 |
 | A restaurant never answers | A deadline set in the transaction that asks it: after ten minutes the order is cancelled, stopped and paid back; an answer in time is left alone | S15 |
 | A new reader of events | Notifications was added last, reads the stream from its beginning, and no other service was changed | S13 |
-| The customer's language | Every failure and every notification in English, Persian or Turkish, by `Accept-Language` | S2, S6, S11, S13 |
+| The customer's language | Every failure and every notification in English, Turkish or Simplified Chinese, by `Accept-Language` | S2, S6, S11, S13 |
 
 ## The services
 
@@ -182,14 +182,16 @@ On 2026-09-28, on a Mac with Apple Silicon, against MP Core's source:
 The same day, against MP Core from nuget.org with an empty package cache: `0.9.1` and `0.9.2`, 213 tests each time;
 `0.9.3`, with the restaurant's deadline, 216.
 
-And on GitHub, on Linux, on every change ([the workflow](.github/workflows/ci.yml)), first on 2026-09-28
-(run [36390966923](https://github.com/panahister/mpcore-tiffin-sample/actions/runs/36390966923)):
+And on GitHub, on Linux, on every change ([the workflow](.github/workflows/ci.yml)). The first green run was
+[36390966923](https://github.com/panahister/mpcore-tiffin-sample/actions/runs/36390966923), with fifteen
+scenarios; the latest, with the restaurant's deadline, against MP Core's `main` as the workflow builds it, was
+[36428022738](https://github.com/panahister/mpcore-tiffin-sample/actions/runs/36428022738):
 
 | What | Result |
 |---|---|
-| Build, unit and contract tests | Release, warnings as errors: 213 passed |
-| The fifteen scenarios with RustFS, the edge not verifying tokens | 266 checks passed, none failed, none skipped |
-| The fifteen scenarios with SeaweedFS, the edge verifying tokens with Keycloak | 266 checks passed, none failed, none skipped |
+| Build, unit and contract tests | Release, warnings as errors: 216 passed |
+| The sixteen scenarios with RustFS, the edge not verifying tokens | 286 checks passed, none failed, none skipped |
+| The sixteen scenarios with SeaweedFS, the edge verifying tokens with Keycloak | 286 checks passed, none failed, none skipped |
 
 The first run on GitHub failed twelve checks of S14, with both stores. The defect was in the workflow,
 not in a service: [docs/findings.md](docs/findings.md), T-13.

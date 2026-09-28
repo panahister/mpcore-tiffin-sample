@@ -26,7 +26,7 @@ namespace Tiffin.Notifications.Api.Rest.Endpoints;
 public static class NotificationEndpoints
 {
     /// <summary>The languages the service has texts in. The first is what somebody is told who asks for none of them.</summary>
-    private static readonly string[] Languages = ["en", "fa", "tr"];
+    private static readonly string[] Languages = ["en", "zh-Hans", "tr"];
 
     public static RouteGroupBuilder MapNotificationEndpoints(this IEndpointRouteBuilder endpoints)
     {
@@ -68,11 +68,24 @@ public static class NotificationEndpoints
             .OfType<string>();
         foreach (var language in asked)
         {
-            var known = Languages.FirstOrDefault(l => language.Equals(l, StringComparison.OrdinalIgnoreCase)
-                                                      || language.StartsWith(l + "-", StringComparison.OrdinalIgnoreCase));
-            if (known is not null)
+            // The culture asked for, then its parents: "zh-CN" is told in "zh-Hans", "tr-TR" in "tr".
+            CultureInfo culture;
+            try
             {
-                return CultureInfo.GetCultureInfo(known);
+                culture = CultureInfo.GetCultureInfo(language);
+            }
+            catch (CultureNotFoundException)
+            {
+                continue;
+            }
+
+            for (; culture.Name.Length > 0; culture = culture.Parent)
+            {
+                var known = Languages.FirstOrDefault(l => string.Equals(l, culture.Name, StringComparison.OrdinalIgnoreCase));
+                if (known is not null)
+                {
+                    return CultureInfo.GetCultureInfo(known);
+                }
             }
         }
 
