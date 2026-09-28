@@ -76,6 +76,11 @@ jobs:
           - { media_store: rustfs, edge_auth: "off" }
           - { media_store: seaweedfs, edge_auth: keycloak }
     name: scenarios (${{ matrix.media_store }}, edge ${{ matrix.edge_auth }})
+    # For every step, not only the one that starts the services: scenario S14 stops services and starts
+    # them again, and a service started again without these runs a Debug build that was never made.
+    env:
+      TIFFIN_BIND: 0.0.0.0
+      DOTNET_ARGS: --configuration Release -p:MPCoreSource=${{ inputs.mpcore_source || 'Local' }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -97,7 +102,7 @@ jobs:
         run: MEDIA_STORE=${{ matrix.media_store }} EDGE_AUTH=${{ matrix.edge_auth }} scripts/up.sh && scripts/setup.sh
       - name: Start the services
         working-directory: mpcore-tiffin-sample
-        run: TIFFIN_BIND=0.0.0.0 DOTNET_ARGS="--configuration Release -p:MPCoreSource=$MPCORE_SOURCE" scripts/run.sh all
+        run: scripts/run.sh all
       - name: Run every scenario
         working-directory: mpcore-tiffin-sample
         run: MEDIA_STORE=${{ matrix.media_store }} scripts/scenarios.sh
