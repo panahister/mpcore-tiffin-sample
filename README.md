@@ -5,7 +5,7 @@
 **The MP Core microservices sample: food delivery in nine services, none of which trusts another to be up.**
 
 Nine services built with [MP Core](https://github.com/panahister/mpcore), each with a database of its own,<br>
-two cities that never see each other, and fifteen scenarios that prove what is claimed here.
+two cities that never see each other, and sixteen scenarios that prove what is claimed here.
 
 [![ci](https://github.com/panahister/mpcore-tiffin-sample/actions/workflows/ci.yml/badge.svg)](https://github.com/panahister/mpcore-tiffin-sample/actions/workflows/ci.yml)
 [![MP Core](https://img.shields.io/nuget/v/MPCore.Domain?label=MP%20Core&color=512bd4)](https://github.com/panahister/mpcore)
@@ -53,6 +53,7 @@ everything that makes that hard is here, in code that runs.
 | Who may change roles, and where are they kept? | One service, Access, in front of the identity provider: an anti-corruption layer. No other service may call Keycloak's administration | S0, S10 |
 | Where do files live? | One service, Media, is the single source of truth. The bytes never pass through a service: they go to a store that speaks the S3 API | S11, run with two stores |
 | A time series | Positions of couriers in a TimescaleDB hypertable, compressed and expired by policy | S12 |
+| A restaurant never answers | A deadline set in the transaction that asks it: after ten minutes the order is cancelled, stopped and paid back; an answer in time is left alone | S15 |
 | A new reader of events | Notifications was added last, reads the stream from its beginning, and no other service was changed | S13 |
 | The customer's language | Every failure and every notification in English, Persian or Turkish, by `Accept-Language` | S2, S6, S11, S13 |
 
@@ -120,12 +121,13 @@ stream catches up. Every case in the picture is a scenario of `scripts/scenarios
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/why-mpcore-dark.svg">
-  <img alt="Nine guarantees the platform needs: for each, what every team builds and proves without MP Core, the line Tiffin wrote with it, and the scenario that proves it; and the code counted: 3,322 lines of Tiffin's business against 5,016 lines in MP Core's 28 packages" src="docs/images/why-mpcore-light.svg" width="100%">
+  <img alt="Ten guarantees the platform needs: for each, what every team builds and proves without MP Core, the line Tiffin wrote with it, and the scenario that proves it; and the code counted: 3,322 lines of Tiffin's business against 5,016 lines in MP Core's 28 packages" src="docs/images/why-mpcore-light.svg" width="100%">
 </picture>
 
 Nine services need the same guarantees nine times: the city on every message and every call, a token of
 their own, a step of the saga and its message in one commit, an order sent twice, a message delivered
-twice, a race for the last courier, a rule answered in the customer's language. Without a framework, each
+twice, a race for the last courier, a step that is never answered, a rule answered in the customer's
+language. Without a framework, each
 team builds them, and proves them again. In Tiffin each of those is one line, or nothing at all, and the
 scenario in the last column proves it against the running system.
 
@@ -160,7 +162,7 @@ scripts/scenarios.sh
 
 `scripts/up.sh` starts what the services depend on, in Docker. `scripts/setup.sh` writes their addresses
 into each service's user secrets, outside the repository. `scripts/run.sh all` builds the nine services
-and runs them on this machine, where they can be debugged. `scripts/scenarios.sh` tells fifteen stories
+and runs them on this machine, where they can be debugged. `scripts/scenarios.sh` tells sixteen stories
 through real calls with real tokens, and fails if one of them does not end as it should.
 [docs/running.md](docs/running.md) has the rest: one service alone, the logs, the second store, the tests.
 
@@ -172,7 +174,7 @@ On 2026-09-28, on a Mac with Apple Silicon, against MP Core's source:
 |---|---|
 | Unit tests of the nine services | 170 passed |
 | Contract tests between them | 43 passed |
-| The fifteen scenarios, on databases that were made anew, with RustFS as the store | 266 checks passed, none failed, none skipped |
+| The sixteen scenarios, on databases that were made anew, with RustFS as the store | 286 checks passed, none failed, none skipped |
 | Scenario S11, the one that uses the store, with SeaweedFS | 33 checks passed |
 | Build | Release, warnings as errors: no warning |
 
@@ -199,7 +201,6 @@ code was broken on purpose and the check was seen to fail: [docs/findings.md](do
 |---|---|---|
 | Two instances of one service | what shows that the inbox, the cache and the queues are shared | not run |
 | Two versions of one event side by side | how a contract changes without stopping its readers | not written |
-| A step that waits too long | an order waits for ever for a restaurant that never answers | not written: MP Core's publisher cannot delay a message ([findings](docs/findings.md), T-08) |
 | Kubernetes | | fits by standard, not run |
 | Ceph, Amazon S3 as the store of Media | | fit by standard, not run. RustFS and SeaweedFS were run |
 | Traces across the nine services | | the exporters are configured and off; not looked at |

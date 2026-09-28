@@ -120,8 +120,12 @@ is paid back; a restaurant's yes for a cancelled order tells the Kitchen to stop
 and the order would wait for ever. So the host's error policy, where a message is given up, sends the
 answer "declined" or "nobody can carry it" in its place.
 
-**What the process cannot do yet:** wait no longer than so long. An order whose restaurant never answers
-stays paid. [Findings](findings.md), T-08.
+**An answer that never comes has a deadline.** When Ordering asks a restaurant to cook, it also sends
+itself a `RestaurantDeadline`, in the same transaction, delivered no sooner than ten minutes later. It
+waits in Ordering's own database, not in a broker, and a restart does not lose it (MP Core's
+`MessageDeliveryContext.DeliverAfter`, ADR-015). When it arrives it asks the order: if the restaurant has
+answered, it does nothing; if not, the order is cancelled, the Kitchen is told to stop and the money goes
+back. What NServiceBus calls a saga's *timeout*. [Findings](findings.md), T-08; scenario S15.
 
 ## Two cities
 

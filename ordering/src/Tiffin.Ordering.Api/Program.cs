@@ -5,6 +5,7 @@ using Npgsql;
 using Tiffin.Ordering.Api.Grpc.Services;
 using Tiffin.Ordering.Application;
 using Tiffin.Ordering.Application.Contracts;
+using Tiffin.Ordering.Application.Process;
 using Tiffin.Ordering.Application.Resources;
 using Tiffin.Ordering.Domain.Events;
 using Wolverine;
@@ -167,6 +168,10 @@ builder.Services.AddInfrastructure(databaseConnection, new OtherServices
         ?? throw new InvalidOperationException("ServiceIdentity:ClientSecret is required. Set it in user secrets or the environment."),
     RequireHttps = builder.Configuration.GetValue("Security:RequireHttpsMetadata", true)
 });
+// How long the order process waits for a restaurant (finding T-08). An instance, never a lambda: Wolverine
+// builds a handler's dependencies inline.
+builder.Services.AddSingleton(new OrderDeadlines(
+    builder.Configuration.GetValue("Ordering:RestaurantAnswerDeadline", OrderDeadlines.DefaultRestaurantAnswer)));
 // AppDbContext is named here as the transaction owner, so a handler can depend on IUnitOfWork and
 // still run inside the Entity Framework transaction whose commit releases its outgoing messages.
 builder.Host.UseMPCoreWolverine<AppDbContext>(

@@ -70,4 +70,4 @@ Storefront runs both.
 | Rate limits | the edge limits how often an address may read the menus without a token |
 | An endpoint for the audit trail | none; the scenarios read the table |
 | A store of files | Media's adapter for the S3 API lives in Media. It moves to MP Core when a second service needs it |
-| A delay set by the publisher | not solved: [findings](findings.md), T-08 |
+| A delay set by the publisher | solved in MP Core `0.9.3`: `MessageDeliveryContext.DeliverAfter`; Ordering's deadline for a restaurant, S15 |

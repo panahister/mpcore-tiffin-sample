@@ -68,7 +68,7 @@ public static class OrderEventsHandler
     /// <summary>The reasons of the <c>order-cancelled</c> contract this service has a text for.</summary>
     private static readonly HashSet<string> Reasons = new(StringComparer.Ordinal)
     {
-        "cancelled-by-customer", "payment-declined", "restaurant-refused", "no-courier"
+        "cancelled-by-customer", "payment-declined", "restaurant-refused", "restaurant-did-not-answer", "no-courier"
     };
 
     private static async Task TellAsync(

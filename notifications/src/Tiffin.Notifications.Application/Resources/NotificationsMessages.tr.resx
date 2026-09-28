@@ -39,6 +39,9 @@
   <data name="notifications.order_cancelled.restaurant-refused" xml:space="preserve">
     <value>{order_number} numaralı siparişiniz iptal edildi: restoran siparişi alamadı. Çekilen tutar kartınıza iade edilir.</value>
   </data>
+  <data name="notifications.order_cancelled.restaurant-did-not-answer" xml:space="preserve">
+    <value>{order_number} numaralı siparişiniz iptal edildi: restoran zamanında yanıt vermedi. Çekilen tutar kartınıza iade edilir.</value>
+  </data>
   <data name="notifications.order_cancelled.no-courier" xml:space="preserve">
     <value>{order_number} numaralı siparişiniz iptal edildi: boşta kurye yoktu. Çekilen tutar kartınıza iade edilir.</value>
   </data>

@@ -123,34 +123,40 @@
 <path d="M 966 172.0 L 976 172.0 L 976 267.0 L 20 267.0 L 20 362.0 L 30 362.0" fill="none" stroke="#6e7681" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M 23.7 365.0 L 30 362.0 L 23.7 359.0" fill="none" stroke="#6e7681" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="32" y="474" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#f0506e" text-anchor="start" letter-spacing="0.8">WHEN A STEP FAILS, THE STEPS BEFORE IT ARE TAKEN BACK</text>
-<rect x="32.0" y="484" width="178.8" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
+<rect x="32.0" y="484" width="147.66666666666666" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
 <text x="42.0" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">The bank refuses</text>
-<text x="42.0" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">cancelled; nothing else was</text>
-<text x="42.0" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">done</text>
-<rect x="174.8" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
-<text x="185.84" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S4</text>
-<rect x="218.8" y="484" width="178.8" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
-<text x="228.8" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">The restaurant refuses</text>
-<text x="228.8" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">Payments gives the money</text>
-<text x="228.8" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">back</text>
-<rect x="361.6" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
-<text x="372.64000000000004" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S2</text>
-<rect x="405.6" y="484" width="178.8" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
-<text x="415.6" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">No courier is free</text>
-<text x="415.6" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">the Kitchen stops, the money</text>
-<text x="415.6" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">goes back</text>
-<rect x="548.4000000000001" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
-<text x="559.44" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S3</text>
-<rect x="592.4000000000001" y="484" width="178.8" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
-<text x="602.4000000000001" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">PayLane gone for good</text>
-<text x="602.4000000000001" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">cancelled; the request waits</text>
-<text x="602.4000000000001" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">in the dead-letter queue</text>
-<rect x="735.2" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
-<text x="746.24" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S9</text>
-<rect x="779.2" y="484" width="178.8" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
-<text x="789.2" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">The customer cancels</text>
-<text x="789.2" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">until the Kitchen cooks:</text>
-<text x="789.2" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">stop, money back</text>
-<rect x="922.0" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
-<text x="933.04" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S7</text>
+<text x="42.0" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">cancelled; nothing else</text>
+<text x="42.0" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">was done</text>
+<rect x="139.66666666666666" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
+<text x="150.70666666666665" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S4</text>
+<rect x="187.66666666666666" y="484" width="147.66666666666666" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
+<text x="197.66666666666666" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">The restaurant refuses</text>
+<text x="197.66666666666666" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">Payments gives the money</text>
+<text x="197.66666666666666" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">back</text>
+<rect x="295.3333333333333" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
+<text x="306.37333333333333" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S2</text>
+<rect x="343.3333333333333" y="484" width="147.66666666666666" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
+<text x="353.3333333333333" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">No courier is free</text>
+<text x="353.3333333333333" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">the Kitchen stops, the</text>
+<text x="353.3333333333333" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">money goes back</text>
+<rect x="451.0" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
+<text x="462.04" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S3</text>
+<rect x="499.0" y="484" width="147.66666666666666" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
+<text x="509.0" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">PayLane gone for good</text>
+<text x="509.0" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">cancelled; the request</text>
+<text x="509.0" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">is dead-lettered</text>
+<rect x="606.6666666666666" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
+<text x="617.7066666666666" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S9</text>
+<rect x="654.6666666666666" y="484" width="147.66666666666666" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
+<text x="664.6666666666666" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">The restaurant is silent</text>
+<text x="664.6666666666666" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">after ten minutes: stop,</text>
+<text x="664.6666666666666" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">money back</text>
+<rect x="762.3333333333333" y="536" width="27.120000000000005" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
+<text x="775.8933333333332" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S15</text>
+<rect x="810.3333333333333" y="484" width="147.66666666666666" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
+<text x="820.3333333333333" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">The customer cancels</text>
+<text x="820.3333333333333" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">until the Kitchen cooks:</text>
+<text x="820.3333333333333" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">stop, money back</text>
+<rect x="917.9999999999999" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
+<text x="929.0399999999998" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S7</text>
 </svg>

@@ -191,7 +191,7 @@ fi
 
 # ------------------------------------------------------------------------------------ the cast
 # Signed in once. mina manages restaurants in Tehran, kemal in Istanbul; omid carries in Tehran.
-if wanted S1 || wanted S2 || wanted S3 || wanted S4 || wanted S5 || wanted S6 || wanted S7 || wanted S8 || wanted S9 || wanted S10 || wanted S11 || wanted S12 || wanted S13 || wanted S14; then
+if wanted S1 || wanted S2 || wanted S3 || wanted S4 || wanted S5 || wanted S6 || wanted S7 || wanted S8 || wanted S9 || wanted S10 || wanted S11 || wanted S12 || wanted S13 || wanted S14 || wanted S15; then
   SARA=$(token_for sara); REZA=$(token_for reza); MINA=$(token_for mina); OMID=$(token_for omid)
   ELIF=$(token_for elif); KEMAL=$(token_for kemal)
   open_restaurant "$MINA" "Dizi Sara $RUN" IRR DIZI 450000 DOOGH 60000
@@ -618,15 +618,17 @@ check "$(about notifications.order_cancelled.payment-declined | grep -c 'مبل�
 check "$(psql_in tiffin_notifications "select count(*) from idempotency.processed_messages" | awk '{print ($1 > 0) ? "yes" : "no"}')" yes "the inbox remembers what was read from the stream"
 fi
 
-# ------------------------------------------------------------------------------------ S14
-if wanted S14; then
-section "S14 A service is down: who asks is told, who was asked later waits, and nothing is lost"
+# Stopping and starting a service again, for the scenarios that take one away (S14, S15).
 stop_service() { pkill -f "Tiffin\.$(pascal "$1")\.Api" 2>/dev/null; local deadline=$((SECONDS + 20)); while is_ready "$1" && [ $SECONDS -lt $deadline ]; do sleep 0.5; done; ! is_ready "$1"; }
 start_service() { # started as scripts/run.sh starts it, without building again, with the TIFFIN_BIND and DOTNET_ARGS the services were started with
   mkdir -p "$REPO_ROOT/tmp/logs"
   TIFFIN_NO_BUILD=1 nohup "$REPO_ROOT/scripts/run.sh" "$1" >> "$REPO_ROOT/tmp/logs/$1.log" 2>&1 &
   local deadline=$((SECONDS + 90)); until is_ready "$1" || [ $SECONDS -ge $deadline ]; do sleep 1; done; is_ready "$1"
 }
+
+# ------------------------------------------------------------------------------------ S14
+if wanted S14; then
+section "S14 A service is down: who asks is told, who was asked later waits, and nothing is lost"
 orders_in_tehran() { psql_in tiffin_ordering "select count(*) from ordering.orders where \"City\" = 'tehran'"; }
 free_courier "$OMID"
 
@@ -675,6 +677,58 @@ caught_up() {
   return 1
 }
 if caught_up; then ok "it reads what it missed from where it had stopped, and sara is told"; else bad "sara was not told that her order was delivered"; fi
+fi
+
+# ------------------------------------------------------------------------------------ S15
+if wanted S15; then
+section "S15 The restaurant never answers: the order does not wait for ever"
+# Ordering gives a restaurant ten minutes (Ordering:RestaurantAnswerDeadline, finding T-08). This scenario starts
+# it again with eight seconds, and at its end as it was.
+NOTIFICATIONS="http://localhost:$(rest_port_of notifications)"
+free_courier "$OMID"
+stop_service ordering && ok "Ordering is stopped" || bad "Ordering could not be stopped"
+if Ordering__RestaurantAnswerDeadline=00:00:08 start_service ordering; then ok "Ordering is back, giving a restaurant eight seconds"; else bad "Ordering did not come back"; fi
+
+place "$SARA" "$TEHRAN_RESTAURANT" DIZI 1 450000 tok_ok; expect 202 "sara orders"
+S15_SILENT="$ORDER_ID"
+reaches "$S15_SILENT" "$SARA" Paid "the card was charged"
+if wait_ticket "$MINA" "$S15_SILENT" Pending; then ok "the Kitchen has the order, and mina says nothing"; else bad "the ticket did not arrive"; fi
+
+place "$REZA" "$TEHRAN_RESTAURANT" DOOGH 2 120000 tok_ok; expect 202 "reza orders from the same restaurant"
+S15_ANSWERED="$ORDER_ID"
+reaches "$S15_ANSWERED" "$REZA" Paid "his card was charged"
+wait_ticket "$MINA" "$S15_ANSWERED" Pending
+api POST "$KITCHEN/v1/kitchen/tickets/$S15_ANSWERED/accept" "$MINA" '{"readyInMinutes":15}'; expect 200 "mina accepts reza's order in time"
+
+reaches "$S15_SILENT" "$SARA" Cancelled "sara's order, once the deadline has passed"
+check "$(jq -r .cancellationReason <<<"$LAST")" restaurant-did-not-answer "why"
+say "$(history)"
+if refunded "$S15_SILENT" "$SARA"; then ok "the money went back"; else bad "the order was not refunded"; fi
+check "$(paylane refunds "$S15_SILENT")" 1 "the provider was asked to refund, times"
+if wait_ticket "$MINA" "$S15_SILENT" Cancelled; then ok "the Kitchen was told to stop: the ticket is cancelled"; else bad "the ticket was not cancelled"; fi
+api POST "$KITCHEN/v1/kitchen/tickets/$S15_SILENT/accept" "$MINA" '{"readyInMinutes":20}'
+expect 422 "mina answers after all, too late"; check "$(code)" TICKET_NOT_PENDING "rule K1"
+
+say "reza's order was answered: its deadline arrives, asks, and changes nothing."
+sleep 12
+api GET "$ORDERING/v1/orders/$S15_ANSWERED" "$REZA"
+check "$(jq -r '.status | IN("Accepted", "OutForDelivery", "Delivered")' <<<"$LAST")" true "reza's order after its deadline has passed is still on its way"
+check "$(jq -r '.cancellationReason // "none"' <<<"$LAST")" none "and was not cancelled"
+
+told15() {
+  local deadline=$((SECONDS + WAIT_SECONDS))
+  while [ $SECONDS -lt $deadline ]; do
+    api GET "$NOTIFICATIONS/v1/notifications?size=200" "$SARA"
+    [ "$(jq -r --arg id "$S15_SILENT" '[.items[]? | select(.orderId == $id and .messageKey == "notifications.order_cancelled.restaurant-did-not-answer")] | length' <<<"$LAST")" = 1 ] && return 0
+    sleep 0.5
+  done
+  return 1
+}
+if told15; then ok "sara is told why, and that the money goes back"; else bad "sara was not told why her order was cancelled"; fi
+say "$(jq -r --arg id "$S15_SILENT" '.items[] | select(.orderId == $id and .messageKey == "notifications.order_cancelled.restaurant-did-not-answer") | .text' <<<"$LAST")"
+
+stop_service ordering && ok "Ordering is stopped again" || bad "Ordering could not be stopped"
+if start_service ordering; then ok "Ordering is back as it was: ten minutes"; else bad "Ordering did not come back"; fi
 fi
 
 # ------------------------------------------------------------------------------------ summary

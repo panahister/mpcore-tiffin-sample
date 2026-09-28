@@ -28,6 +28,7 @@ public static class CancellationReasons
     public const string ByCustomer = "cancelled-by-customer";
     public const string PaymentDeclined = "payment-declined";
     public const string RestaurantRefused = "restaurant-refused";
+    public const string RestaurantDidNotAnswer = "restaurant-did-not-answer";
     public const string NoCourier = "no-courier";
     public const string StepGivenUp = "step-given-up";
 }
