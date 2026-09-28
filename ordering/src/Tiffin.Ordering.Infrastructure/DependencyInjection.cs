@@ -72,7 +72,9 @@ public static class DependencyInjection
                     resilience.Retry.Delay = TimeSpan.FromMilliseconds(200);
                     resilience.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(10);
                 })
-            .AddMPCoreServiceIdentity(identity => Identify(identity, others));
+            .AddMPCoreServiceIdentity(identity => Identify(identity, others))
+            // The service's token names no city: the city of the order travels in x-tenant-id (T-05).
+            .AddMPCoreTenantPropagation();
 
         // The card's token is handed over once: no retry. A call that did not come through is the
         // customer's to repeat, with the same Idempotency-Key.
@@ -92,7 +94,8 @@ public static class DependencyInjection
                     resilience.Retry.ShouldHandle = static _ => ValueTask.FromResult(false);
                     resilience.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(10);
                 })
-            .AddMPCoreServiceIdentity(identity => Identify(identity, others));
+            .AddMPCoreServiceIdentity(identity => Identify(identity, others))
+            .AddMPCoreTenantPropagation();
         return services;
     }
 

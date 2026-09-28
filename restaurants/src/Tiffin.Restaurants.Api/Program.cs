@@ -79,8 +79,17 @@ builder.Services.AddMPCoreCurrentActor(mapping =>
         mapping.UseKeycloakDefaults();
     }
 });
-// The tenant, when the token names one. Business code reads ITenantContext; audit records it.
-builder.Services.AddMPCoreTenancyFromClaim(builder.Configuration["Security:TenantClaim"] ?? "tenant_id");
+// The tenant, when the token names one. Business code reads ITenantContext; audit records it. Ordering
+// calls with its own token, which names no city, and names the city of the order in x-tenant-id: that is
+// believed from the services listed in Security:TrustedServiceClients, and from nobody else (T-05).
+builder.Services.AddMPCoreTenancyFromClaim(options =>
+{
+    options.ClaimType = builder.Configuration["Security:TenantClaim"] ?? "tenant_id";
+    foreach (var client in builder.Configuration.GetSection("Security:TrustedServiceClients").Get<string[]>() ?? [])
+    {
+        options.TrustedServiceClients.Add(client);
+    }
+});
 builder.Services.AddForwardedIdentityHeaderGuard();
 // X-Forwarded-* is honoured only from the proxies listed here (APISIX or another gateway). Empty
 // means the host reasons from the real connection and ignores the headers entirely.
