@@ -76,7 +76,7 @@ def system(d):
     d.tool(R + 12, 680, RW - 24, 36, "redis", "Redis", [], "run", size=20)
 
     d.status(L + 8, by + 112, "run")
-    d.text(L + 20, by + 116, "Run end to end by the 15 scenarios of scripts/scenarios.sh: 266 checks, with each file store", size=11.5, fill=d.t["muted"])
+    d.text(L + 20, by + 116, "Run end to end by the 16 scenarios of scripts/scenarios.sh, with each file store, on every change", size=11.5, fill=d.t["muted"])
 
 
 # ------------------------------------------------------------------------------------------------ journey
@@ -113,23 +113,24 @@ def journey(d):
     backs = [("The bank refuses", "cancelled; nothing else was done", "S4"),
              ("The restaurant refuses", "Payments gives the money back", "S2"),
              ("No courier is free", "the Kitchen stops, the money goes back", "S3"),
-             ("PayLane gone for good", "cancelled; the request waits in the dead-letter queue", "S9"),
+             ("PayLane gone for good", "cancelled; the request is dead-lettered", "S9"),
+             ("The restaurant is silent", "after ten minutes: stop, money back", "S15"),
              ("The customer cancels", "until the Kitchen cooks: stop, money back", "S7")]
-    bw = (4 * w + 3 * gx - 4 * 8) / 5
+    bw = (4 * w + 3 * gx - 5 * 8) / 6
     for k, (what, back, proof) in enumerate(backs):
         x = x0 + k * (bw + 8)
         d.rect(x, ty + 14, bw, 76, d.fill("rose"), d.stroke("rose"), r=9, sw=1)
         d.text(x + 10, ty + 34, what, size=11.2, weight=700, fill=d.ink("rose"))
         words, lines, cur = back.split(" "), [], ""
         for word in words:
-            if len(cur) + len(word) + 1 > 28:
+            if len(cur) + len(word) + 1 > 24:
                 lines.append(cur); cur = word
             else:
                 cur = (cur + " " + word).strip()
         lines.append(cur)
         for j, line in enumerate(lines[:2]):
             d.text(x + 10, ty + 51 + j * 14, line, size=10.2, fill=d.t["muted"])
-        d.chip(x + bw - 36, ty + 66, proof, "blue", size=9, pad=6)
+        d.chip(x + bw - 40, ty + 66, proof, "blue", size=9, pad=6)
 
 
 # ------------------------------------------------------------------------------------------------ city
@@ -211,6 +212,7 @@ def why(d):
         ("A message delivered twice", "An inbox in six services", "options.UseMPCoreInbox();", "S5 S13"),
         ("Six orders, one courier", "Retries with pauses; a failed try's messages dropped", "OnException<DbUpdateConcurrencyException>()", "S8"),
         ("A rule, in three languages", "An error model on REST and gRPC, texts per language", "CheckRule(new ...)  (36 in 8 services)", "S2 S13"),
+        ("A step never answered", "A sweeper in each service, with its own lock", "DeliverAfter = deadlines.RestaurantAnswer", "S15"),
         ("A time series", "Hypertable, compression and retention, as SQL", "migrationBuilder.CreateHypertable(...)", "S12"),
     ]
     x0, cw = 32, [196, 344, 306, 76]
@@ -252,5 +254,5 @@ write_both(f"{OUT}/system", 1000, 850, "Tiffin: nine services behind a gateway, 
 write_both(f"{OUT}/order-journey", 1000, 596, "One order through six services, what MP Core guarantees at each step, and what is taken back when a step fails", journey)
 write_both(f"{OUT}/city", 1000, 412, "The city is the tenant: from the token to the request, a message, a call, a row and the audit trail", city)
 write_both(f"{OUT}/failure", 1000, 350, "When a service, a provider or a courier is not there: five scenarios and what each shows", failure)
-write_both(f"{OUT}/why-mpcore", 1000, 610, "What nine services need without MP Core and with it: the guarantees, the code Tiffin wrote, and the scenario that proves each", why)
+write_both(f"{OUT}/why-mpcore", 1000, 652, "What nine services need without MP Core and with it: the guarantees, the code Tiffin wrote, and the scenario that proves each", why)
 print("drawn:", ", ".join(sorted(os.listdir(OUT))))

@@ -30,8 +30,14 @@ with "forbidden", because "forbidden" says that it exists.
 Placed ──▶ Paid ──▶ Accepted ──▶ OutForDelivery ──▶ Delivered
    │         │          │
    └─────────┴──────────┴──▶ Cancelled      payment-declined · restaurant-refused · no-courier
-                                            cancelled-by-customer (until Accepted) · step-given-up
+                                            restaurant-did-not-answer · step-given-up
+                                            cancelled-by-customer (until Accepted)
 ```
+
+**A restaurant has ten minutes to answer a paid order.** When it has neither accepted nor refused by then,
+the order is cancelled (`restaurant-did-not-answer`), the Kitchen is told to stop, the money goes back and
+the customer is told why. An answer that comes later is refused under rule K1. The ten minutes are
+`Ordering:RestaurantAnswerDeadline`.
 
 A customer is told "accepted" (HTTP 202) the moment the order has an identity. Whether the card has the
 money, whether the restaurant will cook and whether a courier is free is answered afterwards, by the
@@ -117,3 +123,4 @@ meets most:
 | S12 | Where is my order | positions as a time series; who may say and who may see |
 | S13 | What happened | one notification, read in three languages |
 | S14 | A service is down | Restaurants, the Kitchen and Notifications are stopped in the middle of an order: who asks is told, a message waits, a reader catches up |
+| S15 | The restaurant never answers | with a deadline of eight seconds: the order is cancelled, stopped and paid back, and the customer told why; an order answered in time is left alone when its deadline arrives |

@@ -39,6 +39,9 @@
   <data name="notifications.order_cancelled.restaurant-refused" xml:space="preserve">
     <value>سفارش {order_number} لغو شد: رستوران نتوانست آن را بپذیرد. مبلغ کسرشده به کارت شما برمی‌گردد.</value>
   </data>
+  <data name="notifications.order_cancelled.restaurant-did-not-answer" xml:space="preserve">
+    <value>سفارش {order_number} لغو شد: رستوران به‌موقع پاسخ نداد. مبلغ کسرشده به کارت شما برمی‌گردد.</value>
+  </data>
   <data name="notifications.order_cancelled.no-courier" xml:space="preserve">
     <value>سفارش {order_number} لغو شد: هیچ پیکی آزاد نبود. مبلغ کسرشده به کارت شما برمی‌گردد.</value>
   </data>

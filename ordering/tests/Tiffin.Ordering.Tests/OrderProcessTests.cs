@@ -35,6 +35,7 @@ public sealed class OrderProcessTests
     private readonly FakeUnitOfWork unitOfWork = new();
     private readonly FakeClock clock = FakeClock.At2026();
     private readonly FakeTenant tehran = FakeTenant.Tehran();
+    private readonly OrderDeadlines deadlines = new(TimeSpan.FromMinutes(10));
 
     private Order Paid()
     {
@@ -51,8 +52,52 @@ public sealed class OrderProcessTests
     }
 
     private Task Authorized(Order order, FakeTenant? tenant = null) => OrderProcessHandler.Handle(
-        new PaymentAuthorized(Event, order.Id, "PLA-1", clock.UtcNow), orders, tenant ?? tehran, publisher, unitOfWork, clock,
+        new PaymentAuthorized(Event, order.Id, "PLA-1", clock.UtcNow), orders, tenant ?? tehran, publisher, unitOfWork, deadlines, clock,
         NullLogger<PaymentAuthorized>.Instance, default);
+
+    private Task DeadlinePasses(Order order) => OrderProcessHandler.Handle(
+        new RestaurantDeadline(order.Id), orders, tehran, publisher, unitOfWork, deadlines, clock, NullLogger<RestaurantDeadline>.Instance, default);
+
+    [Fact]
+    public async Task Asking_the_restaurant_gives_it_a_deadline_in_the_same_transaction()
+    {
+        var order = orders.Holding(OrderTests.Placed());
+
+        await Authorized(order);
+
+        var (message, delivery) = Assert.Single(publisher.Deliveries, static d => d.Message is RestaurantDeadline);
+        Assert.Equal(order.Id, ((RestaurantDeadline)message).OrderId);
+        Assert.Equal(TimeSpan.FromMinutes(10), delivery.DeliverAfter);
+    }
+
+    [Fact]
+    public async Task A_restaurant_that_did_not_answer_in_time_has_the_order_cancelled_stopped_and_paid_back()
+    {
+        var order = Paid();
+
+        await DeadlinePasses(order);
+
+        Assert.Equal((OrderStatus.Cancelled, CancellationReasons.RestaurantDidNotAnswer), (order.Status, order.CancellationReason));
+        Assert.Equal("no answer within 10 minutes", order.History[^1].Note);
+        Assert.Equal(order.Id, Assert.Single(publisher.Messages.OfType<PreparationCancelled>()).OrderId);
+        Assert.Equal(CancellationReasons.RestaurantDidNotAnswer, Assert.Single(publisher.Messages.OfType<RefundRequested>()).Reason);
+    }
+
+    [Fact]
+    public async Task A_deadline_that_arrives_after_the_restaurant_answered_does_nothing()
+    {
+        var accepted = Accepted();
+        var refused = Paid();
+        await KitchenRejects(refused);
+        publisher.Messages.Clear();
+
+        await DeadlinePasses(accepted);
+        await DeadlinePasses(refused);
+
+        Assert.Equal(OrderStatus.Accepted, accepted.Status);
+        Assert.Equal(CancellationReasons.RestaurantRefused, refused.CancellationReason);
+        Assert.Empty(publisher.Messages);
+    }
 
     private Task KitchenAccepts(Order order) => OrderProcessHandler.Handle(
         new KitchenAccepted(Event, order.Id, 25, clock.UtcNow), orders, tehran, publisher, unitOfWork, clock, NullLogger<KitchenAccepted>.Instance, default);
@@ -88,7 +133,10 @@ public sealed class OrderProcessTests
         await Authorized(order);
         await Authorized(order);
 
-        Assert.Single(publisher.Messages);
+        // One request to cook, and one deadline for it: the second report adds neither.
+        Assert.Equal(2, publisher.Messages.Count);
+        Assert.Single(publisher.Messages.OfType<PreparationRequested>());
+        Assert.Single(publisher.Messages.OfType<RestaurantDeadline>());
     }
 
     [Fact]

@@ -27,6 +27,7 @@ namespace Tiffin.Ordering.Application.Process;
 /// <list type="table">
 /// <item><term>The bank refuses the card</term><description>the order is cancelled; nothing was done that has to be undone.</description></item>
 /// <item><term>The restaurant refuses the order</term><description>the order is cancelled; Payments gives the money back.</description></item>
+/// <item><term>The restaurant does not answer in time</term><description>the order is cancelled; the Kitchen stops; Payments gives the money back.</description></item>
 /// <item><term>No courier is free</term><description>the order is cancelled; the Kitchen stops; Payments gives the money back.</description></item>
 /// <item><term>The customer cancelled while an answer was on its way</term><description>the answer is met by a cancelled order, and whatever it reports is taken back.</description></item>
 /// </list>
@@ -43,10 +44,10 @@ namespace Tiffin.Ordering.Application.Process;
 /// </remarks>
 public static class OrderProcessHandler
 {
-    /// <summary>The card was charged: ask the restaurant.</summary>
+    /// <summary>The card was charged: ask the restaurant, and give it a deadline.</summary>
     public static async Task Handle(
         PaymentAuthorized message, IOrderRepository orders, ITenantContext tenant, IMessagePublisher publisher, IUnitOfWork unitOfWork,
-        IClock clock, ILogger<PaymentAuthorized> logger, CancellationToken cancellationToken)
+        OrderDeadlines deadlines, IClock clock, ILogger<PaymentAuthorized> logger, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(message);
         ArgumentNullException.ThrowIfNull(publisher);
@@ -75,6 +76,42 @@ public static class OrderProcessHandler
                 order.Id, order.OrderNumber, order.RestaurantId, order.RestaurantName,
                 [.. order.Lines.Select(static l => new PreparationLine(l.Code, l.Name, l.Quantity))], now),
             cancellationToken).ConfigureAwait(false);
+
+        // In the same transaction: a restaurant that never answers cannot leave the order paid for ever.
+        ArgumentNullException.ThrowIfNull(deadlines);
+        await publisher.PublishAsync(
+            new RestaurantDeadline(order.Id),
+            new MessageDeliveryContext(null, null) { DeliverAfter = deadlines.RestaurantAnswer },
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// The restaurant's deadline has passed. If it has not answered, the order is cancelled, the Kitchen is told
+    /// to stop and Payments gives the money back. If it has, nothing happens: the deadline asks, it does not act.
+    /// </summary>
+    public static async Task Handle(
+        RestaurantDeadline message, IOrderRepository orders, ITenantContext tenant, IMessagePublisher publisher, IUnitOfWork unitOfWork,
+        OrderDeadlines deadlines, IClock clock, ILogger<RestaurantDeadline> logger, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(message);
+        ArgumentNullException.ThrowIfNull(publisher);
+        ArgumentNullException.ThrowIfNull(deadlines);
+
+        var order = await LoadAsync(orders, tenant, message.OrderId, cancellationToken).ConfigureAwait(false);
+        if (!order.CanAccept)
+        {
+            // Accepted, refused or cancelled before the deadline: the restaurant, or somebody, answered.
+            logger.LogDebug("The restaurant's deadline for {OrderNumber} passed after it was answered ({Status})", order.OrderNumber, order.Status);
+            return;
+        }
+
+        var now = clock.UtcNow;
+        order.Cancel(CancellationReasons.RestaurantDidNotAnswer, $"no answer within {Describe(deadlines.RestaurantAnswer)}", now);
+        await publisher.PublishAsync(new PreparationCancelled(order.Id, order.OrderNumber, CancellationReasons.RestaurantDidNotAnswer, now), cancellationToken)
+            .ConfigureAwait(false);
+        await publisher.PublishAsync(new RefundRequested(order.Id, order.OrderNumber, CancellationReasons.RestaurantDidNotAnswer, now), cancellationToken)
+            .ConfigureAwait(false);
+        logger.LogInformation("Order {OrderNumber} cancelled: the restaurant did not answer in time", order.OrderNumber);
     }
 
     /// <summary>The bank said no: cancel the order. Nobody else has been asked yet.</summary>
@@ -148,6 +185,12 @@ public static class OrderProcessHandler
             .ConfigureAwait(false);
         logger.LogInformation("Order {OrderNumber} cancelled: the restaurant refused ({Reason})", order.OrderNumber, message.Reason);
     }
+
+    /// <summary>"10 minutes", "8 seconds": how long the restaurant had, as the order's history says it.</summary>
+    private static string Describe(TimeSpan span) =>
+        span.TotalSeconds % 60 == 0
+            ? $"{span.TotalMinutes:0} minute{(span.TotalMinutes == 1 ? "" : "s")}"
+            : $"{span.TotalSeconds:0} second{(span.TotalSeconds == 1 ? "" : "s")}";
 
     /// <summary>A courier carries it.</summary>
     public static async Task Handle(
