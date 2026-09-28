@@ -622,7 +622,7 @@ fi
 if wanted S14; then
 section "S14 A service is down: who asks is told, who was asked later waits, and nothing is lost"
 stop_service() { pkill -f "Tiffin\.$(pascal "$1")\.Api" 2>/dev/null; local deadline=$((SECONDS + 20)); while is_ready "$1" && [ $SECONDS -lt $deadline ]; do sleep 0.5; done; ! is_ready "$1"; }
-start_service() { # started as scripts/run.sh starts it, without building again
+start_service() { # started as scripts/run.sh starts it, without building again, with the TIFFIN_BIND and DOTNET_ARGS the services were started with
   mkdir -p "$REPO_ROOT/tmp/logs"
   TIFFIN_NO_BUILD=1 nohup "$REPO_ROOT/scripts/run.sh" "$1" >> "$REPO_ROOT/tmp/logs/$1.log" 2>&1 &
   local deadline=$((SECONDS + 90)); until is_ready "$1" || [ $SECONDS -ge $deadline ]; do sleep 1; done; is_ready "$1"
