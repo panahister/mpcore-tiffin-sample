@@ -119,10 +119,11 @@ var anonymousDescriptionSurface = builder.Environment.IsDevelopment();
 // What "alive" and "ready" mean is the same on every transport: Hosting/HostHealthChecks.cs.
 builder.Services.AddHostHealthChecks();
 
-// A failure is told in the caller's language: English, Persian for Tehran, Turkish for Istanbul.
+// A failure is told in the caller's language: English, Turkish or Simplified Chinese. "zh-Hans" answers a
+// caller who asks for "zh-CN": MP Core accepts the requested culture or its parent.
 builder.Services.AddMPCoreHttpFailureHandling(options =>
 {
-    options.SupportedCultures.Add("fa");
+    options.SupportedCultures.Add("zh-Hans");
     options.SupportedCultures.Add("tr");
 });
 builder.Services.AddMPCoreProblemDetailsSecurityResponses();

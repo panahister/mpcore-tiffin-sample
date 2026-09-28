@@ -124,7 +124,7 @@ builder.Services.AddHostHealthChecks();
 
 builder.Services.AddGrpc().AddMPCoreFailureHandling(options =>
 {
-    options.SupportedCultures.Add("fa");
+    options.SupportedCultures.Add("zh-Hans");
     options.SupportedCultures.Add("tr");
 });
 // The empty service name is the whole host; "live" asks the process only.

@@ -111,7 +111,7 @@
 <text x="748" y="304" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9.5" font-weight="700" fill="#6e7781" text-anchor="start" letter-spacing="0.8">NOTIFICATIONS</text>
 <text x="748" y="324" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#424a53" text-anchor="start">The customer is told</text>
 <text x="748" y="346" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#57606a" text-anchor="start">From the stream, in English,</text>
-<text x="748" y="363.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#57606a" text-anchor="start">Persian or Turkish</text>
+<text x="748" y="363.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#57606a" text-anchor="start">Turkish or Chinese</text>
 <circle cx="938" cy="304" r="11" fill="#6e7781"/>
 <text x="938" y="308" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#ffffff" text-anchor="middle">8</text>
 <line x1="748" y1="406" x2="944" y2="406" stroke="#afb8c1" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 4"/>

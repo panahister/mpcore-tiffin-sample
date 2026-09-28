@@ -13,27 +13,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="access.admin_required" xml:space="preserve">
-    <value>به‌عنوان مدیر یک شهر یا مدیر پلتفرم وارد شوید.</value>
+    <value>请以城市管理员或平台管理员身份登录。</value>
   </data>
   <data name="access.city_required" xml:space="preserve">
-    <value>شهر مورد نظر را نام ببرید.</value>
+    <value>请说明您指的是哪个城市。</value>
   </data>
   <data name="access.person_not_found" xml:space="preserve">
-    <value>چنین شخصی در این شهر وجود ندارد.</value>
+    <value>这个城市没有此人。</value>
   </data>
   <data name="access.grant_not_found" xml:space="preserve">
-    <value>چنین تصمیمی در این شهر وجود ندارد.</value>
+    <value>这个城市没有这项决定。</value>
   </data>
   <data name="access.directory_unavailable" xml:space="preserve">
-    <value>در حال حاضر به سامانه‌ی هویت دسترسی نیست. کمی بعد دوباره تلاش کنید.</value>
+    <value>暂时无法连接身份提供方，请稍后再试。</value>
   </data>
   <data name="access.role_unknown" xml:space="preserve">
-    <value>{role} جزو نقش‌های پلتفرم نیست.</value>
+    <value>{role} 不是平台的角色。</value>
   </data>
   <data name="access.role_not_yours_to_give" xml:space="preserve">
-    <value>دادن یا گرفتن نقش {role} در اختیار شما نیست.</value>
+    <value>您无权授予或收回角色 {role}。</value>
   </data>
   <data name="access.own_roles" xml:space="preserve">
-    <value>هیچ‌کس نقش‌های خودش را تغییر نمی‌دهد.</value>
+    <value>任何人都不能更改自己的角色。</value>
   </data>
 </root>

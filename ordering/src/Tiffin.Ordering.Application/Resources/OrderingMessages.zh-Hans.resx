@@ -13,48 +13,48 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ordering.order_not_found" xml:space="preserve">
-    <value>چنین سفارشی وجود ندارد.</value>
+    <value>没有这笔订单。</value>
   </data>
   <data name="ordering.customer_required" xml:space="preserve">
-    <value>برای سفارش به‌عنوان مشتری یک شهر وارد شوید.</value>
+    <value>请以城市顾客身份登录后下单。</value>
   </data>
   <data name="ordering.restaurant_not_found" xml:space="preserve">
-    <value>چنین رستورانی در شهر شما وجود ندارد.</value>
+    <value>您所在的城市没有这家餐厅。</value>
   </data>
   <data name="ordering.total_changed" xml:space="preserve">
-    <value>مبلغ سفارش اکنون {total} {currency} است. دوباره نگاه کنید و تأیید کنید.</value>
+    <value>该订单现在的价格是 {total} {currency}。请重新查看并确认。</value>
   </data>
   <data name="ordering.refused_by_restaurant" xml:space="preserve">
-    <value>رستوران نمی‌تواند این سفارش را بپذیرد: {detail}</value>
+    <value>餐厅无法接这笔订单：{detail}</value>
   </data>
   <data name="ordering.restaurants_unavailable" xml:space="preserve">
-    <value>در حال حاضر به منوها دسترسی نیست. کمی بعد دوباره تلاش کنید.</value>
+    <value>暂时无法获取菜单，请稍后再试。</value>
   </data>
   <data name="ordering.payments_unavailable" xml:space="preserve">
-    <value>در حال حاضر به پرداخت دسترسی نیست. مبلغی کسر نشده است. کمی بعد دوباره تلاش کنید.</value>
+    <value>暂时无法连接支付服务。未扣任何款项，请稍后再试。</value>
   </data>
   <data name="ordering.payment_token_refused" xml:space="preserve">
-    <value>توکن کارت پذیرفته نشد. کارت را دوباره وارد کنید.</value>
+    <value>银行卡令牌被拒绝。请重新输入银行卡。</value>
   </data>
   <data name="ordering.order_empty" xml:space="preserve">
-    <value>سفارش باید دست‌کم یک قلم داشته باشد.</value>
+    <value>一笔订单至少要有一件商品。</value>
   </data>
   <data name="ordering.not_awaiting_payment" xml:space="preserve">
-    <value>سفارش {order_number} در انتظار پرداخت نیست ({status}).</value>
+    <value>订单 {order_number} 不在等待付款（{status}）。</value>
   </data>
   <data name="ordering.not_awaiting_restaurant" xml:space="preserve">
-    <value>سفارش {order_number} در انتظار رستوران نیست ({status}).</value>
+    <value>订单 {order_number} 不在等待餐厅（{status}）。</value>
   </data>
   <data name="ordering.not_awaiting_courier" xml:space="preserve">
-    <value>سفارش {order_number} در انتظار پیک نیست ({status}).</value>
+    <value>订单 {order_number} 不在等待骑手（{status}）。</value>
   </data>
   <data name="ordering.not_on_its_way" xml:space="preserve">
-    <value>سفارش {order_number} در راه نیست ({status}).</value>
+    <value>订单 {order_number} 不在配送途中（{status}）。</value>
   </data>
   <data name="ordering.cannot_be_cancelled" xml:space="preserve">
-    <value>سفارش {order_number} دیگر قابل لغو نیست ({status}).</value>
+    <value>订单 {order_number} 已无法取消（{status}）。</value>
   </data>
   <data name="ordering.already_cooking" xml:space="preserve">
-    <value>رستوران در حال آماده‌سازی سفارش {order_number} است و دیگر قابل لغو نیست ({status}).</value>
+    <value>餐厅已经在制作订单 {order_number}，无法再取消（{status}）。</value>
   </data>
 </root>

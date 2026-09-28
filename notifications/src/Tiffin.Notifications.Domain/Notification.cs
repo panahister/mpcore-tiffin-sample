@@ -7,7 +7,7 @@ namespace Tiffin.Notifications.Domain;
 /// <para>
 /// <b>A notification is kept as what happened, not as a sentence.</b> It holds the key of a message and
 /// the values that go into it. The sentence is made when it is read, in the language of whoever reads: a
-/// customer who orders in Persian today and reads in English tomorrow is told in English. A sentence that
+/// customer who orders in Chinese today and reads in English tomorrow is told in English. A sentence that
 /// was stored could be read in one language only, and corrected in none.
 /// </para>
 /// <para>

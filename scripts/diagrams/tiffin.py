@@ -91,7 +91,7 @@ def journey(d):
         ("rose", "Tracking", "The courier is followed", ["Positions in a hypertable,", "compressed after seven days"], "TimescaleDB, by policy"),
         ("rose", "Dispatch", "The order is delivered", ["The courier says so, and the", "stream tells whoever reads"], "Outbox: sent if committed"),
         ("blue", "Ordering", "The saga ends", ["Delivered; or cancelled, with", "every step taken back"], "The city on every message"),
-        ("slate", "Notifications", "The customer is told", ["From the stream, in English,", "Persian or Turkish"], "Inbox: handled once"),
+        ("slate", "Notifications", "The customer is told", ["From the stream, in English,", "Turkish or Chinese"], "Inbox: handled once"),
     ]
     w, h, gx, gy, x0, y0 = 224, 168, 10, 22, 32, 88
     for i, (color, service, title, lines, promise) in enumerate(steps):

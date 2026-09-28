@@ -5,7 +5,7 @@
 
 The table is a JSON file next to the .resx files it produces:
 
-    { "class": "OrderingMessages", "languages": ["en", "fa", "tr"],
+    { "class": "OrderingMessages", "languages": ["en", "zh-Hans", "tr"],
       "messages": { "ordering.order_not_found": ["There is no such order.", "...", "..."] } }
 
 The first language is the default and is written to <class>.resx; every other one to <class>.<language>.resx.

@@ -54,7 +54,7 @@ Storefront runs both.
 | | **The tenant of a call** (new in `0.9.2`): Ordering names the city of the order in `x-tenant-id`; Payments and Restaurants believe it from Ordering only | S1 and every scenario that orders: Payments' audit trail names the city |
 | | Behind a gateway | S0 asks through the edge; **the scenarios call the services directly** |
 | **8. Business audit** | Business actions and entity changes, with the actor, the city and the request | S1, S6, S10, S11 |
-| **9. Language** | 78 texts in English, Persian and Turkish; failures over REST and gRPC, and stored notifications, in the caller's language | S2, S6, S8, S11, S13; `NotificationTests` |
+| **9. Language** | 79 texts in English, Turkish and Simplified Chinese; failures over REST and gRPC, and stored notifications, in the caller's language | S2, S6, S8, S11, S13; `NotificationTests` |
 | | Translations edited while the service runs | not used here |
 | **10. Data and cache** | One database per service; a hypertable with retention and compression; Redis in front of the menus | S12 for the hypertable; `RestaurantTests` for the cache, with a fake: **Redis itself is asked by the running service and not looked into by a scenario** |
 | **11. Operations** | Health over REST and gRPC; calls to other systems with timeouts, retries and a circuit breaker | S0 for health; S9 for a provider that is down |

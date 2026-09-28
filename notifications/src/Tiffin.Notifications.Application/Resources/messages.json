@@ -1,17 +1,17 @@
 {
   "class": "NotificationsMessages",
-  "languages": ["en", "fa", "tr"],
+  "languages": ["en", "zh-Hans", "tr"],
   "messages": {
-    "notifications.sign_in_required": ["Sign in as somebody of a city.", "به‌عنوان عضو یک شهر وارد شوید.", "Bir şehrin üyesi olarak oturum açın."],
-    "notifications.not_found": ["There is no such notification for you.", "چنین اعلانی برای شما وجود ندارد.", "Sizin için böyle bir bildirim yok."],
-    "notifications.order_placed": ["Your order {order_number} at {restaurant} was received: {total} {currency}.", "سفارش {order_number} شما از {restaurant} دریافت شد: {total} {currency}.", "{restaurant} restoranındaki {order_number} numaralı siparişiniz alındı: {total} {currency}."],
-    "notifications.order_out_for_delivery": ["{courier} is on the way with your order {order_number}.", "{courier} با سفارش {order_number} شما در راه است.", "{courier}, {order_number} numaralı siparişinizle yolda."],
-    "notifications.order_delivered": ["Your order {order_number} was delivered. Enjoy.", "سفارش {order_number} شما تحویل داده شد. نوش جان.", "{order_number} numaralı siparişiniz teslim edildi. Afiyet olsun."],
-    "notifications.order_cancelled": ["Your order {order_number} was cancelled.", "سفارش {order_number} شما لغو شد.", "{order_number} numaralı siparişiniz iptal edildi."],
-    "notifications.order_cancelled.cancelled-by-customer": ["Your order {order_number} was cancelled, as you asked. What was charged goes back to your card.", "سفارش {order_number} به درخواست شما لغو شد. مبلغ کسرشده به کارت شما برمی‌گردد.", "{order_number} numaralı siparişiniz isteğiniz üzerine iptal edildi. Çekilen tutar kartınıza iade edilir."],
-    "notifications.order_cancelled.payment-declined": ["Your order {order_number} was cancelled: your bank declined the payment. Nothing was charged.", "سفارش {order_number} لغو شد: بانک شما پرداخت را نپذیرفت. مبلغی کسر نشده است.", "{order_number} numaralı siparişiniz iptal edildi: bankanız ödemeyi reddetti. Hiçbir ücret alınmadı."],
-    "notifications.order_cancelled.restaurant-refused": ["Your order {order_number} was cancelled: the restaurant could not take it. What was charged goes back to your card.", "سفارش {order_number} لغو شد: رستوران نتوانست آن را بپذیرد. مبلغ کسرشده به کارت شما برمی‌گردد.", "{order_number} numaralı siparişiniz iptal edildi: restoran siparişi alamadı. Çekilen tutar kartınıza iade edilir."],
-    "notifications.order_cancelled.restaurant-did-not-answer": ["Your order {order_number} was cancelled: the restaurant did not answer in time. What was charged goes back to your card.", "سفارش {order_number} لغو شد: رستوران به‌موقع پاسخ نداد. مبلغ کسرشده به کارت شما برمی‌گردد.", "{order_number} numaralı siparişiniz iptal edildi: restoran zamanında yanıt vermedi. Çekilen tutar kartınıza iade edilir."],
-    "notifications.order_cancelled.no-courier": ["Your order {order_number} was cancelled: no courier was free. What was charged goes back to your card.", "سفارش {order_number} لغو شد: هیچ پیکی آزاد نبود. مبلغ کسرشده به کارت شما برمی‌گردد.", "{order_number} numaralı siparişiniz iptal edildi: boşta kurye yoktu. Çekilen tutar kartınıza iade edilir."]
+    "notifications.sign_in_required": ["Sign in as somebody of a city.", "请以某个城市的用户身份登录。", "Bir şehrin üyesi olarak oturum açın."],
+    "notifications.not_found": ["There is no such notification for you.", "没有您的这条通知。", "Sizin için böyle bir bildirim yok."],
+    "notifications.order_placed": ["Your order {order_number} at {restaurant} was received: {total} {currency}.", "您在 {restaurant} 的订单 {order_number} 已收到：{total} {currency}。", "{restaurant} restoranındaki {order_number} numaralı siparişiniz alındı: {total} {currency}."],
+    "notifications.order_out_for_delivery": ["{courier} is on the way with your order {order_number}.", "{courier} 正带着您的订单 {order_number} 在路上。", "{courier}, {order_number} numaralı siparişinizle yolda."],
+    "notifications.order_delivered": ["Your order {order_number} was delivered. Enjoy.", "您的订单 {order_number} 已送达，请慢用。", "{order_number} numaralı siparişiniz teslim edildi. Afiyet olsun."],
+    "notifications.order_cancelled": ["Your order {order_number} was cancelled.", "您的订单 {order_number} 已取消。", "{order_number} numaralı siparişiniz iptal edildi."],
+    "notifications.order_cancelled.cancelled-by-customer": ["Your order {order_number} was cancelled, as you asked. What was charged goes back to your card.", "您的订单 {order_number} 已按您的要求取消。已扣款项将退回您的卡。", "{order_number} numaralı siparişiniz isteğiniz üzerine iptal edildi. Çekilen tutar kartınıza iade edilir."],
+    "notifications.order_cancelled.payment-declined": ["Your order {order_number} was cancelled: your bank declined the payment. Nothing was charged.", "您的订单 {order_number} 已取消：您的银行拒绝了付款。未扣任何款项。", "{order_number} numaralı siparişiniz iptal edildi: bankanız ödemeyi reddetti. Hiçbir ücret alınmadı."],
+    "notifications.order_cancelled.restaurant-refused": ["Your order {order_number} was cancelled: the restaurant could not take it. What was charged goes back to your card.", "您的订单 {order_number} 已取消：餐厅无法接单。已扣款项将退回您的卡。", "{order_number} numaralı siparişiniz iptal edildi: restoran siparişi alamadı. Çekilen tutar kartınıza iade edilir."],
+    "notifications.order_cancelled.restaurant-did-not-answer": ["Your order {order_number} was cancelled: the restaurant did not answer in time. What was charged goes back to your card.", "您的订单 {order_number} 已取消：餐厅未能及时回复。已扣款项将退回您的卡。", "{order_number} numaralı siparişiniz iptal edildi: restoran zamanında yanıt vermedi. Çekilen tutar kartınıza iade edilir."],
+    "notifications.order_cancelled.no-courier": ["Your order {order_number} was cancelled: no courier was free. What was charged goes back to your card.", "您的订单 {order_number} 已取消：没有空闲的骑手。已扣款项将退回您的卡。", "{order_number} numaralı siparişiniz iptal edildi: boşta kurye yoktu. Çekilen tutar kartınıza iade edilir."]
   }
 }
