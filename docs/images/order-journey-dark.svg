@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 596" width="1000" height="596" role="img" aria-label="One order through six services, what MP Core guarantees at each step, and what is taken back when a step fails">
+<title>One order through six services, what MP Core guarantees at each step, and what is taken back when a step fails</title>
+<defs><filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.35"/></filter></defs>
+<rect x="0.75" y="0.75" width="998.5" height="594.5" rx="16" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+<text x="32" y="44" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#e6edf3" text-anchor="start">One order, through six services</text>
+<text x="32" y="65" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#9198a1" text-anchor="start">Every box is one transaction in one service. The blue line is what MP Core guarantees there.</text>
+<rect x="32" y="88" width="224" height="168" rx="10" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1.25" filter="url(#shadow)"/>
+<clipPath id="clip3"><rect x="32" y="88" width="224" height="168" rx="10"/></clipPath>
+<rect x="32" y="88" width="224" height="6" fill="#3b82f6" clip-path="url(#clip3)"/>
+<text x="46" y="114" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9.5" font-weight="700" fill="#3b82f6" text-anchor="start" letter-spacing="0.8">ORDERING</text>
+<text x="46" y="134" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#9cc4ff" text-anchor="start">The order is placed</text>
+<text x="46" y="156" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">The price is asked of Restaurants,</text>
+<text x="46" y="173.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">the card handed to Payments</text>
+<circle cx="236" cy="114" r="11" fill="#3b82f6"/>
+<text x="236" y="118" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#0d1117" text-anchor="middle">1</text>
+<line x1="46" y1="216" x2="242" y2="216" stroke="#2f6fdb" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 4"/>
+<rect x="46" y="226" width="18" height="18" rx="4.32" fill="#2563eb" stroke="none" stroke-width="1.25"/>
+<text x="55.0" y="237.88" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="7.56" font-weight="700" fill="#ffffff" text-anchor="middle">MP</text>
+<text x="70" y="239" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.6" font-weight="600" fill="#9cc4ff" text-anchor="start">Idempotency-Key; calls as itself</text>
+<rect x="266" y="88" width="224" height="168" rx="10" fill="#07241f" stroke="#1f9d8b" stroke-width="1.25" filter="url(#shadow)"/>
+<clipPath id="clip16"><rect x="266" y="88" width="224" height="168" rx="10"/></clipPath>
+<rect x="266" y="88" width="224" height="6" fill="#2bb5a0" clip-path="url(#clip16)"/>
+<text x="280" y="114" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9.5" font-weight="700" fill="#2bb5a0" text-anchor="start" letter-spacing="0.8">PAYMENTS</text>
+<text x="280" y="134" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#7fe3d2" text-anchor="start">The card is charged</text>
+<text x="280" y="156" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">PayLane may be slow, or down;</text>
+<text x="280" y="173.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">the token is erased once used</text>
+<circle cx="470" cy="114" r="11" fill="#2bb5a0"/>
+<text x="470" y="118" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#0d1117" text-anchor="middle">2</text>
+<line x1="280" y1="216" x2="476" y2="216" stroke="#1f9d8b" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 4"/>
+<rect x="280" y="226" width="18" height="18" rx="4.32" fill="#2563eb" stroke="none" stroke-width="1.25"/>
+<text x="289.0" y="237.88" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="7.56" font-weight="700" fill="#ffffff" text-anchor="middle">MP</text>
+<text x="304" y="239" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.6" font-weight="600" fill="#9cc4ff" text-anchor="start">Retry under one key</text>
+<path d="M 257 172.0 L 265 172.0" fill="none" stroke="#6e7681" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 258.7 175.0 L 265 172.0 L 258.7 169.0" fill="none" stroke="#6e7681" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="500" y="88" width="224" height="168" rx="10" fill="#2b1d06" stroke="#bb8009" stroke-width="1.25" filter="url(#shadow)"/>
+<clipPath id="clip31"><rect x="500" y="88" width="224" height="168" rx="10"/></clipPath>
+<rect x="500" y="88" width="224" height="6" fill="#d29922" clip-path="url(#clip31)"/>
+<text x="514" y="114" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9.5" font-weight="700" fill="#d29922" text-anchor="start" letter-spacing="0.8">KITCHEN</text>
+<text x="514" y="134" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#f2cc60" text-anchor="start">The restaurant decides</text>
+<text x="514" y="156" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">mina accepts, and promises</text>
+<text x="514" y="173.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">a time; or refuses</text>
+<circle cx="704" cy="114" r="11" fill="#d29922"/>
+<text x="704" y="118" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#0d1117" text-anchor="middle">3</text>
+<line x1="514" y1="216" x2="710" y2="216" stroke="#bb8009" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 4"/>
+<rect x="514" y="226" width="18" height="18" rx="4.32" fill="#2563eb" stroke="none" stroke-width="1.25"/>
+<text x="523.0" y="237.88" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="7.56" font-weight="700" fill="#ffffff" text-anchor="middle">MP</text>
+<text x="538" y="239" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.6" font-weight="600" fill="#9cc4ff" text-anchor="start">A queue: the request waits</text>
+<path d="M 491 172.0 L 499 172.0" fill="none" stroke="#6e7681" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 492.7 175.0 L 499 172.0 L 492.7 169.0" fill="none" stroke="#6e7681" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="734" y="88" width="224" height="168" rx="10" fill="#2d1018" stroke="#da3650" stroke-width="1.25" filter="url(#shadow)"/>
+<clipPath id="clip46"><rect x="734" y="88" width="224" height="168" rx="10"/></clipPath>
+<rect x="734" y="88" width="224" height="6" fill="#f0506e" clip-path="url(#clip46)"/>
+<text x="748" y="114" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9.5" font-weight="700" fill="#f0506e" text-anchor="start" letter-spacing="0.8">DISPATCH</text>
+<text x="748" y="134" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffa3b3" text-anchor="start">A courier is chosen</text>
+<text x="748" y="156" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">The one who waited longest.</text>
+<text x="748" y="173.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">Six orders may want him</text>
+<circle cx="938" cy="114" r="11" fill="#f0506e"/>
+<text x="938" y="118" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#0d1117" text-anchor="middle">4</text>
+<line x1="748" y1="216" x2="944" y2="216" stroke="#da3650" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 4"/>
+<rect x="748" y="226" width="18" height="18" rx="4.32" fill="#2563eb" stroke="none" stroke-width="1.25"/>
+<text x="757.0" y="237.88" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="7.56" font-weight="700" fill="#ffffff" text-anchor="middle">MP</text>
+<text x="772" y="239" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.6" font-weight="600" fill="#9cc4ff" text-anchor="start">One save wins; five go back</text>
+<path d="M 725 172.0 L 733 172.0" fill="none" stroke="#6e7681" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 726.7 175.0 L 733 172.0 L 726.7 169.0" fill="none" stroke="#6e7681" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="32" y="278" width="224" height="168" rx="10" fill="#2d1018" stroke="#da3650" stroke-width="1.25" filter="url(#shadow)"/>
+<clipPath id="clip61"><rect x="32" y="278" width="224" height="168" rx="10"/></clipPath>
+<rect x="32" y="278" width="224" height="6" fill="#f0506e" clip-path="url(#clip61)"/>
+<text x="46" y="304" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9.5" font-weight="700" fill="#f0506e" text-anchor="start" letter-spacing="0.8">TRACKING</text>
+<text x="46" y="324" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffa3b3" text-anchor="start">The courier is followed</text>
+<text x="46" y="346" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">Positions in a hypertable,</text>
+<text x="46" y="363.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">compressed after seven days</text>
+<circle cx="236" cy="304" r="11" fill="#f0506e"/>
+<text x="236" y="308" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#0d1117" text-anchor="middle">5</text>
+<line x1="46" y1="406" x2="242" y2="406" stroke="#da3650" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 4"/>
+<rect x="46" y="416" width="18" height="18" rx="4.32" fill="#2563eb" stroke="none" stroke-width="1.25"/>
+<text x="55.0" y="427.88" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="7.56" font-weight="700" fill="#ffffff" text-anchor="middle">MP</text>
+<text x="70" y="429" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.6" font-weight="600" fill="#9cc4ff" text-anchor="start">TimescaleDB, by policy</text>
+<rect x="266" y="278" width="224" height="168" rx="10" fill="#2d1018" stroke="#da3650" stroke-width="1.25" filter="url(#shadow)"/>
+<clipPath id="clip74"><rect x="266" y="278" width="224" height="168" rx="10"/></clipPath>
+<rect x="266" y="278" width="224" height="6" fill="#f0506e" clip-path="url(#clip74)"/>
+<text x="280" y="304" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9.5" font-weight="700" fill="#f0506e" text-anchor="start" letter-spacing="0.8">DISPATCH</text>
+<text x="280" y="324" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffa3b3" text-anchor="start">The order is delivered</text>
+<text x="280" y="346" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">The courier says so, and the</text>
+<text x="280" y="363.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">stream tells whoever reads</text>
+<circle cx="470" cy="304" r="11" fill="#f0506e"/>
+<text x="470" y="308" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#0d1117" text-anchor="middle">6</text>
+<line x1="280" y1="406" x2="476" y2="406" stroke="#da3650" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 4"/>
+<rect x="280" y="416" width="18" height="18" rx="4.32" fill="#2563eb" stroke="none" stroke-width="1.25"/>
+<text x="289.0" y="427.88" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="7.56" font-weight="700" fill="#ffffff" text-anchor="middle">MP</text>
+<text x="304" y="429" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.6" font-weight="600" fill="#9cc4ff" text-anchor="start">Outbox: sent if committed</text>
+<path d="M 257 362.0 L 265 362.0" fill="none" stroke="#6e7681" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 258.7 365.0 L 265 362.0 L 258.7 359.0" fill="none" stroke="#6e7681" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="500" y="278" width="224" height="168" rx="10" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1.25" filter="url(#shadow)"/>
+<clipPath id="clip89"><rect x="500" y="278" width="224" height="168" rx="10"/></clipPath>
+<rect x="500" y="278" width="224" height="6" fill="#3b82f6" clip-path="url(#clip89)"/>
+<text x="514" y="304" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9.5" font-weight="700" fill="#3b82f6" text-anchor="start" letter-spacing="0.8">ORDERING</text>
+<text x="514" y="324" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#9cc4ff" text-anchor="start">The saga ends</text>
+<text x="514" y="346" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">Delivered; or cancelled, with</text>
+<text x="514" y="363.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">every step taken back</text>
+<circle cx="704" cy="304" r="11" fill="#3b82f6"/>
+<text x="704" y="308" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#0d1117" text-anchor="middle">7</text>
+<line x1="514" y1="406" x2="710" y2="406" stroke="#2f6fdb" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 4"/>
+<rect x="514" y="416" width="18" height="18" rx="4.32" fill="#2563eb" stroke="none" stroke-width="1.25"/>
+<text x="523.0" y="427.88" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="7.56" font-weight="700" fill="#ffffff" text-anchor="middle">MP</text>
+<text x="538" y="429" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.6" font-weight="600" fill="#9cc4ff" text-anchor="start">The city on every message</text>
+<path d="M 491 362.0 L 499 362.0" fill="none" stroke="#6e7681" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 492.7 365.0 L 499 362.0 L 492.7 359.0" fill="none" stroke="#6e7681" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="734" y="278" width="224" height="168" rx="10" fill="#161b22" stroke="#484f58" stroke-width="1.25" filter="url(#shadow)"/>
+<clipPath id="clip104"><rect x="734" y="278" width="224" height="168" rx="10"/></clipPath>
+<rect x="734" y="278" width="224" height="6" fill="#8b949e" clip-path="url(#clip104)"/>
+<text x="748" y="304" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9.5" font-weight="700" fill="#8b949e" text-anchor="start" letter-spacing="0.8">NOTIFICATIONS</text>
+<text x="748" y="324" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#c9d1d9" text-anchor="start">The customer is told</text>
+<text x="748" y="346" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">From the stream, in English,</text>
+<text x="748" y="363.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#9198a1" text-anchor="start">Persian or Turkish</text>
+<circle cx="938" cy="304" r="11" fill="#8b949e"/>
+<text x="938" y="308" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#0d1117" text-anchor="middle">8</text>
+<line x1="748" y1="406" x2="944" y2="406" stroke="#484f58" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 4"/>
+<rect x="748" y="416" width="18" height="18" rx="4.32" fill="#2563eb" stroke="none" stroke-width="1.25"/>
+<text x="757.0" y="427.88" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="7.56" font-weight="700" fill="#ffffff" text-anchor="middle">MP</text>
+<text x="772" y="429" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.6" font-weight="600" fill="#9cc4ff" text-anchor="start">Inbox: handled once</text>
+<path d="M 725 362.0 L 733 362.0" fill="none" stroke="#6e7681" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 726.7 365.0 L 733 362.0 L 726.7 359.0" fill="none" stroke="#6e7681" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 966 172.0 L 976 172.0 L 976 267.0 L 20 267.0 L 20 362.0 L 30 362.0" fill="none" stroke="#6e7681" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 23.7 365.0 L 30 362.0 L 23.7 359.0" fill="none" stroke="#6e7681" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="32" y="474" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#f0506e" text-anchor="start" letter-spacing="0.8">WHEN A STEP FAILS, THE STEPS BEFORE IT ARE TAKEN BACK</text>
+<rect x="32.0" y="484" width="178.8" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
+<text x="42.0" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">The bank refuses</text>
+<text x="42.0" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">cancelled; nothing else was</text>
+<text x="42.0" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">done</text>
+<rect x="174.8" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
+<text x="185.84" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S4</text>
+<rect x="218.8" y="484" width="178.8" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
+<text x="228.8" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">The restaurant refuses</text>
+<text x="228.8" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">Payments gives the money</text>
+<text x="228.8" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">back</text>
+<rect x="361.6" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
+<text x="372.64000000000004" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S2</text>
+<rect x="405.6" y="484" width="178.8" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
+<text x="415.6" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">No courier is free</text>
+<text x="415.6" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">the Kitchen stops, the money</text>
+<text x="415.6" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">goes back</text>
+<rect x="548.4000000000001" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
+<text x="559.44" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S3</text>
+<rect x="592.4000000000001" y="484" width="178.8" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
+<text x="602.4000000000001" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">PayLane gone for good</text>
+<text x="602.4000000000001" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">cancelled; the request waits</text>
+<text x="602.4000000000001" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">in the dead-letter queue</text>
+<rect x="735.2" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
+<text x="746.24" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S9</text>
+<rect x="779.2" y="484" width="178.8" height="76" rx="9" fill="#2d1018" stroke="#da3650" stroke-width="1"/>
+<text x="789.2" y="504" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="11.2" font-weight="700" fill="#ffa3b3" text-anchor="start">The customer cancels</text>
+<text x="789.2" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">until the Kitchen cooks:</text>
+<text x="789.2" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10.2" font-weight="400" fill="#9198a1" text-anchor="start">stop, money back</text>
+<rect x="922.0" y="536" width="22.080000000000002" height="20" rx="10.0" fill="#0d1f3c" stroke="#2f6fdb" stroke-width="1"/>
+<text x="933.04" y="547.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="9" font-weight="600" fill="#9cc4ff" text-anchor="middle">S7</text>
+</svg>
