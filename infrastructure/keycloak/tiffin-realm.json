@@ -200,7 +200,16 @@
       "serviceAccountsEnabled": true,
       "secret": "lab-only-access-secret",
       "protocol": "openid-connect",
-      "protocolMappers": []
+      "protocolMappers": [],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email",
+        "service_account"
+      ]
     },
     {
       "clientId": "tiffin-ordering-service",
@@ -235,6 +244,15 @@
             "introspection.token.claim": "true"
           }
         }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email",
+        "service_account"
       ]
     },
     {
@@ -259,6 +277,15 @@
             "introspection.token.claim": "true"
           }
         }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email",
+        "service_account"
       ]
     },
     {
@@ -283,6 +310,15 @@
             "introspection.token.claim": "true"
           }
         }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email",
+        "service_account"
       ]
     },
     {
@@ -307,6 +343,15 @@
             "introspection.token.claim": "true"
           }
         }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email",
+        "service_account"
       ]
     }
   ],

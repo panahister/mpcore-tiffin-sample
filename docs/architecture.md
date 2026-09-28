@@ -94,9 +94,13 @@ token and sees a caller of kind "service", with the role `service` and no city. 
 
 - the endpoint that prices an order is for services only, and refuses a customer's token whatever its role;
 - Payments has no route at the edge at all;
-- **the city travels in the request**, because a service's token names none. Payments believes it because
-  it believes the caller. Whether MP Core should carry the tenant of a call between services, as it carries
-  the tenant of a message, is an open decision: [findings](findings.md), T-05.
+- **the city travels in the header `x-tenant-id`**, because a service's token names none. Ordering writes
+  it (`AddMPCoreTenantPropagation`), and Payments and Restaurants believe it only from the client they list
+  in `Security:TrustedServiceClients`, `tiffin-ordering-service`; never from a customer, never over a city
+  in the token. The audit trail of Payments names the city of every payment Ordering opens. MP Core's
+  ADR-014, addendum of 2026-09-28; [findings](findings.md), T-05.
+- a service is a service only if its token says so: Keycloak writes `client_id` for a client with the
+  `service_account` scope, which the realm gives to every service client ([findings](findings.md), T-14).
 
 ## The order process
 
