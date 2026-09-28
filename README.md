@@ -208,7 +208,6 @@ code was broken on purpose and the check was seen to fail: [docs/findings.md](do
 | Kubernetes | | fits by standard, not run |
 | Ceph, Amazon S3 as the store of Media | | fit by standard, not run. RustFS and SeaweedFS were run |
 | Traces across the nine services | | the exporters are configured and off; not looked at |
-| Skills for AI agents at the root | a task given at the root finds the service it belongs to, as in Storefront | not written; each service carries MP Core's ten |
 
 ## Licence
 
