@@ -734,4 +734,13 @@ fi
 # ------------------------------------------------------------------------------------ summary
 section "Summary"
 printf '   %s%d passed%s, %s%d failed%s, %d skipped\n' "$G" "$passed" "$N" "$([ $failed -gt 0 ] && echo "$R")" "$failed" "$N" "$skipped"
+cat <<INFO
+   Look behind the scenes (with scripts/up.sh --observability):
+     traces     http://localhost:$(env_value JAEGER_UI_PORT 36686)  (one trace crosses six services: HTTP → Ordering → RabbitMQ → Payments, the Kitchen, Dispatch, Tracking and Notifications)
+     events     http://localhost:$(env_value KAFKA_UI_PORT 38080)  (Kafka topics tiffin.*)
+     queues     http://localhost:$(env_value RABBITMQ_UI_PORT 35673)  (RabbitMQ queues tiffin.*)
+     edge       $EDGE_URL  (Apache APISIX)
+     metrics    http://localhost:$(env_value GRAFANA_PORT 33000)
+     payments   $PAYLANE_URL/__admin/requests
+INFO
 [ "$failed" -eq 0 ]
