@@ -52,6 +52,7 @@ that `scripts/setup.sh` wrote are all it needs. The REST services describe thems
 | What you see | Why | What to do |
 |---|---|---|
 | Every request is answered 401 after Keycloak was recreated | its keys are new, and a service asks for the keys again at most once in five minutes | restart the services |
+| The first request to a service, right after `scripts/run.sh all` on a fresh `scripts/down.sh --volumes`, is answered 401 | its first check of a token raced Keycloak's own keys becoming current (`SecurityTokenSignatureKeyNotFoundException`); MP Core's `RefreshOnIssuerKeyNotFound` forces a fresh fetch on that failure | nothing: the very next call to the same service succeeds (T-15) |
 | Media cannot upload after `MEDIA_STORE` was changed | Media remembers that its bucket exists; the other store has none yet | restart Media |
 | A service starts and its tables are missing | it was started without being built after a migration was added | `scripts/run.sh` builds before it starts; `dotnet run --no-build` does not |
 | `scripts/run.sh all` says a service is not ready | its log says why | `tmp/logs/<service>.log` |
