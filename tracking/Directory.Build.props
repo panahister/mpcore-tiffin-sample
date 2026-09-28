@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <MPCoreVersion>0.9.2</MPCoreVersion>
+    <MPCoreVersion>0.9.3</MPCoreVersion>
   </PropertyGroup>
   <!--
     Grpc.Tools ships only an x64 protoc for macOS, which cannot run on Apple Silicon without Rosetta: every

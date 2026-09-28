@@ -241,10 +241,10 @@ def why(d):
     d.rect(x0, y, total, 88, d.t["canvas"], d.t["frame"], r=10, sw=1)
     d.text(x0 + 16, y + 26, "The code, counted", size=13, weight=700)
     d.text(x0 + 16, y + 44, "lines of C#, without comments and braces", size=10.5, fill=d.t["muted"])
-    scale = (total - 260) / 5016
+    scale = (total - 260) / 5021
     bx = x0 + 240
-    for k, (color, label, n) in enumerate([("green", "Tiffin's business: Domain and Application, nine services", 3322),
-                                           ("blue", "MP Core 0.9.2: 28 packages, with 478 tests of their own", 5016)]):
+    for k, (color, label, n) in enumerate([("green", "Tiffin's business: Domain and Application, nine services", 3353),
+                                           ("blue", "MP Core 0.9.3: 28 packages, with 485 tests of their own", 5021)]):
         by = y + 18 + k * 32
         d.rect(bx, by, n * scale, 24, d.fill(color), d.stroke(color), r=6, sw=1)
         d.text(bx + 10, by + 16.5, f"{n:,}  ·  {label}", size=11, weight=600, fill=d.ink(color))

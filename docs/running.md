@@ -67,5 +67,6 @@ that `scripts/setup.sh` wrote are all it needs. The REST services describe thems
 | There is none | the packages are restored from nuget.org |
 | `-p:MPCoreSource=NuGet` or `-p:MPCoreSource=Local` | says which, for one build |
 
-Tiffin needs `0.9.2`, which is on nuget.org. With older packages it builds up to the calls that are new:
-`AddMPCoreServiceIdentity` and the tenant of a message in `0.9.1`, the tenant of a call in `0.9.2`.
+Tiffin needs `0.9.3`, which is on nuget.org. With older packages it builds up to the calls that are new:
+`AddMPCoreServiceIdentity` and the tenant of a message in `0.9.1`, the tenant of a call in `0.9.2`, a
+delay set by the publisher in `0.9.3`.
