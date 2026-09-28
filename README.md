@@ -7,6 +7,11 @@
 Nine services built with [MP Core](https://github.com/panahister/mpcore), each with a database of its own,<br>
 two cities that never see each other, and fifteen scenarios that prove what is claimed here.
 
+[![ci](https://github.com/panahister/mpcore-tiffin-sample/actions/workflows/ci.yml/badge.svg)](https://github.com/panahister/mpcore-tiffin-sample/actions/workflows/ci.yml)
+[![MP Core](https://img.shields.io/nuget/v/MPCore.Domain?label=MP%20Core&color=512bd4)](https://github.com/panahister/mpcore)
+[![licence](https://img.shields.io/badge/licence-Apache--2.0-blue)](LICENSE)
+[![.NET](https://img.shields.io/badge/.NET-10-512bd4)](global.json)
+
 [Run it](#run-it) ·
 [The journey of one order](#the-journey-of-one-order) ·
 [Architecture](docs/architecture.md) ·
@@ -138,6 +143,20 @@ On 2026-09-28, on a Mac with Apple Silicon, against MP Core's source:
 | Scenario S11, the one that uses the store, with SeaweedFS | 33 checks passed |
 | Build | Release, warnings as errors: no warning |
 
+The same day, against MP Core `0.9.1` from nuget.org with an empty package cache: the 213 tests passed.
+
+And on GitHub, on Linux, on every change ([the workflow](.github/workflows/ci.yml)), first on 2026-09-28
+(run [36390966923](https://github.com/panahister/mpcore-tiffin-sample/actions/runs/36390966923)):
+
+| What | Result |
+|---|---|
+| Build, unit and contract tests | Release, warnings as errors: 213 passed |
+| The fifteen scenarios with RustFS, the edge not verifying tokens | 266 checks passed, none failed, none skipped |
+| The fifteen scenarios with SeaweedFS, the edge verifying tokens with Keycloak | 266 checks passed, none failed, none skipped |
+
+The first run on GitHub failed twelve checks of S14, with both stores. The defect was in the workflow,
+not in a service: [docs/findings.md](docs/findings.md), T-13.
+
 A check that passes the first time proves little. For the tests and scenarios that guard a guarantee, the
 code was broken on purpose and the check was seen to fail: [docs/findings.md](docs/findings.md) lists each.
 
@@ -145,7 +164,6 @@ code was broken on purpose and the check was seen to fail: [docs/findings.md](do
 
 | Not here | Why it matters | State |
 |---|---|---|
-| **CI on GitHub** | the numbers above are from one machine | the workflow is written, and has not run |
 | Two instances of one service | what shows that the inbox, the cache and the queues are shared | not run |
 | Two versions of one event side by side | how a contract changes without stopping its readers | not written |
 | A step that waits too long | an order waits for ever for a restaurant that never answers | not written: MP Core's publisher cannot delay a message ([findings](docs/findings.md), T-08) |
