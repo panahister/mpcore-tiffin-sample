@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="access.admin_required" xml:space="preserve">
+    <value>سجل الدخول بصفتك مسؤول مدينة أو مسؤول المنصة.</value>
+  </data>
+  <data name="access.city_required" xml:space="preserve">
+    <value>حدد المدينة المقصودة.</value>
+  </data>
+  <data name="access.person_not_found" xml:space="preserve">
+    <value>لا يوجد هذا الشخص في هذه المدينة.</value>
+  </data>
+  <data name="access.grant_not_found" xml:space="preserve">
+    <value>لا يوجد هذا القرار في هذه المدينة.</value>
+  </data>
+  <data name="access.directory_unavailable" xml:space="preserve">
+    <value>يتعذر الوصول إلى مزود الهوية حالياً. حاول مرة أخرى بعد قليل.</value>
+  </data>
+  <data name="access.role_unknown" xml:space="preserve">
+    <value>الدور {role} ليس من أدوار المنصة.</value>
+  </data>
+  <data name="access.role_not_yours_to_give" xml:space="preserve">
+    <value>ليس لديك صلاحية منح الدور {role} أو سحبه.</value>
+  </data>
+  <data name="access.own_roles" xml:space="preserve">
+    <value>لا يمكن لأي شخص تغيير أدواره الخاصة.</value>
+  </data>
+</root>

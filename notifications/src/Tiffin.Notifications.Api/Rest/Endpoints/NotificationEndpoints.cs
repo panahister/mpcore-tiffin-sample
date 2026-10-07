@@ -26,7 +26,7 @@ namespace Tiffin.Notifications.Api.Rest.Endpoints;
 public static class NotificationEndpoints
 {
     /// <summary>The languages the service has texts in. The first is what somebody is told who asks for none of them.</summary>
-    private static readonly string[] Languages = ["en", "zh-Hans", "tr"];
+    private static readonly string[] Languages = ["en", "zh-Hans", "tr", "ar"];
 
     public static RouteGroupBuilder MapNotificationEndpoints(this IEndpointRouteBuilder endpoints)
     {
@@ -42,6 +42,7 @@ public static class NotificationEndpoints
                     .ToHttpResult(found => Results.Ok(new Page<NotificationView>(
                         [.. found.Items.Select(n => Told(n, catalog, culture))], found.Number, found.Size, found.Total)));
             })
+            .Produces<Page<NotificationView>>(200)
             .WithName("ListMyNotifications");
 
         notifications.MapPost("/{notificationId:guid}/read", static async (
@@ -51,6 +52,7 @@ public static class NotificationEndpoints
                 return (await bus.InvokeAsync<Result<NotificationView>>(new MarkRead(notificationId), ct).ConfigureAwait(false))
                     .ToHttpResult(n => Results.Ok(Told(n, catalog, culture)));
             })
+            .Produces<NotificationView>(200)
             .WithName("MarkNotificationRead");
 
         return notifications;
@@ -60,9 +62,11 @@ public static class NotificationEndpoints
         notification with { Text = catalog.Render(notification.MessageKey, notification.Arguments, culture) };
 
     /// <summary>The first language the caller asks for that the service has texts in, by the caller's own order of preference.</summary>
-    private static CultureInfo LanguageOf(HttpContext http)
+    internal static CultureInfo LanguageOf(HttpContext http)
     {
         var asked = http.Request.GetTypedHeaders().AcceptLanguage
+            // RFC 9110 section 12.4.2: a zero quality value means not acceptable.
+            .Where(static l => (l.Quality ?? 1) > 0)
             .OrderByDescending(static l => l.Quality ?? 1)
             .Select(static l => l.Value.Value)
             .OfType<string>();

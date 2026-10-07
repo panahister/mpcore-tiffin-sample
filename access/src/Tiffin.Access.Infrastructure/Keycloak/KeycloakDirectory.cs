@@ -4,6 +4,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using MPCore.Application.Querying;
 using Tiffin.Access.Application.Ports;
+using Tiffin.Access.Domain;
 
 namespace Tiffin.Access.Infrastructure.Keycloak;
 
@@ -15,6 +16,12 @@ public sealed class KeycloakOptions
 
     /// <summary>The group whose children are the cities.</summary>
     public string CitiesGroup { get; init; } = "cities";
+
+    /// <summary>How often a complete authoritative snapshot repairs a missed lifecycle event.</summary>
+    public TimeSpan ReconciliationInterval { get; init; } = TimeSpan.FromMinutes(5);
+
+    /// <summary>How soon a transient identity-provider failure is tried again.</summary>
+    public TimeSpan ReconciliationRetryDelay { get; init; } = TimeSpan.FromSeconds(3);
 }
 
 /// <summary>
@@ -59,7 +66,10 @@ public sealed class KeycloakDirectory(IHttpClientFactory clients, KeycloakOption
         }
 
         var groups = await GetAsync<List<GroupRepresentation>>($"users/{id}/groups", cancellationToken).ConfigureAwait(false) ?? [];
-        var roles = await GetAsync<List<RoleRepresentation>>($"users/{id}/role-mappings/realm", cancellationToken).ConfigureAwait(false) ?? [];
+        // Effective roles expand Keycloak's default composite. Reading only direct mappings would hide
+        // the customer role assigned to every public registration behind default-roles-tiffin.
+        var roles = await GetAsync<List<RoleRepresentation>>($"users/{id}/role-mappings/realm/composite", cancellationToken)
+            .ConfigureAwait(false) ?? [];
         return ToPerson(user, CityOf(groups), roles);
     }
 
@@ -84,11 +94,44 @@ public sealed class KeycloakDirectory(IHttpClientFactory clients, KeycloakOption
         var people = new List<Person>(members.Count);
         foreach (var member in members)
         {
-            var roles = await GetAsync<List<RoleRepresentation>>($"users/{member.Id}/role-mappings/realm", cancellationToken).ConfigureAwait(false) ?? [];
+            var roles = await GetAsync<List<RoleRepresentation>>($"users/{member.Id}/role-mappings/realm/composite", cancellationToken)
+                .ConfigureAwait(false) ?? [];
             people.Add(ToPerson(member, city, roles));
         }
 
         return new Page<Person>(people, page.Number, page.Size, everybody.Count);
+    }
+
+    public async Task<IReadOnlyList<Person>> SnapshotAsync(CancellationToken cancellationToken)
+    {
+        const int size = 100;
+        var users = new Dictionary<string, UserRepresentation>(StringComparer.Ordinal);
+        for (var first = 0; first < 100_000; first += size)
+        {
+            var page = await GetAsync<List<UserRepresentation>>(
+                $"users?first={first}&max={size}&briefRepresentation=true", cancellationToken).ConfigureAwait(false) ?? [];
+            foreach (var user in page.Where(static user => !string.IsNullOrWhiteSpace(user.Id)))
+            {
+                users[user.Id!] = user;
+            }
+
+            if (page.Count < size)
+            {
+                break;
+            }
+        }
+
+        var people = new List<Person>(users.Count);
+        foreach (var user in users.Values.OrderBy(static user => user.Username, StringComparer.Ordinal))
+        {
+            var person = await FindAsync(user.Id!, cancellationToken).ConfigureAwait(false);
+            if (!string.IsNullOrWhiteSpace(person?.City))
+            {
+                people.Add(person);
+            }
+        }
+
+        return people;
     }
 
     public Task GrantAsync(string personId, string role, CancellationToken cancellationToken) =>
@@ -172,7 +215,12 @@ public sealed class KeycloakDirectory(IHttpClientFactory clients, KeycloakOption
     private static Person ToPerson(UserRepresentation user, string? city, List<RoleRepresentation> roles) => new(
         user.Id!, user.Username ?? string.Empty,
         $"{user.FirstName} {user.LastName}".Trim() is { Length: > 0 } name ? name : user.Username ?? string.Empty,
-        city, [.. roles.Select(static r => r.Name).OfType<string>()], user.Enabled ?? false);
+        city,
+        [.. roles.Select(static r => r.Name).OfType<string>()
+            .Where(static role => Roles.Known.Contains(role) || role == Roles.PlatformAdmin)
+            .Distinct(StringComparer.Ordinal)
+            .Order(StringComparer.Ordinal)],
+        user.Enabled ?? false);
 
     // What Keycloak calls things. Private: no type of the identity provider leaves this file.
     private sealed record UserRepresentation(string? Id, string? Username, string? FirstName, string? LastName, bool? Enabled);

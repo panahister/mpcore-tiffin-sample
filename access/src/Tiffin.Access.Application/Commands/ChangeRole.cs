@@ -92,13 +92,15 @@ public static class ChangeRoleHandler
 public static class ApplyGrantHandler
 {
     public static async Task Handle(
-        ApplyGrant message, IGrantRepository grants, ITenantContext tenant, IIdentityDirectory directory, IUnitOfWork unitOfWork, IClock clock,
+        ApplyGrant message, IGrantRepository grants, ITenantContext tenant, IIdentityDirectory directory, IIdentityProjection projection,
+        IUnitOfWork unitOfWork, IClock clock,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(message);
         ArgumentNullException.ThrowIfNull(grants);
         ArgumentNullException.ThrowIfNull(tenant);
         ArgumentNullException.ThrowIfNull(directory);
+        ArgumentNullException.ThrowIfNull(projection);
 
         var city = tenant.TenantId
             ?? throw new InvalidOperationException($"The message for grant {message.GrantId} names no city; every message of the platform carries its tenant.");
@@ -119,13 +121,17 @@ public static class ApplyGrantHandler
             {
                 await directory.RevokeAsync(grant.PersonId, grant.Role, cancellationToken).ConfigureAwait(false);
             }
+
+            var person = await directory.FindAsync(grant.PersonId, cancellationToken).ConfigureAwait(false)
+                ?? throw new DirectoryUnavailableException("The identity provider did not return the changed person.");
+            var appliedOnUtc = clock.UtcNow;
+            await projection.UpsertAsync(person, $"access-grant:{grant.Id:N}", appliedOnUtc, cancellationToken).ConfigureAwait(false);
+            grant.MarkApplied(appliedOnUtc);
         }
         catch (DirectoryUnavailableException)
         {
             throw new ResultFailureException(AccessFailures.DirectoryUnavailable());
         }
-
-        grant.MarkApplied(clock.UtcNow);
     }
 }
 

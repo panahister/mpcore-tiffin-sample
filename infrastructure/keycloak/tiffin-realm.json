@@ -1,6 +1,6 @@
 {
   "realm": "tiffin",
-  "displayName": "Tiffin (development)",
+  "displayName": "Tiffin",
   "enabled": true,
   "sslRequired": "none",
   "registrationAllowed": false,
@@ -38,18 +38,18 @@
       "name": "cities",
       "subGroups": [
         {
-          "name": "tehran",
+          "name": "seattle",
           "attributes": {
             "tenant_id": [
-              "tehran"
+              "seattle"
             ]
           }
         },
         {
-          "name": "istanbul",
+          "name": "austin",
           "attributes": {
             "tenant_id": [
-              "istanbul"
+              "austin"
             ]
           }
         },
@@ -70,7 +70,13 @@
       "name": "The Tiffin app (development)",
       "enabled": true,
       "publicClient": true,
-      "standardFlowEnabled": false,
+      "standardFlowEnabled": true,
+      "redirectUris": [
+        "http://localhost:4411/api/session/callback",
+        "http://localhost:4412/api/session/callback"
+      ],
+      "webOrigins": ["http://localhost:4411", "http://localhost:4412"],
+      "attributes": {"pkce.code.challenge.method": "S256"},
       "directAccessGrantsEnabled": true,
       "serviceAccountsEnabled": false,
       "protocol": "openid-connect",
@@ -357,16 +363,16 @@
   ],
   "users": [
     {
-      "username": "sara",
+      "username": "olivia",
       "enabled": true,
       "emailVerified": true,
-      "firstName": "Sara",
-      "lastName": "Ahmadi",
-      "email": "sara@tiffin.example",
+      "firstName": "Olivia",
+      "lastName": "Carter",
+      "email": "olivia@tiffin.example",
       "credentials": [
         {
           "type": "password",
-          "value": "sara-lab",
+          "value": "olivia-lab",
           "temporary": false
         }
       ],
@@ -375,20 +381,20 @@
         "customer"
       ],
       "groups": [
-        "/cities/tehran"
+        "/cities/seattle"
       ]
     },
     {
-      "username": "reza",
+      "username": "ethan",
       "enabled": true,
       "emailVerified": true,
-      "firstName": "Reza",
-      "lastName": "Karimi",
-      "email": "reza@tiffin.example",
+      "firstName": "Ethan",
+      "lastName": "Brooks",
+      "email": "ethan@tiffin.example",
       "credentials": [
         {
           "type": "password",
-          "value": "reza-lab",
+          "value": "ethan-lab",
           "temporary": false
         }
       ],
@@ -397,20 +403,20 @@
         "customer"
       ],
       "groups": [
-        "/cities/tehran"
+        "/cities/seattle"
       ]
     },
     {
-      "username": "mina",
+      "username": "madison",
       "enabled": true,
       "emailVerified": true,
-      "firstName": "Mina",
-      "lastName": "Rahimi",
-      "email": "mina@tiffin.example",
+      "firstName": "Madison",
+      "lastName": "Reed",
+      "email": "madison@tiffin.example",
       "credentials": [
         {
           "type": "password",
-          "value": "mina-lab",
+          "value": "madison-lab",
           "temporary": false
         }
       ],
@@ -419,20 +425,20 @@
         "restaurant-manager"
       ],
       "groups": [
-        "/cities/tehran"
+        "/cities/seattle"
       ]
     },
     {
-      "username": "omid",
+      "username": "noah",
       "enabled": true,
       "emailVerified": true,
-      "firstName": "Omid",
-      "lastName": "Sadeghi",
-      "email": "omid@tiffin.example",
+      "firstName": "Noah",
+      "lastName": "Williams",
+      "email": "noah@tiffin.example",
       "credentials": [
         {
           "type": "password",
-          "value": "omid-lab",
+          "value": "noah-lab",
           "temporary": false
         }
       ],
@@ -441,20 +447,20 @@
         "courier"
       ],
       "groups": [
-        "/cities/tehran"
+        "/cities/seattle"
       ]
     },
     {
-      "username": "ali",
+      "username": "ava",
       "enabled": true,
       "emailVerified": true,
-      "firstName": "Ali",
-      "lastName": "Moradi",
-      "email": "ali@tiffin.example",
+      "firstName": "Ava",
+      "lastName": "Thompson",
+      "email": "ava@tiffin.example",
       "credentials": [
         {
           "type": "password",
-          "value": "ali-lab",
+          "value": "ava-lab",
           "temporary": false
         }
       ],
@@ -463,20 +469,20 @@
         "city-admin"
       ],
       "groups": [
-        "/cities/tehran"
+        "/cities/seattle"
       ]
     },
     {
-      "username": "elif",
+      "username": "emma",
       "enabled": true,
       "emailVerified": true,
-      "firstName": "Elif",
-      "lastName": "Yilmaz",
-      "email": "elif@tiffin.example",
+      "firstName": "Emma",
+      "lastName": "Davis",
+      "email": "emma@tiffin.example",
       "credentials": [
         {
           "type": "password",
-          "value": "elif-lab",
+          "value": "emma-lab",
           "temporary": false
         }
       ],
@@ -485,20 +491,20 @@
         "customer"
       ],
       "groups": [
-        "/cities/istanbul"
+        "/cities/austin"
       ]
     },
     {
-      "username": "kemal",
+      "username": "mason",
       "enabled": true,
       "emailVerified": true,
-      "firstName": "Kemal",
-      "lastName": "Demir",
-      "email": "kemal@tiffin.example",
+      "firstName": "Mason",
+      "lastName": "Miller",
+      "email": "mason@tiffin.example",
       "credentials": [
         {
           "type": "password",
-          "value": "kemal-lab",
+          "value": "mason-lab",
           "temporary": false
         }
       ],
@@ -507,20 +513,20 @@
         "restaurant-manager"
       ],
       "groups": [
-        "/cities/istanbul"
+        "/cities/austin"
       ]
     },
     {
-      "username": "deniz",
+      "username": "logan",
       "enabled": true,
       "emailVerified": true,
-      "firstName": "Deniz",
-      "lastName": "Kaya",
-      "email": "deniz@tiffin.example",
+      "firstName": "Logan",
+      "lastName": "Martin",
+      "email": "logan@tiffin.example",
       "credentials": [
         {
           "type": "password",
-          "value": "deniz-lab",
+          "value": "logan-lab",
           "temporary": false
         }
       ],
@@ -529,20 +535,20 @@
         "city-admin"
       ],
       "groups": [
-        "/cities/istanbul"
+        "/cities/austin"
       ]
     },
     {
-      "username": "nora",
+      "username": "grace",
       "enabled": true,
       "emailVerified": true,
-      "firstName": "Nora",
-      "lastName": "Hashemi",
-      "email": "nora@tiffin.example",
+      "firstName": "Grace",
+      "lastName": "Hall",
+      "email": "grace@tiffin.example",
       "credentials": [
         {
           "type": "password",
-          "value": "nora-lab",
+          "value": "grace-lab",
           "temporary": false
         }
       ],

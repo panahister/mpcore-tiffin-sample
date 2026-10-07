@@ -2,6 +2,7 @@
 # Shared settings for the scripts. Sourced, never run.
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 INFRA_DIR="$REPO_ROOT/infrastructure"
+APISIX_PRODUCT_DIR="${TIFFIN_APISIX_PRODUCT_DIR:-$REPO_ROOT/../tiffin-apisix/product/tiffin-local}"
 ENV_FILE="$INFRA_DIR/.env"
 ENV_EXAMPLE="$INFRA_DIR/.env.example"
 
@@ -65,6 +66,11 @@ GATEWAY_DIR="$INFRA_DIR/apisix/generated"
 GATEWAY_CA="$GATEWAY_DIR/localhost.crt"
 ensure_gateway_config() {
   mkdir -p "$GATEWAY_DIR"
+  [ -f "$APISIX_PRODUCT_DIR/apisix.template.yaml" ] || {
+    echo "Tiffin APISIX source was not found at $APISIX_PRODUCT_DIR" >&2
+    echo "Clone https://github.com/panahister/tiffin-apisix next to this repository, or set TIFFIN_APISIX_PRODUCT_DIR." >&2
+    return 2
+  }
   if [ ! -s "$GATEWAY_CA" ] || [ ! -s "$GATEWAY_DIR/localhost.key" ]; then
     openssl req -x509 -newkey rsa:2048 -nodes -days 825 -subj "/CN=localhost" \
       -addext "subjectAltName=DNS:localhost,IP:127.0.0.1" \
@@ -72,13 +78,12 @@ ensure_gateway_config() {
     echo "made a certificate for the edge: infrastructure/apisix/generated/localhost.crt"
   fi
   local auth; auth="$(env_value EDGE_AUTH off)"
-  [ -f "$INFRA_DIR/apisix/edge-auth.$auth.yaml" ] || { echo "EDGE_AUTH=$auth: there is no infrastructure/apisix/edge-auth.$auth.yaml (off, keycloak)" >&2; return 2; }
-  awk -v cert="$GATEWAY_CA" -v key="$GATEWAY_DIR/localhost.key" -v auth="$INFRA_DIR/apisix/edge-auth.$auth.yaml" '
+  [ -f "$APISIX_PRODUCT_DIR/edge-auth.$auth.yaml" ] || { echo "EDGE_AUTH=$auth: there is no product/tiffin-local/edge-auth.$auth.yaml (off, keycloak)" >&2; return 2; }
+  awk -v cert="$GATEWAY_CA" -v key="$GATEWAY_DIR/localhost.key" -v auth="$APISIX_PRODUCT_DIR/edge-auth.$auth.yaml" '
     function paste(file, margin,   line) { while ((getline line < file) > 0) if (line !~ /^#/) print margin line; close(file) }
     /^__CERTIFICATE__$/ { paste(cert, "      "); next }
     /^__KEY__$/         { paste(key, "      "); next }
     /^__EDGE_AUTH__$/   { paste(auth, "      "); next }
-    { print }' "$INFRA_DIR/apisix/apisix.template.yaml" > "$GATEWAY_DIR/apisix.yaml"
+    { print }' "$APISIX_PRODUCT_DIR/apisix.template.yaml" > "$GATEWAY_DIR/apisix.yaml"
   echo "the edge: EDGE_AUTH=$auth"
 }
-

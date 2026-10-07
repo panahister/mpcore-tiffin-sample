@@ -10,7 +10,7 @@ using Tiffin.Restaurants.Application.Views;
 namespace Tiffin.Restaurants.Application.Commands;
 
 /// <summary>The manager adds an item to the menu, or changes its name, its price or whether it is sold out.</summary>
-public sealed record SetMenuItem(Guid RestaurantId, string Code, string Name, decimal Price, bool IsAvailable) : ICommand<Result<MenuView>>;
+public sealed record SetMenuItem(Guid RestaurantId, string Code, string Name, decimal Price, bool IsAvailable, Guid? PictureId = null) : ICommand<Result<MenuView>>;
 
 /// <summary>Opens or closes the restaurant.</summary>
 public sealed record SetOpen(Guid RestaurantId, bool Open) : ICommand<Result<MenuView>>;
@@ -37,7 +37,7 @@ public static class ManageRestaurantHandler
         ArgumentNullException.ThrowIfNull(command);
         return ChangeAsync(
             command.RestaurantId, actor, tenant, restaurants, cache,
-            restaurant => restaurant.SetMenuItem(command.Code.Trim(), command.Name, command.Price, command.IsAvailable),
+            restaurant => restaurant.SetMenuItem(command.Code.Trim(), command.Name, command.Price, command.IsAvailable, command.PictureId),
             cancellationToken);
     }
 

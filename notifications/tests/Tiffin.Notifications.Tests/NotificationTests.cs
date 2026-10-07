@@ -74,6 +74,8 @@ public sealed class NotificationTests
     [InlineData("tr", "Dizi Sara restoranındaki TFN-260928-ABC123 numaralı siparişiniz alındı: 900000 IRR.")]
     [InlineData("zh-CN", "您在 Dizi Sara 的订单 TFN-260928-ABC123 已收到：900000 IRR。")]
     [InlineData("de", "Your order TFN-260928-ABC123 at Dizi Sara was received: 900000 IRR.")]
+    [InlineData("ar", "تم استلام طلبك TFN-260928-ABC123 من Dizi Sara: 900000 IRR.")]
+    [InlineData("ar-SA", "تم استلام طلبك TFN-260928-ABC123 من Dizi Sara: 900000 IRR.")]
     public async Task The_sentence_is_made_when_it_is_read_in_the_language_of_who_reads(string language, string sentence)
     {
         await Placed();
@@ -117,9 +119,9 @@ public sealed class NotificationTests
 
         foreach (var key in keys)
         {
-            var texts = new[] { "en", "zh-Hans", "tr" }.Select(l => catalog.Render(key, values, CultureInfo.GetCultureInfo(l))).ToList();
+            var texts = new[] { "en", "zh-Hans", "tr", "ar" }.Select(l => catalog.Render(key, values, CultureInfo.GetCultureInfo(l))).ToList();
             Assert.All(texts, text => Assert.DoesNotContain("{", text, StringComparison.Ordinal));
-            Assert.Equal(3, texts.Distinct().Count());
+            Assert.Equal(4, texts.Distinct().Count());
         }
     }
 

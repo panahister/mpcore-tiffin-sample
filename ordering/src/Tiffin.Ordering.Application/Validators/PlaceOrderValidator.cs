@@ -21,8 +21,9 @@ public sealed class PlaceOrderValidator : AbstractValidator<PlaceOrder>
         When(static x => x.DeliverTo is not null, () =>
         {
             RuleFor(x => x.DeliverTo.Recipient).NotEmpty().MaximumLength(100);
-            // E.164: a plus sign and up to fifteen digits.
-            RuleFor(x => x.DeliverTo.Phone).NotEmpty().Matches(@"^\+[1-9]\d{7,14}$");
+            // The sample accepts country-neutral test values; real products can add their own
+            // normalization and regional phone policy at the product boundary.
+            RuleFor(x => x.DeliverTo.Phone).NotEmpty().MaximumLength(30);
             RuleFor(x => x.DeliverTo.District).NotEmpty().MaximumLength(60);
             RuleFor(x => x.DeliverTo.Line).NotEmpty().MaximumLength(300);
         });

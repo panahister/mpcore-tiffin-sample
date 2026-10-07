@@ -5,23 +5,29 @@ decides, and every rule with its code. A rule that is added or changed is added 
 
 ## The people
 
-Signed in at Keycloak, realm `tiffin`. A password is the name and `-lab`: `sara-lab`.
+Signed in at Keycloak, realm `tiffin`. A password is the name and `-lab`: `olivia-lab`.
 
-| Who | City | Role | What they do |
-|---|---|---|---|
-| sara, reza | Tehran | `customer` | order, follow, cancel |
-| mina | Tehran | `restaurant-manager` | keeps a restaurant, accepts or refuses its orders |
-| omid | Tehran | `courier` | goes on duty, carries, says where he is |
-| ali | Tehran | `city-admin` | gives and takes the roles of the city |
-| elif | Istanbul | `customer` | |
-| kemal | Istanbul | `restaurant-manager` | |
-| deniz | Istanbul | `city-admin` | |
-| nora | the platform | `platform-admin` | makes admins of cities |
+| Who | City | Role | Surface | What they do |
+|---|---|---|---|---|
+| olivia, ethan | Seattle | `customer` | Customer app | order, follow, cancel |
+| madison | Seattle | `restaurant-manager` | Operations app | keeps Seattle restaurants and accepts or refuses their orders |
+| noah | Seattle | `courier` | Operations app | goes on duty, carries, reports position and completes delivery |
+| ava | Seattle | `city-admin` | Access API (no Operations UI) | gives and takes the roles of the city |
+| emma | Austin | `customer` | Customer app | orders, follows and cancels |
+| mason | Austin | `restaurant-manager` | Operations app | keeps Austin restaurants and accepts or refuses their orders |
+| logan | Austin | `city-admin` | Access API (no Operations UI) | gives and takes the roles of the city |
+| grace | the platform | `platform-admin` | Access API (no Operations UI) | makes admins of cities |
 
-**The city is the tenant.** Somebody belongs to the city whose group they are in (`/cities/tehran`), the
+The Operations UI intentionally exposes restaurant and courier work only. Role/resource creation and
+assignment stay in Keycloak and the Access service and this sample intentionally ships no UI for them,
+so city and platform administrators must not be presented as Operations UI accounts.
+`scripts/verify-demo-users.py` performs a non-mutating login, claim
+and protected-read check for every human demo identity without printing a credential or token.
+
+**The city is the tenant.** Somebody belongs to the city whose group they are in (`/cities/seattle`), the
 identity provider writes it into the token as `tenant_id`, and from there it is in every message, every
 row and every record of the audit trail. What belongs to one city does not exist for another: an order,
-a restaurant, a file or a person of Tehran is answered to somebody of Istanbul with "not found", never
+a restaurant, a file or a person of Seattle is answered to somebody of Austin with "not found", never
 with "forbidden", because "forbidden" says that it exists.
 
 ## The life of an order

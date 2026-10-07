@@ -232,4 +232,27 @@ public sealed class SettingsTests
         Assert.DoesNotContain("a-secret-nobody-may-see", store.ToString(), StringComparison.Ordinal);
         Assert.DoesNotContain("an-access-key", store.ToString(), StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void Browser_upload_CORS_is_exact_and_PUT_only()
+    {
+        var configuration = Tiffin.Media.Infrastructure.Store.S3ObjectStore.BuildBrowserUploadCors(
+            ["http://localhost:4412/", "https://operations.example"]);
+
+        var rule = Assert.Single(configuration.Rules);
+        Assert.Equal(["http://localhost:4412", "https://operations.example"], rule.AllowedOrigins);
+        Assert.Equal(["PUT"], rule.AllowedMethods);
+        Assert.Equal(["content-type"], rule.AllowedHeaders);
+        Assert.Equal(600, rule.MaxAgeSeconds);
+    }
+
+    [Theory]
+    [InlineData("*")]
+    [InlineData("ftp://operations.example")]
+    [InlineData("https://user:password@operations.example")]
+    [InlineData("https://operations.example/upload")]
+    [InlineData("https://operations.example?tenant=tehran")]
+    public void Browser_upload_CORS_refuses_values_that_are_not_origins(string value) =>
+        Assert.Throws<ArgumentException>(() =>
+            Tiffin.Media.Infrastructure.Store.S3ObjectStore.BuildBrowserUploadCors([value]));
 }

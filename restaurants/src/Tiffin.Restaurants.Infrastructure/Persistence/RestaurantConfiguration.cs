@@ -34,6 +34,7 @@ public sealed class RestaurantConfiguration : IEntityTypeConfiguration<Restauran
             menu.Ignore(i => i.Code);
             menu.Property(i => i.Name).HasMaxLength(120).IsRequired();
             menu.Property(i => i.Price).HasPrecision(18, 2);
+            menu.Property(i => i.PictureId);
         });
         builder.Navigation(r => r.Menu).AutoInclude();
 

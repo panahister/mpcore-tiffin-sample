@@ -121,6 +121,7 @@ builder.Services.AddMPCoreHttpFailureHandling(options =>
 {
     options.SupportedCultures.Add("zh-Hans");
     options.SupportedCultures.Add("tr");
+    options.SupportedCultures.Add("ar");
 });
 builder.Services.AddMPCoreProblemDetailsSecurityResponses();
 if (enableOpenApi)

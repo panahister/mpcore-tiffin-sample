@@ -12,7 +12,7 @@ using Tiffin.Access.Tests.Support;
 namespace Tiffin.Access.Tests;
 
 /// <summary>The identity provider: a few people, their cities and roles; and whether it answers.</summary>
-public sealed class FakeDirectory : IIdentityDirectory
+public sealed class FakeDirectory : IIdentityDirectory, IIdentityProjection
 {
     public const string Sara = "11111111-1111-1111-1111-111111111111";
     public const string Ali = "22222222-2222-2222-2222-222222222222";
@@ -44,6 +44,14 @@ public sealed class FakeDirectory : IIdentityDirectory
         return Task.FromResult(new Page<Person>(found, page.Number, page.Size, found.Count));
     }
 
+    public Task<IReadOnlyList<Person>> SnapshotAsync(CancellationToken cancellationToken)
+    {
+        Answer();
+        IReadOnlyList<Person> found = [.. people.Select(static p =>
+            new Person(p.Key, p.Key, p.Value.Name, p.Value.City, [.. p.Value.Roles], true))];
+        return Task.FromResult(found);
+    }
+
     public Task GrantAsync(string personId, string role, CancellationToken cancellationToken)
     {
         Answer();
@@ -62,6 +70,30 @@ public sealed class FakeDirectory : IIdentityDirectory
         Changes.Add($"-{role}");
         people[personId].Roles.Remove(role);
         return Task.CompletedTask;
+    }
+
+    public Task UpsertAsync(Person person, string eventId, DateTimeOffset occurredAt, CancellationToken cancellationToken)
+    {
+        people[person.PersonId] = (person.Name, person.City ?? string.Empty, [.. person.Roles]);
+        return Task.CompletedTask;
+    }
+
+    public Task DisableAsync(string personId, string eventId, DateTimeOffset occurredAt, CancellationToken cancellationToken)
+    {
+        people.Remove(personId);
+        return Task.CompletedTask;
+    }
+
+    Task<Person?> IIdentityProjection.FindAsync(string personId, CancellationToken cancellationToken) =>
+        Task.FromResult(people.TryGetValue(personId, out var p)
+            ? new Person(personId, personId, p.Name, p.City, [.. p.Roles], true)
+            : null);
+
+    Task<Page<Person>> IIdentityProjection.PeopleOfAsync(string city, PageRequest page, CancellationToken cancellationToken)
+    {
+        var found = people.Where(p => p.Value.City == city)
+            .Select(static p => new Person(p.Key, p.Key, p.Value.Name, p.Value.City, [.. p.Value.Roles], true)).ToList();
+        return Task.FromResult(new Page<Person>(found, page.Number, page.Size, found.Count));
     }
 
     private void Answer()
@@ -101,7 +133,7 @@ public sealed class AccessTests
             clock, default);
 
     private Task Apply(Grant grant, FakeTenant? tenant = null) => ApplyGrantHandler.Handle(
-        new ApplyGrant(grant.Id), grants, tenant ?? FakeTenant.Tehran(), directory, new FakeUnitOfWork(), clock, default);
+        new ApplyGrant(grant.Id), grants, tenant ?? FakeTenant.Tehran(), directory, directory, new FakeUnitOfWork(), clock, default);
 
     [Fact]
     public async Task A_decision_is_recorded_with_the_step_that_applies_it_and_the_identity_provider_is_not_told_yet()
@@ -215,14 +247,15 @@ public sealed class AccessTests
     }
 
     [Fact]
-    public async Task An_identity_provider_that_does_not_answer_a_question_is_told_as_something_to_try_again()
+    public async Task A_Keycloak_outage_does_not_take_down_the_local_projection_but_blocks_identity_mutation()
     {
         directory.IsDown = true;
 
         var people = await AccessQueriesHandler.Handle(new ListPeople(null), ali, FakeTenant.Tehran(), directory, default);
         var decision = await Change(FakeDirectory.Sara, "courier");
 
-        Assert.Equal(ErrorCategory.DependencyUnavailable, people.FailureDescriptor!.Category);
+        Assert.True(people.IsSuccess);
+        Assert.NotEmpty(people.Value.Items);
         Assert.Equal("DIRECTORY_UNAVAILABLE", decision.FailureDescriptor!.Identity.Code);
         Assert.Empty(grants.All);
     }

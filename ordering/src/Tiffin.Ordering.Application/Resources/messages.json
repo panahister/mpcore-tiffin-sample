@@ -1,21 +1,21 @@
 {
   "class": "OrderingMessages",
-  "languages": ["en", "zh-Hans", "tr"],
+  "languages": ["en","zh-Hans","tr","ar"],
   "messages": {
-    "ordering.order_not_found": ["There is no such order.", "没有这笔订单。", "Böyle bir sipariş yok."],
-    "ordering.customer_required": ["Sign in as a customer of a city to order.", "请以城市顾客身份登录后下单。", "Sipariş vermek için bir şehrin müşterisi olarak oturum açın."],
-    "ordering.restaurant_not_found": ["There is no such restaurant in your city.", "您所在的城市没有这家餐厅。", "Şehrinizde böyle bir restoran yok."],
-    "ordering.total_changed": ["The order now costs {total} {currency}. Look at it again and confirm.", "该订单现在的价格是 {total} {currency}。请重新查看并确认。", "Sipariş artık {total} {currency} tutuyor. Tekrar bakın ve onaylayın."],
-    "ordering.refused_by_restaurant": ["The restaurant cannot take this order: {detail}", "餐厅无法接这笔订单：{detail}", "Restoran bu siparişi alamıyor: {detail}"],
-    "ordering.restaurants_unavailable": ["The menus cannot be reached at the moment. Try again shortly.", "暂时无法获取菜单，请稍后再试。", "Menülere şu anda ulaşılamıyor. Kısa süre sonra tekrar deneyin."],
-    "ordering.payments_unavailable": ["Payments cannot be reached at the moment. Nothing was charged. Try again shortly.", "暂时无法连接支付服务。未扣任何款项，请稍后再试。", "Ödemelere şu anda ulaşılamıyor. Hiçbir ücret alınmadı. Kısa süre sonra tekrar deneyin."],
-    "ordering.payment_token_refused": ["The card's token was refused. Enter the card again.", "银行卡令牌被拒绝。请重新输入银行卡。", "Kartın belirteci reddedildi. Kartı tekrar girin."],
-    "ordering.order_empty": ["An order has at least one item.", "一笔订单至少要有一件商品。", "Bir siparişte en az bir ürün bulunur."],
-    "ordering.not_awaiting_payment": ["Order {order_number} does not wait for its payment ({status}).", "订单 {order_number} 不在等待付款（{status}）。", "{order_number} numaralı sipariş ödeme beklemiyor ({status})."],
-    "ordering.not_awaiting_restaurant": ["Order {order_number} does not wait for the restaurant ({status}).", "订单 {order_number} 不在等待餐厅（{status}）。", "{order_number} numaralı sipariş restoranı beklemiyor ({status})."],
-    "ordering.not_awaiting_courier": ["Order {order_number} does not wait for a courier ({status}).", "订单 {order_number} 不在等待骑手（{status}）。", "{order_number} numaralı sipariş kurye beklemiyor ({status})."],
-    "ordering.not_on_its_way": ["Order {order_number} is not on its way ({status}).", "订单 {order_number} 不在配送途中（{status}）。", "{order_number} numaralı sipariş yolda değil ({status})."],
-    "ordering.cannot_be_cancelled": ["Order {order_number} can no longer be cancelled ({status}).", "订单 {order_number} 已无法取消（{status}）。", "{order_number} numaralı sipariş artık iptal edilemez ({status})."],
-    "ordering.already_cooking": ["The restaurant already cooks order {order_number}; it can no longer be cancelled ({status}).", "餐厅已经在制作订单 {order_number}，无法再取消（{status}）。", "Restoran {order_number} numaralı siparişi hazırlıyor; artık iptal edilemez ({status})."]
+    "ordering.order_not_found": ["There is no such order.","没有这笔订单。","Böyle bir sipariş yok.","لا يوجد طلب بهذا المعرّف."],
+    "ordering.customer_required": ["Sign in as a customer of a city to order.","请以城市顾客身份登录后下单。","Sipariş vermek için bir şehrin müşterisi olarak oturum açın.","سجّل الدخول كعميل في إحدى المدن لتقديم طلب."],
+    "ordering.restaurant_not_found": ["There is no such restaurant in your city.","您所在的城市没有这家餐厅。","Şehrinizde böyle bir restoran yok.","لا يوجد هذا المطعم في مدينتك."],
+    "ordering.total_changed": ["The order now costs {total} {currency}. Look at it again and confirm.","该订单现在的价格是 {total} {currency}。请重新查看并确认。","Sipariş artık {total} {currency} tutuyor. Tekrar bakın ve onaylayın.","أصبحت تكلفة الطلب {total} {currency}. راجعه مرة أخرى وأكّد."],
+    "ordering.refused_by_restaurant": ["The restaurant cannot take this order: {detail}","餐厅无法接这笔订单：{detail}","Restoran bu siparişi alamıyor: {detail}","لا يستطيع المطعم قبول هذا الطلب: {detail}"],
+    "ordering.restaurants_unavailable": ["The menus cannot be reached at the moment. Try again shortly.","暂时无法获取菜单，请稍后再试。","Menülere şu anda ulaşılamıyor. Kısa süre sonra tekrar deneyin.","لا يمكن الوصول إلى قوائم الطعام حاليًا. حاول مجددًا بعد قليل."],
+    "ordering.payments_unavailable": ["Payments cannot be reached at the moment. Nothing was charged. Try again shortly.","暂时无法连接支付服务。未扣任何款项，请稍后再试。","Ödemelere şu anda ulaşılamıyor. Hiçbir ücret alınmadı. Kısa süre sonra tekrar deneyin.","لا يمكن الوصول إلى خدمة الدفع حاليًا. لم يتم خصم أي مبلغ. حاول مجددًا بعد قليل."],
+    "ordering.payment_token_refused": ["The card's token was refused. Enter the card again.","银行卡令牌被拒绝。请重新输入银行卡。","Kartın belirteci reddedildi. Kartı tekrar girin.","تم رفض رمز البطاقة. أدخل البطاقة مرة أخرى."],
+    "ordering.order_empty": ["An order has at least one item.","一笔订单至少要有一件商品。","Bir siparişte en az bir ürün bulunur.","يجب أن يحتوي الطلب على صنف واحد على الأقل."],
+    "ordering.not_awaiting_payment": ["Order {order_number} does not wait for its payment ({status}).","订单 {order_number} 不在等待付款（{status}）。","{order_number} numaralı sipariş ödeme beklemiyor ({status}).","الطلب {order_number} ليس في انتظار الدفع ({status})."],
+    "ordering.not_awaiting_restaurant": ["Order {order_number} does not wait for the restaurant ({status}).","订单 {order_number} 不在等待餐厅（{status}）。","{order_number} numaralı sipariş restoranı beklemiyor ({status}).","الطلب {order_number} ليس في انتظار المطعم ({status})."],
+    "ordering.not_awaiting_courier": ["Order {order_number} does not wait for a courier ({status}).","订单 {order_number} 不在等待骑手（{status}）。","{order_number} numaralı sipariş kurye beklemiyor ({status}).","الطلب {order_number} ليس في انتظار مندوب توصيل ({status})."],
+    "ordering.not_on_its_way": ["Order {order_number} is not on its way ({status}).","订单 {order_number} 不在配送途中（{status}）。","{order_number} numaralı sipariş yolda değil ({status}).","الطلب {order_number} ليس في طريقه إليك ({status})."],
+    "ordering.cannot_be_cancelled": ["Order {order_number} can no longer be cancelled ({status}).","订单 {order_number} 已无法取消（{status}）。","{order_number} numaralı sipariş artık iptal edilemez ({status}).","لم يعد بالإمكان إلغاء الطلب {order_number} ({status})."],
+    "ordering.already_cooking": ["The restaurant already cooks order {order_number}; it can no longer be cancelled ({status}).","餐厅已经在制作订单 {order_number}，无法再取消（{status}）。","Restoran {order_number} numaralı siparişi hazırlıyor; artık iptal edilemez ({status}).","بدأ المطعم إعداد الطلب {order_number}؛ لم يعد بالإمكان إلغاؤه ({status})."]
   }
 }

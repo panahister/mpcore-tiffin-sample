@@ -120,6 +120,7 @@ builder.Services.AddGrpc().AddMPCoreFailureHandling(options =>
 {
     options.SupportedCultures.Add("zh-Hans");
     options.SupportedCultures.Add("tr");
+    options.SupportedCultures.Add("ar");
 });
 // The empty service name is the whole host; "live" asks the process only.
 builder.Services.AddGrpcHealthChecks(options =>

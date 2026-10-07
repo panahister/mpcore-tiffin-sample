@@ -36,20 +36,24 @@ public static class OrderEndpoints
                 (await idempotent.ExecuteAsync(request, token => bus.InvokeAsync<Result<OrderAccepted>>(request, token), ct)
                     .ConfigureAwait(false)).ToHttpResult(accepted => Results.Accepted($"/v1/orders/{accepted.OrderId}", accepted)))
             .RequireIdempotencyKey()
+            .Produces<OrderAccepted>(202)
             .WithName("PlaceOrder");
 
         orders.MapGet("/", static async (int? page, int? size, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<Page<OrderSummary>>>(new ListMyOrders(page ?? 1, size ?? PageRequest.DefaultSize), ct)
                     .ConfigureAwait(false)).ToHttpResult(Results.Ok))
+            .Produces<Page<OrderSummary>>(200)
             .WithName("ListMyOrders");
 
         orders.MapGet("/{orderId:guid}", static async (Guid orderId, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<OrderView>>(new GetOrder(orderId), ct).ConfigureAwait(false)).ToHttpResult(Results.Ok))
+            .Produces<OrderView>(200)
             .WithName("GetOrder");
 
         orders.MapPost("/{orderId:guid}/cancel", static async (Guid orderId, CancelRequest? request, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<OrderView>>(new CancelOrder(orderId, request?.Note), ct).ConfigureAwait(false))
                 .ToHttpResult(Results.Ok))
+            .Produces<OrderView>(200)
             .WithName("CancelOrder");
 
         return orders;

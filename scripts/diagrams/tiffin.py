@@ -22,7 +22,7 @@ SERVICES = [
     ("green", "Restaurants", "Restaurants, menus, prices", "REST :6300", ["postgresql", "redis", "apachekafka"]),
     ("blue", "Ordering", "Orders, and the saga", "REST :6400 · gRPC :6401", ["postgresql", "rabbitmq", "apachekafka"]),
     ("teal", "Payments", "Money; called by services only", "gRPC :6501 · not at the edge", ["postgresql", "rabbitmq"]),
-    ("amber", "Kitchen", "The restaurant's word", "REST :6600", ["postgresql", "rabbitmq", "apachekafka"]),
+    ("cyan", "Kitchen", "The restaurant's word", "REST :6600", ["postgresql", "rabbitmq", "apachekafka"]),
     ("rose", "Dispatch", "Couriers, who carries what", "gRPC :6701", ["postgresql", "rabbitmq", "apachekafka"]),
     ("rose", "Tracking", "Where a courier is", "REST :6800", ["timescale", "apachekafka"]),
     ("slate", "Notifications", "What a customer is told", "REST :6900", ["postgresql", "apachekafka"]),
@@ -58,7 +58,7 @@ def system(d):
         d.chip(x + 12, y + h - 29, "MP Core", "blue", size=9.5, pad=7)
 
     by = gy + 3 * h + 2 * gx + 50
-    d.group(L, by, LW, 92, "amber", "MESSAGES  ·  EACH SIDE STATES ITS OWN COPY OF A CONTRACT")
+    d.group(L, by, LW, 92, "cyan", "MESSAGES  ·  EACH SIDE STATES ITS OWN COPY OF A CONTRACT")
     d.tool(L + 16, by + 20, 316, 58, "rabbitmq", "RabbitMQ", ["5 requests and 7 answers: the order's saga,", "one queue per contract, one reader each"], "run", size=24)
     d.tool(L + 344, by + 20, 316, 58, "apachekafka", "Apache Kafka", ["10 topics: what happened, for whoever", "reads it, from the beginning if it is new"], "run", size=24)
 
@@ -86,7 +86,7 @@ def journey(d):
     steps = [
         ("blue", "Ordering", "The order is placed", ["The price is asked of Restaurants,", "the card handed to Payments"], "Idempotency-Key; calls as itself"),
         ("teal", "Payments", "The card is charged", ["PayLane may be slow, or down;", "the token is erased once used"], "Retry under one key"),
-        ("amber", "Kitchen", "The restaurant decides", ["mina accepts, and promises", "a time; or refuses"], "A queue: the request waits"),
+        ("cyan", "Kitchen", "The restaurant decides", ["mina accepts, and promises", "a time; or refuses"], "A queue: the request waits"),
         ("rose", "Dispatch", "A courier is chosen", ["The one who waited longest.", "Six orders may want him"], "One save wins; five go back"),
         ("rose", "Tracking", "The courier is followed", ["Positions in a hypertable,", "compressed after seven days"], "TimescaleDB, by policy"),
         ("rose", "Dispatch", "The order is delivered", ["The courier says so, and the", "stream tells whoever reads"], "Outbox: sent if committed"),
@@ -140,7 +140,7 @@ def city(d):
     stops = [
         ("purple", "The token", ["Keycloak writes the", "group's city into", "tenant_id"], "never a user's header", ""),
         ("blue", "The request", ["ITenantContext answers", "it for the handler and", "for the audit trail"], "one port for all code", ""),
-        ("amber", "A message", ["x-tenant-id, written by", "the publisher, opened", "for the handler"], "the save included", "0.9.1"),
+        ("cyan", "A message", ["x-tenant-id, written by", "the publisher, opened", "for the handler"], "the save included", "0.9.1"),
         ("teal", "A call", ["x-tenant-id on a service's", "call; believed only from", "a listed service"], "listed services only", "0.9.2"),
         ("green", "A row", ["Every table has a City;", "every repository asks", "for it"], "the sample's own rule", ""),
         ("slate", "The audit trail", ["Every record names", "its city and its", "actor"], "in the change's commit", ""),
@@ -172,7 +172,7 @@ def failure(d):
     cases = [
         ("rose", "While one waits", "Restaurants is stopped",
          ["The customer is told 503,", "`RESTAURANTS_UNAVAILABLE`", "No order is stored, and", "no card is handed over"], "A call times out, the failure is a value", "S14"),
-        ("amber", "By a message", "The Kitchen is stopped",
+        ("cyan", "By a message", "The Kitchen is stopped",
          ["The order is paid all the", "same. The request waits", "in its queue, six seconds", "and more, until it is back"], "Durable queue; sent only if committed", "S14"),
         ("teal", "From the stream", "Notifications stops",
          ["Nobody waits for it. Back,", "it reads what it missed:", "the customer is told the", "order was delivered"], "Kafka from its offset; inbox", "S14"),

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="payments.provider_unavailable" xml:space="preserve">
+    <value>لا يمكن الوصول إلى مزوّد خدمة الدفع حاليًا.</value>
+  </data>
+  <data name="payments.amount_not_positive" xml:space="preserve">
+    <value>يجب أن يكون المبلغ أكبر من صفر؛ المبلغ {amount} ليس كذلك.</value>
+  </data>
+  <data name="payments.amount_invalid" xml:space="preserve">
+    <value>المبلغ ليس رقمًا.</value>
+  </data>
+  <data name="payments.order_id_invalid" xml:space="preserve">
+    <value>معرّف الطلب ليس UUID صالحًا.</value>
+  </data>
+  <data name="payments.not_pending" xml:space="preserve">
+    <value>عملية الدفع ليست في انتظار الخصم ({status}).</value>
+  </data>
+  <data name="payments.not_charged" xml:space="preserve">
+    <value>لم يتم خصم أي مبلغ يمكن إرجاعه ({status}).</value>
+  </data>
+</root>

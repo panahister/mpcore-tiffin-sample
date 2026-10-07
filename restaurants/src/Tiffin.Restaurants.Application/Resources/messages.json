@@ -1,15 +1,15 @@
 {
   "class": "RestaurantsMessages",
-  "languages": ["en", "zh-Hans", "tr"],
+  "languages": ["en","zh-Hans","tr","ar"],
   "messages": {
-    "restaurants.not_found": ["There is no such restaurant.", "没有这家餐厅。", "Böyle bir restoran yok."],
-    "restaurants.not_the_manager": ["Only the manager of a restaurant changes it.", "只有餐厅经理才能更改餐厅。", "Bir restoranı yalnızca yöneticisi değiştirir."],
-    "restaurants.city_required": ["Name a city, or sign in.", "请指明城市，或登录。", "Bir şehir belirtin veya oturum açın."],
-    "restaurants.name_taken": ["This city already has a restaurant named {restaurant}.", "这个城市已经有一家名为 {restaurant} 的餐厅。", "Bu şehirde {restaurant} adında bir restoran zaten var."],
-    "restaurants.price_not_positive": ["The price of {code} must be more than nothing; {price} is not.", "{code} 的价格必须大于零；{price} 不是。", "{code} fiyatı sıfırdan büyük olmalıdır; {price} değil."],
-    "restaurants.menu_empty": ["{restaurant} has nothing to sell yet, so it cannot open.", "{restaurant} 还没有可售的东西，因此无法营业。", "{restaurant} henüz satacak bir şeye sahip değil, bu yüzden açılamaz."],
-    "restaurants.closed": ["{restaurant} is closed.", "{restaurant} 已打烊。", "{restaurant} kapalı."],
-    "restaurants.item_not_on_sale": ["{restaurant} does not sell {code} at the moment.", "{restaurant} 目前不出售 {code}。", "{restaurant} şu anda {code} satmıyor."],
-    "restaurants.currency_unknown": ["The platform does not settle in {currency}.", "平台不以 {currency} 结算。", "Platform {currency} ile ödeme yapmıyor."]
+    "restaurants.not_found": ["There is no such restaurant.","没有这家餐厅。","Böyle bir restoran yok.","المطعم غير موجود."],
+    "restaurants.not_the_manager": ["Only the manager of a restaurant changes it.","只有餐厅经理才能更改餐厅。","Bir restoranı yalnızca yöneticisi değiştirir.","يمكن تعديل المطعم فقط بواسطة مديره."],
+    "restaurants.city_required": ["Name a city, or sign in.","请指明城市，或登录。","Bir şehir belirtin veya oturum açın.","حدد مدينة أو سجل الدخول."],
+    "restaurants.name_taken": ["This city already has a restaurant named {restaurant}.","这个城市已经有一家名为 {restaurant} 的餐厅。","Bu şehirde {restaurant} adında bir restoran zaten var.","يوجد مطعم باسم {restaurant} في هذه المدينة بالفعل."],
+    "restaurants.price_not_positive": ["The price of {code} must be more than nothing; {price} is not.","{code} 的价格必须大于零；{price} 不是。","{code} fiyatı sıfırdan büyük olmalıdır; {price} değil.","يجب أن يكون سعر {code} أكبر من صفر؛ السعر {price} غير صالح."],
+    "restaurants.menu_empty": ["{restaurant} has nothing to sell yet, so it cannot open.","{restaurant} 还没有可售的东西，因此无法营业。","{restaurant} henüz satacak bir şeye sahip değil, bu yüzden açılamaz.","لا يملك {restaurant} أي أصناف للبيع بعد، لذلك لا يمكن فتحه."],
+    "restaurants.closed": ["{restaurant} is closed.","{restaurant} 已打烊。","{restaurant} kapalı.","المطعم {restaurant} مغلق."],
+    "restaurants.item_not_on_sale": ["{restaurant} does not sell {code} at the moment.","{restaurant} 目前不出售 {code}。","{restaurant} şu anda {code} satmıyor.","لا يبيع {restaurant} الصنف {code} حالياً."],
+    "restaurants.currency_unknown": ["The platform does not settle in {currency}.","平台不以 {currency} 结算。","Platform {currency} ile ödeme yapmıyor.","لا تتم تسوية المدفوعات على المنصة بعملة {currency}."]
   }
 }

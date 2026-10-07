@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Tiffin.Access.Application;
 using Tiffin.Access.Application.Resources;
 using Tiffin.Access.Domain.Events;
+using Tiffin.Access.Application.Integration;
+using Tiffin.Access.Application.Ports;
 using Tiffin.Access.Infrastructure.Keycloak;
 using Wolverine;
 using Wolverine.ErrorHandling;
@@ -125,6 +127,7 @@ builder.Services.AddMPCoreHttpFailureHandling(options =>
 {
     options.SupportedCultures.Add("zh-Hans");
     options.SupportedCultures.Add("tr");
+    options.SupportedCultures.Add("ar");
 });
 builder.Services.AddMPCoreProblemDetailsSecurityResponses();
 if (enableOpenApi)
@@ -171,6 +174,18 @@ builder.Host.UseMPCoreWolverine<AppDbContext>(
         // A message whose validators fail never reaches its handler; the caller receives MP Core's
         // validation failure with one violation per field.
         options.UseMPCoreFluentValidation();
+        // Keycloak is the identity source of truth. Its durable CloudEvent triggers an idempotent local
+        // projection keyed by the immutable Keycloak subject. The projection is business reference data,
+        // never a second credential or signup store.
+        options.UseMPCoreInbox();
+        options.ListenToKafkaTopic(AccessTopics.IdentityUserEvents)
+            .DefaultIncomingMessage<IdentityUserEventV1>()
+            .UseDurableInbox()
+            .ConfigureConsumer(consumer =>
+            {
+                consumer.GroupId = AccessTopics.IdentityConsumerGroup;
+                consumer.AutoOffsetReset = Confluent.Kafka.AutoOffsetReset.Earliest;
+            });
         // What happened to somebody's roles leaves through Kafka, keyed by the person, so that "given" is
         // read before "taken". The step that tells the identity provider needs no route: it goes to the
         // handler that exists for it, on Wolverine's durable local queues.
@@ -188,6 +203,14 @@ builder.Host.UseMPCoreWolverine<AppDbContext>(
             .RetryWithCooldown(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(6))
             .Then.MoveToErrorQueue()
             .And(GivenUpMessages.MarkTheDecisionFailedAsync, GivenUpMessages.Description);
+        options.OnException<DirectoryUnavailableException>()
+            .RetryWithCooldown(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(10))
+            .WithFullJitter()
+            .Then.MoveToErrorQueue();
+        options.OnException<DbUpdateException>()
+            .RetryWithCooldown(TimeSpan.FromMilliseconds(50), TimeSpan.FromMilliseconds(200), TimeSpan.FromMilliseconds(800))
+            .WithFullJitter()
+            .Then.MoveToErrorQueue();
 
         options.UseMPCoreKafka(new KafkaTransportOptions
         {
