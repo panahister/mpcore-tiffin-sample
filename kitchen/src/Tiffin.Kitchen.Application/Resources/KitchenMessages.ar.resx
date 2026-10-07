@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="kitchen.ticket_not_found" xml:space="preserve">
+    <value>لا يوجد هذا الطلب لمطعمك.</value>
+  </data>
+  <data name="kitchen.manager_required" xml:space="preserve">
+    <value>سجّل الدخول كمدير مطعم.</value>
+  </data>
+  <data name="kitchen.status_unknown" xml:space="preserve">
+    <value>الحالة المطلوبة ليست من حالات تذكرة الطلب.</value>
+  </data>
+  <data name="kitchen.ticket_not_pending" xml:space="preserve">
+    <value>تم اتخاذ قرار بشأن الطلب {order_number} بالفعل ({status}).</value>
+  </data>
+  <data name="kitchen.promise_out_of_range" xml:space="preserve">
+    <value>يجب أن تكون المدة التي يعد بها المطعم بين 5 و180 دقيقة؛ المدة {minutes} ليست ضمن هذا النطاق.</value>
+  </data>
+  <data name="kitchen.ticket_empty" xml:space="preserve">
+    <value>لا توجد أصناف لإعدادها.</value>
+  </data>
+</root>

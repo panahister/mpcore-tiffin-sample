@@ -30,18 +30,22 @@ public static class MediaEndpoints
         media.MapPost("/uploads", static async (ReserveUpload request, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<UploadTicket>>(request, ct).ConfigureAwait(false))
                 .ToHttpResult(ticket => Results.Created($"/v1/media/{ticket.MediaId}", ticket)))
+            .Produces<UploadTicket>(201)
             .WithName("ReserveUpload");
 
         media.MapPost("/{mediaId:guid}/confirm", static async (Guid mediaId, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<MediaView>>(new ConfirmUpload(mediaId), ct).ConfigureAwait(false)).ToHttpResult(Results.Ok))
+            .Produces<MediaView>(200)
             .WithName("ConfirmUpload");
 
         media.MapGet("/{mediaId:guid}", static async (Guid mediaId, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<MediaView>>(new GetMedia(mediaId), ct).ConfigureAwait(false)).ToHttpResult(Results.Ok))
+            .Produces<MediaView>(200)
             .WithName("GetMedia");
 
         media.MapDelete("/{mediaId:guid}", static async (Guid mediaId, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<MediaView>>(new DeleteMedia(mediaId), ct).ConfigureAwait(false)).ToHttpResult(Results.Ok))
+            .Produces<MediaView>(200)
             .WithName("DeleteMedia");
 
         return media;

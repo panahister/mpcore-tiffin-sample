@@ -26,6 +26,9 @@ public sealed class S3Options
     /// <summary>Whether the bucket is made when it is not there. A developer's machine says yes; elsewhere it is made on purpose.</summary>
     public bool CreateBucket { get; init; }
 
+    /// <summary>Exact browser origins that may use a signed upload address. Empty means infrastructure owns CORS.</summary>
+    public IReadOnlyCollection<string> BrowserOrigins { get; init; } = [];
+
     /// <summary>What a log may show of these settings: never a key.</summary>
     public override string ToString() => $"{nameof(S3Options)} {{ Endpoint = {Endpoint}, Bucket = {Bucket} }}";
 }
@@ -56,7 +59,7 @@ public sealed class S3ObjectStore : IObjectStore, IDisposable
     private readonly S3Options options;
     private readonly ILogger<S3ObjectStore> logger;
     private readonly SemaphoreSlim once = new(1, 1);
-    private bool bucketIsThere;
+    private bool uploadBucketIsReady;
 
     public S3ObjectStore(S3Options options, ILogger<S3ObjectStore> logger)
     {
@@ -150,7 +153,7 @@ public sealed class S3ObjectStore : IObjectStore, IDisposable
 
     private async Task EnsureBucketAsync(CancellationToken cancellationToken)
     {
-        if (bucketIsThere || !options.CreateBucket)
+        if (uploadBucketIsReady || (!options.CreateBucket && options.BrowserOrigins.Count == 0))
         {
             return;
         }
@@ -158,22 +161,35 @@ public sealed class S3ObjectStore : IObjectStore, IDisposable
         await once.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
-            if (bucketIsThere)
+            if (uploadBucketIsReady)
             {
                 return;
             }
 
-            try
+            if (options.CreateBucket)
             {
-                await client.PutBucketAsync(new PutBucketRequest { BucketName = options.Bucket }, cancellationToken).ConfigureAwait(false);
-                logger.LogInformation("Made the bucket {Bucket}", options.Bucket);
-            }
-            catch (AmazonS3Exception exception) when (exception.ErrorCode is "BucketAlreadyOwnedByYou" or "BucketAlreadyExists")
-            {
-                // Another instance made it a moment ago, or it was there all along.
+                try
+                {
+                    await client.PutBucketAsync(new PutBucketRequest { BucketName = options.Bucket }, cancellationToken).ConfigureAwait(false);
+                    logger.LogInformation("Made the bucket {Bucket}", options.Bucket);
+                }
+                catch (AmazonS3Exception exception) when (exception.ErrorCode is "BucketAlreadyOwnedByYou" or "BucketAlreadyExists")
+                {
+                    // Another instance made it a moment ago, or it was there all along.
+                }
             }
 
-            bucketIsThere = true;
+            if (options.BrowserOrigins.Count > 0)
+            {
+                await client.PutCORSConfigurationAsync(new PutCORSConfigurationRequest
+                {
+                    BucketName = options.Bucket,
+                    Configuration = BuildBrowserUploadCors(options.BrowserOrigins)
+                }, cancellationToken).ConfigureAwait(false);
+                logger.LogInformation("Configured browser upload CORS for {OriginCount} exact origin(s)", options.BrowserOrigins.Count);
+            }
+
+            uploadBucketIsReady = true;
         }
         catch (Exception exception) when (IsTheStoresFault(exception))
         {
@@ -183,6 +199,44 @@ public sealed class S3ObjectStore : IObjectStore, IDisposable
         {
             once.Release();
         }
+    }
+
+    internal static CORSConfiguration BuildBrowserUploadCors(IEnumerable<string> configuredOrigins)
+    {
+        ArgumentNullException.ThrowIfNull(configuredOrigins);
+        var origins = configuredOrigins.Select(NormalizeOrigin).Distinct(StringComparer.Ordinal).ToList();
+        if (origins.Count == 0)
+        {
+            throw new ArgumentException("At least one browser origin is required.", nameof(configuredOrigins));
+        }
+
+        return new CORSConfiguration
+        {
+            Rules =
+            [
+                new CORSRule
+                {
+                    Id = "browser-signed-upload",
+                    AllowedOrigins = origins,
+                    AllowedMethods = ["PUT"],
+                    AllowedHeaders = ["content-type"],
+                    MaxAgeSeconds = 600
+                }
+            ]
+        };
+    }
+
+    private static string NormalizeOrigin(string configured)
+    {
+        if (string.IsNullOrWhiteSpace(configured) || !Uri.TryCreate(configured, UriKind.Absolute, out var origin)
+            || (!origin.Scheme.Equals(Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase)
+                && !origin.Scheme.Equals(Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase)) || !string.IsNullOrEmpty(origin.UserInfo)
+            || origin.AbsolutePath != "/" || !string.IsNullOrEmpty(origin.Query) || !string.IsNullOrEmpty(origin.Fragment))
+        {
+            throw new ArgumentException("A browser upload origin must be an exact HTTP or HTTPS origin.", nameof(configured));
+        }
+
+        return origin.GetLeftPart(UriPartial.Authority);
     }
 
     private static Protocol ProtocolOf(Uri endpoint) => endpoint.Scheme == Uri.UriSchemeHttps ? Protocol.HTTPS : Protocol.HTTP;

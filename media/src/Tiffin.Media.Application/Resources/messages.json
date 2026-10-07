@@ -1,17 +1,17 @@
 {
   "class": "MediaMessages",
-  "languages": ["en", "zh-Hans", "tr"],
+  "languages": ["en","zh-Hans","tr","ar"],
   "messages": {
-    "media.sign_in_required": ["Sign in as somebody of a city.", "请以某个城市的用户身份登录。", "Bir şehrin üyesi olarak oturum açın."],
-    "media.file_not_found": ["There is no such file.", "没有这个文件。", "Böyle bir dosya yok."],
-    "media.not_the_owner": ["Only who sent a file changes it.", "只有上传文件的人才能更改它。", "Bir dosyayı yalnızca göndereni değiştirir."],
-    "media.nothing_arrived": ["Nothing has arrived in the store yet. Send the file, then confirm.", "存储中还没有收到任何内容。请先发送文件，再确认。", "Depoya henüz bir şey ulaşmadı. Dosyayı gönderin, sonra onaylayın."],
-    "media.upload_window_closed": ["The time to send this file has passed. Announce it again.", "发送此文件的时间已过。请重新登记。", "Bu dosyayı gönderme süresi doldu. Dosyayı yeniden bildirin."],
-    "media.store_unavailable": ["The store of files cannot be reached at the moment. Try again shortly.", "暂时无法连接文件存储，请稍后再试。", "Dosya deposuna şu anda ulaşılamıyor. Kısa süre sonra tekrar deneyin."],
-    "media.purpose_unknown": ["The platform has no files for {purpose}.", "平台没有用于 {purpose} 的文件。", "Platform {purpose} için dosya tutmuyor."],
-    "media.type_not_allowed": ["A file for {purpose} is one of {allowed}; {type} is not.", "用于 {purpose} 的文件应为 {allowed} 之一；{type} 不是。", "{purpose} için bir dosya {allowed} türlerinden biridir; {type} değil."],
-    "media.size_not_allowed": ["A file for {purpose} has between 1 and {maximum} bytes; {size} is not.", "用于 {purpose} 的文件应在 1 到 {maximum} 字节之间；{size} 不在此范围内。", "{purpose} için bir dosya 1 ile {maximum} bayt arasındadır; {size} değil."],
-    "media.file_not_pending": ["The file has already been confirmed ({state}).", "该文件已经确认过了（{state}）。", "Dosya zaten onaylandı ({state})."],
-    "media.not_what_was_announced": ["What arrived is not what was announced: {announced} were announced, {arrived} arrived.", "收到的内容与登记的不符：登记了 {announced}，收到了 {arrived}。", "Ulaşan, bildirilenle aynı değil: {announced} bildirildi, {arrived} ulaştı."]
+    "media.sign_in_required": ["Sign in as somebody of a city.","请以某个城市的用户身份登录。","Bir şehrin üyesi olarak oturum açın.","سجل الدخول بصفتك مستخدماً في إحدى المدن."],
+    "media.file_not_found": ["There is no such file.","没有这个文件。","Böyle bir dosya yok.","الملف غير موجود."],
+    "media.not_the_owner": ["Only who sent a file changes it.","只有上传文件的人才能更改它。","Bir dosyayı yalnızca göndereni değiştirir.","يمكن تعديل الملف فقط بواسطة من رفعه."],
+    "media.nothing_arrived": ["Nothing has arrived in the store yet. Send the file, then confirm.","存储中还没有收到任何内容。请先发送文件，再确认。","Depoya henüz bir şey ulaşmadı. Dosyayı gönderin, sonra onaylayın.","لم يصل الملف إلى مخزن الملفات بعد. ارفع الملف ثم أكد وصوله."],
+    "media.upload_window_closed": ["The time to send this file has passed. Announce it again.","发送此文件的时间已过。请重新登记。","Bu dosyayı gönderme süresi doldu. Dosyayı yeniden bildirin.","انتهت مهلة رفع هذا الملف. أعلن عنه مرة أخرى."],
+    "media.store_unavailable": ["The store of files cannot be reached at the moment. Try again shortly.","暂时无法连接文件存储，请稍后再试。","Dosya deposuna şu anda ulaşılamıyor. Kısa süre sonra tekrar deneyin.","يتعذر الوصول إلى مخزن الملفات حالياً. حاول مرة أخرى بعد قليل."],
+    "media.purpose_unknown": ["The platform has no files for {purpose}.","平台没有用于 {purpose} 的文件。","Platform {purpose} için dosya tutmuyor.","لا تدعم المنصة ملفات للغرض {purpose}."],
+    "media.type_not_allowed": ["A file for {purpose} is one of {allowed}; {type} is not.","用于 {purpose} 的文件应为 {allowed} 之一；{type} 不是。","{purpose} için bir dosya {allowed} türlerinden biridir; {type} değil.","يجب أن يكون الملف للغرض {purpose} من الأنواع {allowed}؛ النوع {type} غير مسموح."],
+    "media.size_not_allowed": ["A file for {purpose} has between 1 and {maximum} bytes; {size} is not.","用于 {purpose} 的文件应在 1 到 {maximum} 字节之间；{size} 不在此范围内。","{purpose} için bir dosya 1 ile {maximum} bayt arasındadır; {size} değil.","يجب أن يكون حجم الملف للغرض {purpose} بين 1 و{maximum} بايت؛ الحجم {size} غير مسموح."],
+    "media.file_not_pending": ["The file has already been confirmed ({state}).","该文件已经确认过了（{state}）。","Dosya zaten onaylandı ({state}).","تم تأكيد الملف بالفعل ({state})."],
+    "media.not_what_was_announced": ["What arrived is not what was announced: {announced} were announced, {arrived} arrived.","收到的内容与登记的不符：登记了 {announced}，收到了 {arrived}。","Ulaşan, bildirilenle aynı değil: {announced} bildirildi, {arrived} ulaştı.","الملف الذي وصل لا يطابق المعلن عنه: المعلن {announced}، والواصل {arrived}."]
   }
 }

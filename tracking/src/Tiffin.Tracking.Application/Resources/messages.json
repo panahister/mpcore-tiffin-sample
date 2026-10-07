@@ -1,11 +1,11 @@
 {
   "class": "TrackingMessages",
-  "languages": ["en", "zh-Hans", "tr"],
+  "languages": ["en","zh-Hans","tr","ar"],
   "messages": {
-    "tracking.sign_in_required": ["Sign in as somebody of a city.", "请以某个城市的用户身份登录。", "Bir şehrin üyesi olarak oturum açın."],
-    "tracking.delivery_not_found": ["There is no such delivery for you.", "没有您的这笔配送。", "Sizin için böyle bir teslimat yok."],
-    "tracking.not_your_delivery": ["Order {order_number} is carried by somebody else.", "订单 {order_number} 由其他人配送。", "{order_number} numaralı siparişi başka biri taşıyor."],
-    "tracking.delivery_has_arrived": ["Order {order_number} has arrived; it is not followed any more.", "订单 {order_number} 已送达，不再跟踪。", "{order_number} numaralı sipariş ulaştı; artık takip edilmiyor."],
-    "tracking.position_not_on_earth": ["A position has a latitude between -90 and 90 and a longitude between -180 and 180.", "位置的纬度应在 -90 到 90 之间，经度应在 -180 到 180 之间。", "Bir konumun enlemi -90 ile 90, boylamı -180 ile 180 arasındadır."]
+    "tracking.sign_in_required": ["Sign in as somebody of a city.","请以某个城市的用户身份登录。","Bir şehrin üyesi olarak oturum açın.","سجّل الدخول كمستخدم في إحدى المدن."],
+    "tracking.delivery_not_found": ["There is no such delivery for you.","没有您的这笔配送。","Sizin için böyle bir teslimat yok.","لا توجد عملية التوصيل هذه لك."],
+    "tracking.not_your_delivery": ["Order {order_number} is carried by somebody else.","订单 {order_number} 由其他人配送。","{order_number} numaralı siparişi başka biri taşıyor.","الطلب {order_number} مع مندوب آخر."],
+    "tracking.delivery_has_arrived": ["Order {order_number} has arrived; it is not followed any more.","订单 {order_number} 已送达，不再跟踪。","{order_number} numaralı sipariş ulaştı; artık takip edilmiyor.","وصل الطلب {order_number}؛ لم يعد تتبّعه مستمرًا."],
+    "tracking.position_not_on_earth": ["A position has a latitude between -90 and 90 and a longitude between -180 and 180.","位置的纬度应在 -90 到 90 之间，经度应在 -180 到 180 之间。","Bir konumun enlemi -90 ile 90, boylamı -180 ile 180 arasındadır.","يجب أن يكون خط العرض بين -90 و90 وخط الطول بين -180 و180."]
   }
 }

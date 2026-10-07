@@ -25,11 +25,13 @@ public static class TrackingEndpoints
                 (await bus.InvokeAsync<Result<TrackingView>>(new ReportPosition(orderId, request.Latitude, request.Longitude), ct).ConfigureAwait(false))
                 .ToHttpResult(static _ => Results.NoContent()))
             .RequireAuthorization(TrackingPolicies.Courier)
+            .Produces(204)
             .WithName("ReportPosition");
 
         deliveries.MapGet("/{orderId:guid}", static async (Guid orderId, int? points, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<TrackingView>>(new GetTracking(orderId, points ?? 20), ct).ConfigureAwait(false)).ToHttpResult(Results.Ok))
             .RequireAuthorization(TrackingPolicies.Followers)
+            .Produces<TrackingView>(200)
             .WithName("GetTracking");
 
         return deliveries;

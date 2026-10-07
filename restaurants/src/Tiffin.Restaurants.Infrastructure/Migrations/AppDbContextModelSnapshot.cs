@@ -201,6 +201,9 @@ namespace Tiffin.Restaurants.Infrastructure.Migrations
                                 .HasMaxLength(120)
                                 .HasColumnType("character varying(120)");
 
+                            b1.Property<Guid?>("PictureId")
+                                .HasColumnType("uuid");
+
                             b1.Property<decimal>("Price")
                                 .HasPrecision(18, 2)
                                 .HasColumnType("numeric(18,2)");

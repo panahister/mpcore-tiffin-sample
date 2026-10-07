@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ordering.order_not_found" xml:space="preserve">
+    <value>لا يوجد طلب بهذا المعرّف.</value>
+  </data>
+  <data name="ordering.customer_required" xml:space="preserve">
+    <value>سجّل الدخول كعميل في إحدى المدن لتقديم طلب.</value>
+  </data>
+  <data name="ordering.restaurant_not_found" xml:space="preserve">
+    <value>لا يوجد هذا المطعم في مدينتك.</value>
+  </data>
+  <data name="ordering.total_changed" xml:space="preserve">
+    <value>أصبحت تكلفة الطلب {total} {currency}. راجعه مرة أخرى وأكّد.</value>
+  </data>
+  <data name="ordering.refused_by_restaurant" xml:space="preserve">
+    <value>لا يستطيع المطعم قبول هذا الطلب: {detail}</value>
+  </data>
+  <data name="ordering.restaurants_unavailable" xml:space="preserve">
+    <value>لا يمكن الوصول إلى قوائم الطعام حاليًا. حاول مجددًا بعد قليل.</value>
+  </data>
+  <data name="ordering.payments_unavailable" xml:space="preserve">
+    <value>لا يمكن الوصول إلى خدمة الدفع حاليًا. لم يتم خصم أي مبلغ. حاول مجددًا بعد قليل.</value>
+  </data>
+  <data name="ordering.payment_token_refused" xml:space="preserve">
+    <value>تم رفض رمز البطاقة. أدخل البطاقة مرة أخرى.</value>
+  </data>
+  <data name="ordering.order_empty" xml:space="preserve">
+    <value>يجب أن يحتوي الطلب على صنف واحد على الأقل.</value>
+  </data>
+  <data name="ordering.not_awaiting_payment" xml:space="preserve">
+    <value>الطلب {order_number} ليس في انتظار الدفع ({status}).</value>
+  </data>
+  <data name="ordering.not_awaiting_restaurant" xml:space="preserve">
+    <value>الطلب {order_number} ليس في انتظار المطعم ({status}).</value>
+  </data>
+  <data name="ordering.not_awaiting_courier" xml:space="preserve">
+    <value>الطلب {order_number} ليس في انتظار مندوب توصيل ({status}).</value>
+  </data>
+  <data name="ordering.not_on_its_way" xml:space="preserve">
+    <value>الطلب {order_number} ليس في طريقه إليك ({status}).</value>
+  </data>
+  <data name="ordering.cannot_be_cancelled" xml:space="preserve">
+    <value>لم يعد بالإمكان إلغاء الطلب {order_number} ({status}).</value>
+  </data>
+  <data name="ordering.already_cooking" xml:space="preserve">
+    <value>بدأ المطعم إعداد الطلب {order_number}؛ لم يعد بالإمكان إلغاؤه ({status}).</value>
+  </data>
+</root>

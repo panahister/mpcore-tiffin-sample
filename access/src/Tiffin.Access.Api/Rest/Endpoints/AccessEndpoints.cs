@@ -31,34 +31,41 @@ public static class AccessEndpoints
 
         access.MapGet("/roles", static async (IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<GrantableRoles>>(new GetGrantableRoles(), ct).ConfigureAwait(false)).ToHttpResult(Results.Ok))
+            .Produces<GrantableRoles>(200)
             .WithName("GetGrantableRoles");
 
         access.MapGet("/people", static async (string? city, int? page, int? size, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<Page<PersonView>>>(new ListPeople(city, page ?? 1, size ?? PageRequest.DefaultSize), ct)
                     .ConfigureAwait(false)).ToHttpResult(Results.Ok))
+            .Produces<Page<PersonView>>(200)
             .WithName("ListPeople");
 
         access.MapGet("/people/{personId}", static async (string personId, string? city, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<PersonView>>(new GetPerson(personId, city), ct).ConfigureAwait(false)).ToHttpResult(Results.Ok))
+            .Produces<PersonView>(200)
             .WithName("GetPerson");
 
         access.MapPut("/people/{personId}/roles/{role}", static async (string personId, string role, string? city, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<GrantView>>(new ChangeRole(personId, role, true, city), ct).ConfigureAwait(false))
                 .ToHttpResult(grant => Results.Accepted($"/v1/access/grants/{grant.GrantId}", grant)))
+            .Produces<GrantView>(202)
             .WithName("GiveRole");
 
         access.MapDelete("/people/{personId}/roles/{role}", static async (string personId, string role, string? city, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<GrantView>>(new ChangeRole(personId, role, false, city), ct).ConfigureAwait(false))
                 .ToHttpResult(grant => Results.Accepted($"/v1/access/grants/{grant.GrantId}", grant)))
+            .Produces<GrantView>(202)
             .WithName("TakeRole");
 
         access.MapGet("/grants", static async (string? city, string? personId, int? page, int? size, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<Page<GrantView>>>(new ListGrants(city, personId, page ?? 1, size ?? PageRequest.DefaultSize), ct)
                     .ConfigureAwait(false)).ToHttpResult(Results.Ok))
+            .Produces<Page<GrantView>>(200)
             .WithName("ListGrants");
 
         access.MapGet("/grants/{grantId:guid}", static async (Guid grantId, string? city, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<GrantView>>(new GetGrant(grantId, city), ct).ConfigureAwait(false)).ToHttpResult(Results.Ok))
+            .Produces<GrantView>(200)
             .WithName("GetGrant");
 
         return access;

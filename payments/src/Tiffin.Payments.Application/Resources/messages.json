@@ -1,12 +1,12 @@
 {
   "class": "PaymentsMessages",
-  "languages": ["en", "zh-Hans", "tr"],
+  "languages": ["en","zh-Hans","tr","ar"],
   "messages": {
-    "payments.provider_unavailable": ["The payment provider cannot be reached at the moment.", "暂时无法连接支付服务商。", "Ödeme sağlayıcısına şu anda ulaşılamıyor."],
-    "payments.amount_not_positive": ["An amount must be more than nothing; {amount} is not.", "金额必须大于零；{amount} 不是。", "Tutar sıfırdan büyük olmalıdır; {amount} değil."],
-    "payments.amount_invalid": ["The amount is not a number.", "金额不是数字。", "Tutar bir sayı değil."],
-    "payments.order_id_invalid": ["The order's identifier is not a UUID.", "订单标识不是 UUID。", "Sipariş kimliği geçerli bir UUID değil."],
-    "payments.not_pending": ["The payment does not wait to be charged ({status}).", "该付款不在等待扣款（{status}）。", "Ödeme tahsil edilmeyi beklemiyor ({status})."],
-    "payments.not_charged": ["Nothing was charged that could be given back ({status}).", "没有可以退回的已扣款项（{status}）。", "İade edilebilecek bir tahsilat yok ({status})."]
+    "payments.provider_unavailable": ["The payment provider cannot be reached at the moment.","暂时无法连接支付服务商。","Ödeme sağlayıcısına şu anda ulaşılamıyor.","لا يمكن الوصول إلى مزوّد خدمة الدفع حاليًا."],
+    "payments.amount_not_positive": ["An amount must be more than nothing; {amount} is not.","金额必须大于零；{amount} 不是。","Tutar sıfırdan büyük olmalıdır; {amount} değil.","يجب أن يكون المبلغ أكبر من صفر؛ المبلغ {amount} ليس كذلك."],
+    "payments.amount_invalid": ["The amount is not a number.","金额不是数字。","Tutar bir sayı değil.","المبلغ ليس رقمًا."],
+    "payments.order_id_invalid": ["The order's identifier is not a UUID.","订单标识不是 UUID。","Sipariş kimliği geçerli bir UUID değil.","معرّف الطلب ليس UUID صالحًا."],
+    "payments.not_pending": ["The payment does not wait to be charged ({status}).","该付款不在等待扣款（{status}）。","Ödeme tahsil edilmeyi beklemiyor ({status}).","عملية الدفع ليست في انتظار الخصم ({status})."],
+    "payments.not_charged": ["Nothing was charged that could be given back ({status}).","没有可以退回的已扣款项（{status}）。","İade edilebilecek bir tahsilat yok ({status}).","لم يتم خصم أي مبلغ يمكن إرجاعه ({status})."]
   }
 }

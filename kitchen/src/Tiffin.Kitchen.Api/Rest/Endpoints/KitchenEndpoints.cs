@@ -25,16 +25,19 @@ public static class KitchenEndpoints
         tickets.MapGet("/", static async (string? status, int? page, int? size, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<Page<TicketView>>>(new ListTickets(status, page ?? 1, size ?? PageRequest.DefaultSize), ct)
                     .ConfigureAwait(false)).ToHttpResult(Results.Ok))
+            .Produces<Page<TicketView>>(200)
             .WithName("ListTickets");
 
         tickets.MapPost("/{orderId:guid}/accept", static async (Guid orderId, AcceptRequest request, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<TicketView>>(new AcceptTicket(orderId, request.ReadyInMinutes), ct).ConfigureAwait(false))
                 .ToHttpResult(Results.Ok))
+            .Produces<TicketView>(200)
             .WithName("AcceptTicket");
 
         tickets.MapPost("/{orderId:guid}/reject", static async (Guid orderId, RejectRequest request, IMessageBus bus, CancellationToken ct) =>
                 (await bus.InvokeAsync<Result<TicketView>>(new RejectTicket(orderId, request.Reason), ct).ConfigureAwait(false))
                 .ToHttpResult(Results.Ok))
+            .Produces<TicketView>(200)
             .WithName("RejectTicket");
 
         return tickets;

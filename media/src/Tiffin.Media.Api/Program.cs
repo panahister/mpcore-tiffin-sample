@@ -120,6 +120,7 @@ builder.Services.AddMPCoreHttpFailureHandling(options =>
 {
     options.SupportedCultures.Add("zh-Hans");
     options.SupportedCultures.Add("tr");
+    options.SupportedCultures.Add("ar");
 });
 builder.Services.AddMPCoreProblemDetailsSecurityResponses();
 if (enableOpenApi)
@@ -140,7 +141,8 @@ builder.Services.AddInfrastructure(databaseConnection, new S3Options
         ?? throw new InvalidOperationException("Store:AccessKey is required. Set it in user secrets or the environment."),
     SecretKey = builder.Configuration["Store:SecretKey"]
         ?? throw new InvalidOperationException("Store:SecretKey is required. Set it in user secrets or the environment."),
-    CreateBucket = builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Store:CreateBucket", false)
+    CreateBucket = builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Store:CreateBucket", false),
+    BrowserOrigins = builder.Configuration.GetSection("Store:BrowserOrigins").Get<string[]>() ?? []
 });
 // AppDbContext is named here as the transaction owner, so a handler can depend on IUnitOfWork and
 // still run inside the Entity Framework transaction whose commit releases its outgoing messages.

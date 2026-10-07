@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using MPCore.Audit.EntityFrameworkCore;
 using MPCore.Caching.Memory;
+using MPCore.Idempotency.EntityFrameworkCore;
 using MPCore.Messaging.Wolverine;
 using MPCore.Persistence.EntityFrameworkCore.PostgreSql;
 using MPCore.Resilience.Http;
@@ -41,14 +42,19 @@ public static class DependencyInjection
         // context's transaction, and what it publishes is committed with it (transactional outbox). The
         // audit interceptor runs inside the same save.
         services.AddMPCoreWolverineDbContext<AppDbContext>((provider, options) =>
-            PostgreSqlDbContextOptions.Apply(options, connectionString).UseMPCoreAudit(provider));
+            PostgreSqlDbContextOptions.Apply(options, connectionString)
+                .UseMPCoreAudit(provider)
+                .UseMPCoreIdempotency(provider));
         services.AddMPCoreAudit<AppDbContext>(AuditPolicyConfiguration.Configure);
+        services.AddMPCoreIdempotency<AppDbContext>();
 
         // By type, never with a lambda: Wolverine builds a handler's dependencies inline.
         services.AddSingleton(keycloak);
         services.AddScoped<IGrantRepository, GrantRepository>();
         services.AddScoped<IGrantReadModel, GrantReadModel>();
         services.AddScoped<IIdentityDirectory, KeycloakDirectory>();
+        services.AddScoped<IIdentityProjection, IdentityProjection>();
+        services.AddHostedService<IdentityProjectionReconciler>();
 
         // The only client of the platform that speaks to the identity provider's administration, as the
         // Access service itself.

@@ -74,7 +74,7 @@ public sealed class Restaurant : AggregateRoot<Guid>
     }
 
     /// <summary>Adds the item, or changes it when the restaurant already sells something under that code.</summary>
-    public MenuItem SetMenuItem(string code, string name, decimal price, bool available)
+    public MenuItem SetMenuItem(string code, string name, decimal price, bool available, Guid? pictureId = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(code);
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
@@ -83,12 +83,12 @@ public sealed class Restaurant : AggregateRoot<Guid>
         var item = menu.Find(i => i.Code == code);
         if (item is null)
         {
-            item = new MenuItem(code, name.Trim(), price, available);
+            item = new MenuItem(code, name.Trim(), price, available, pictureId);
             menu.Add(item);
         }
         else
         {
-            item.Change(name.Trim(), price, available);
+            item.Change(name.Trim(), price, available, pictureId);
         }
 
         return item;

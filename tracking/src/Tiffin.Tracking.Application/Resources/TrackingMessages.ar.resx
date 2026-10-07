@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="tracking.sign_in_required" xml:space="preserve">
+    <value>سجّل الدخول كمستخدم في إحدى المدن.</value>
+  </data>
+  <data name="tracking.delivery_not_found" xml:space="preserve">
+    <value>لا توجد عملية التوصيل هذه لك.</value>
+  </data>
+  <data name="tracking.not_your_delivery" xml:space="preserve">
+    <value>الطلب {order_number} مع مندوب آخر.</value>
+  </data>
+  <data name="tracking.delivery_has_arrived" xml:space="preserve">
+    <value>وصل الطلب {order_number}؛ لم يعد تتبّعه مستمرًا.</value>
+  </data>
+  <data name="tracking.position_not_on_earth" xml:space="preserve">
+    <value>يجب أن يكون خط العرض بين -90 و90 وخط الطول بين -180 و180.</value>
+  </data>
+</root>

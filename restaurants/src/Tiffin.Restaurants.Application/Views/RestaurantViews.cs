@@ -4,7 +4,7 @@ namespace Tiffin.Restaurants.Application.Views;
 
 public sealed record RestaurantSummary(Guid RestaurantId, string Name, string City, string Currency, bool IsOpen, Guid? PictureId);
 
-public sealed record MenuItemView(string Code, string Name, decimal Price, bool IsAvailable);
+public sealed record MenuItemView(string Code, string Name, decimal Price, bool IsAvailable, Guid? PictureId);
 
 public sealed record MenuView(Guid RestaurantId, string Name, string City, string Currency, bool IsOpen, Guid? PictureId, IReadOnlyList<MenuItemView> Items);
 
@@ -19,7 +19,7 @@ public static class RestaurantViews
         ArgumentNullException.ThrowIfNull(restaurant);
         return new MenuView(
             restaurant.Id, restaurant.Name, restaurant.City, restaurant.Currency, restaurant.IsOpen, restaurant.PictureId,
-            [.. restaurant.Menu.OrderBy(static i => i.Code, StringComparer.Ordinal).Select(static i => new MenuItemView(i.Code, i.Name, i.Price, i.IsAvailable))]);
+            [.. restaurant.Menu.OrderBy(static i => i.Code, StringComparer.Ordinal).Select(static i => new MenuItemView(i.Code, i.Name, i.Price, i.IsAvailable, i.PictureId))]);
     }
 
     public static QuoteView Of(Quote quote)

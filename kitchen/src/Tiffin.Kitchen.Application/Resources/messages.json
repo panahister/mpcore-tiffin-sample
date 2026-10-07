@@ -1,12 +1,12 @@
 {
   "class": "KitchenMessages",
-  "languages": ["en", "zh-Hans", "tr"],
+  "languages": ["en","zh-Hans","tr","ar"],
   "messages": {
-    "kitchen.ticket_not_found": ["There is no such order for your restaurant.", "您的餐厅没有这笔订单。", "Restoranınız için böyle bir sipariş yok."],
-    "kitchen.manager_required": ["Sign in as the manager of a restaurant.", "请以餐厅经理身份登录。", "Bir restoranın yöneticisi olarak oturum açın."],
-    "kitchen.status_unknown": ["The status asked for is not a status of a ticket.", "所查询的状态不是订单票据的状态。", "İstenen durum bir sipariş fişi durumu değil."],
-    "kitchen.ticket_not_pending": ["Order {order_number} has already been decided ({status}).", "订单 {order_number} 已有决定（{status}）。", "{order_number} numaralı sipariş hakkında zaten karar verildi ({status})."],
-    "kitchen.promise_out_of_range": ["A restaurant promises between 5 and 180 minutes; {minutes} is not.", "餐厅承诺的时间应在 5 到 180 分钟之间；{minutes} 不在此范围内。", "Bir restoran 5 ile 180 dakika arasında söz verir; {minutes} bu aralıkta değil."],
-    "kitchen.ticket_empty": ["There is nothing to cook.", "没有需要烹饪的东西。", "Pişirilecek bir şey yok."]
+    "kitchen.ticket_not_found": ["There is no such order for your restaurant.","您的餐厅没有这笔订单。","Restoranınız için böyle bir sipariş yok.","لا يوجد هذا الطلب لمطعمك."],
+    "kitchen.manager_required": ["Sign in as the manager of a restaurant.","请以餐厅经理身份登录。","Bir restoranın yöneticisi olarak oturum açın.","سجّل الدخول كمدير مطعم."],
+    "kitchen.status_unknown": ["The status asked for is not a status of a ticket.","所查询的状态不是订单票据的状态。","İstenen durum bir sipariş fişi durumu değil.","الحالة المطلوبة ليست من حالات تذكرة الطلب."],
+    "kitchen.ticket_not_pending": ["Order {order_number} has already been decided ({status}).","订单 {order_number} 已有决定（{status}）。","{order_number} numaralı sipariş hakkında zaten karar verildi ({status}).","تم اتخاذ قرار بشأن الطلب {order_number} بالفعل ({status})."],
+    "kitchen.promise_out_of_range": ["A restaurant promises between 5 and 180 minutes; {minutes} is not.","餐厅承诺的时间应在 5 到 180 分钟之间；{minutes} 不在此范围内。","Bir restoran 5 ile 180 dakika arasında söz verir; {minutes} bu aralıkta değil.","يجب أن تكون المدة التي يعد بها المطعم بين 5 و180 دقيقة؛ المدة {minutes} ليست ضمن هذا النطاق."],
+    "kitchen.ticket_empty": ["There is nothing to cook.","没有需要烹饪的东西。","Pişirilecek bir şey yok.","لا توجد أصناف لإعدادها."]
   }
 }

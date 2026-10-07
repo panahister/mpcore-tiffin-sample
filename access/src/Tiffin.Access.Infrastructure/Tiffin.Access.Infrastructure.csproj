@@ -2,6 +2,7 @@
   <ItemGroup>
     <ProjectReference Include="../Tiffin.Access.Application/Tiffin.Access.Application.csproj" />
     <PackageReference Include="MPCore.Caching.Memory" Version="$(MPCoreVersion)" />
+    <PackageReference Include="MPCore.Idempotency.EntityFrameworkCore.PostgreSql" Version="$(MPCoreVersion)" />
     <PackageReference Include="MPCore.Persistence.EntityFrameworkCore.PostgreSql" Version="$(MPCoreVersion)" />
     <PackageReference Include="MPCore.Messaging.Wolverine" Version="$(MPCoreVersion)" />
     <PackageReference Include="MPCore.Resilience.Http" Version="$(MPCoreVersion)" />

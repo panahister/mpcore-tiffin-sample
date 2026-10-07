@@ -117,6 +117,59 @@ namespace Tiffin.Access.Infrastructure.Migrations
                     b.ToTable("entries", "audit");
                 });
 
+            modelBuilder.Entity("MPCore.Idempotency.EntityFrameworkCore.IdempotencyRecord", b =>
+                {
+                    b.Property<string>("Scope")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("Key")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<DateTimeOffset>("CreatedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Operation")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<string>("RequestHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("Response")
+                        .HasColumnType("jsonb");
+
+                    b.HasKey("Scope", "Key");
+
+                    b.HasIndex("CreatedOnUtc");
+
+                    b.ToTable("requests", "idempotency");
+                });
+
+            modelBuilder.Entity("MPCore.Idempotency.EntityFrameworkCore.ProcessedMessageRecord", b =>
+                {
+                    b.Property<string>("Consumer")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("MessageId")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<DateTimeOffset>("ProcessedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Consumer", "MessageId");
+
+                    b.HasIndex("ProcessedOnUtc");
+
+                    b.ToTable("processed_messages", "idempotency");
+                });
+
             modelBuilder.Entity("Tiffin.Access.Domain.Grant", b =>
                 {
                     b.Property<Guid>("Id")
@@ -182,6 +235,49 @@ namespace Tiffin.Access.Infrastructure.Migrations
                         .HasDatabaseName("ix_grants_city_person");
 
                     b.ToTable("grants", "access");
+                });
+
+            modelBuilder.Entity("Tiffin.Access.Infrastructure.Persistence.IdentityPerson", b =>
+                {
+                    b.Property<string>("PersonId")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LastEventId")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("character varying(160)");
+
+                    b.Property<DateTimeOffset>("LastEventOccurredOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.PrimitiveCollection<string[]>("Roles")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("PersonId");
+
+                    b.HasIndex("City", "UserName")
+                        .HasDatabaseName("ix_identity_people_city_username");
+
+                    b.ToTable("identity_people", "access");
                 });
 #pragma warning restore 612, 618
         }

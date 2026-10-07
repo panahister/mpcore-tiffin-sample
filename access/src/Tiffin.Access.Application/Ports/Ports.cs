@@ -26,6 +26,12 @@ public interface IIdentityDirectory
 
     Task<Page<Person>> PeopleOfAsync(string city, PageRequest page, CancellationToken cancellationToken);
 
+    /// <summary>
+    /// Reads one complete authoritative snapshot for startup/recovery reconciliation. The result contains
+    /// only business identities (people assigned to a Tiffin city), never credentials or service accounts.
+    /// </summary>
+    Task<IReadOnlyList<Person>> SnapshotAsync(CancellationToken cancellationToken);
+
     /// <summary>Gives the role. To give a role the person has changes nothing.</summary>
     Task GrantAsync(string personId, string role, CancellationToken cancellationToken);
 
@@ -35,6 +41,21 @@ public interface IIdentityDirectory
 
 /// <summary>Somebody the identity provider knows. <see cref="City"/> is null for somebody who belongs to no city.</summary>
 public sealed record Person(string PersonId, string UserName, string Name, string? City, IReadOnlyList<string> Roles, bool Enabled);
+
+/// <summary>
+/// Food Delivery's eventually consistent identity projection. Keycloak remains authoritative; this
+/// store gives business data a stable local reference to the immutable Keycloak subject.
+/// </summary>
+public interface IIdentityProjection
+{
+    Task UpsertAsync(Person person, string eventId, DateTimeOffset occurredAt, CancellationToken cancellationToken);
+
+    Task DisableAsync(string personId, string eventId, DateTimeOffset occurredAt, CancellationToken cancellationToken);
+
+    Task<Person?> FindAsync(string personId, CancellationToken cancellationToken);
+
+    Task<Page<Person>> PeopleOfAsync(string city, PageRequest page, CancellationToken cancellationToken);
+}
 
 /// <summary>The identity provider could not be reached, or did not answer as it should.</summary>
 public sealed class DirectoryUnavailableException : Exception

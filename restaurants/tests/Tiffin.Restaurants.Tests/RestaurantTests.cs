@@ -90,9 +90,9 @@ public sealed class RestaurantTests
         (await RegisterRestaurantHandler.Handle(
             new RegisterRestaurant(name, "irr"), manager ?? mina, tenant ?? FakeTenant.Tehran(), restaurants, audit, new FakeUnitOfWork(), clock, default)).Value;
 
-    private Task<MPCore.Application.Results.Result<MenuView>> Item(Guid restaurant, string code, decimal price, bool available = true, FakeActor? by = null, FakeTenant? tenant = null) =>
+    private Task<MPCore.Application.Results.Result<MenuView>> Item(Guid restaurant, string code, decimal price, bool available = true, FakeActor? by = null, FakeTenant? tenant = null, Guid? pictureId = null) =>
         ManageRestaurantHandler.Handle(
-            new SetMenuItem(restaurant, code, code, price, available), by ?? mina, tenant ?? FakeTenant.Tehran(), restaurants, cache, new FakeUnitOfWork(), default);
+            new SetMenuItem(restaurant, code, code, price, available, pictureId), by ?? mina, tenant ?? FakeTenant.Tehran(), restaurants, cache, new FakeUnitOfWork(), default);
 
     private Task<MPCore.Application.Results.Result<MenuView>> Open(Guid restaurant, bool open = true) => ManageRestaurantHandler.Handle(
         new SetOpen(restaurant, open), mina, FakeTenant.Tehran(), restaurants, cache, new FakeUnitOfWork(), default);
@@ -145,6 +145,19 @@ public sealed class RestaurantTests
 
         Assert.Equal("PRICE_NOT_POSITIVE", await Rules.BrokenAsync(() => Item(menu.RestaurantId, "DIZI", 0m)));
         Assert.Equal("CURRENCY_UNKNOWN", Rules.Broken(() => Restaurant.Register("tehran", "X", "mina", "XXX", clock.UtcNow)));
+    }
+
+    [Fact]
+    public async Task A_menu_item_keeps_the_media_identifier_of_its_food_picture_when_later_fields_change()
+    {
+        var menu = await Registered();
+        var pictureId = Guid.NewGuid();
+
+        var pictured = (await Item(menu.RestaurantId, "DIZI", 450_000m, pictureId: pictureId)).Value;
+        var renamed = (await Item(menu.RestaurantId, "DIZI", 500_000m)).Value;
+
+        Assert.Equal(pictureId, Assert.Single(pictured.Items).PictureId);
+        Assert.Equal((500_000m, pictureId), (Assert.Single(renamed.Items).Price, Assert.Single(renamed.Items).PictureId));
     }
 
     [Fact]

@@ -51,7 +51,7 @@ public sealed class PlaceOrderTests
     private readonly FakeAudit audit = new();
 
     private static PlaceOrder Two(decimal expectedTotal = 900_000m, string token = "tok_ok") => new(
-        FakeQuotes.DiziSara, [new PlaceOrderLine("DIZI", 2)], new PlaceOrderAddress("Sara Ahmadi", "+989121234567", "Vanak", "12 Gandhi St"),
+        FakeQuotes.DiziSara, [new PlaceOrderLine("DIZI", 2)], new PlaceOrderAddress("Madison Clark", "206-555-0142", "Ballard", "123 Pine Street"),
         token, expectedTotal);
 
     private Task<Result<OrderAccepted>> Place(PlaceOrder command, FakeActor? actor = null, FakeTenant? tenant = null) => PlaceOrderHandler.Handle(
@@ -146,12 +146,14 @@ public sealed class PlaceOrderTests
     }
 
     [Theory]
-    [InlineData("09121234567", false)]
-    [InlineData("+989121234567", true)]
-    [InlineData("+90 532 123 45 67", false)]
-    public void A_phone_number_is_written_as_the_world_writes_it(string phone, bool accepted)
+    [InlineData("2065550142", true)]
+    [InlineData("+1 (206) 555-0142", true)]
+    [InlineData("test-phone", true)]
+    [InlineData("", false)]
+    [InlineData("1234567890123456789012345678901", false)]
+    public void A_demo_phone_is_country_neutral_but_bounded(string phone, bool accepted)
     {
-        var command = Two() with { DeliverTo = new PlaceOrderAddress("Sara", phone, "Vanak", "12 Gandhi St") };
+        var command = Two() with { DeliverTo = new PlaceOrderAddress("Madison", phone, "Ballard", "123 Pine Street") };
 
         Assert.Equal(accepted, new PlaceOrderValidator().Validate(command).IsValid);
     }

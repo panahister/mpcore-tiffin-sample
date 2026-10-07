@@ -105,6 +105,20 @@ services:
       retries: 20
       start_period: 30s
 
+  # Keycloak's identity-event provider refuses to start against missing or mismatched topics.
+  # Keep topic provisioning separate from its runtime producer permissions, even in this local stack.
+  keycloak-topics:
+    image: apache/kafka:4.0.0
+    restart: "no"
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    entrypoint: ["/bin/bash", "/product/prepare-topics.sh"]
+    volumes:
+      - ${TIFFIN_KEYCLOAK_PRODUCT_DIR:-../../tiffin-keycloak/product/tiffin-local}/docker:/product:ro
+
   # The work queue: what has to be done, by exactly one worker.
   rabbitmq:
     image: rabbitmq:4.1.4-management-alpine
@@ -139,28 +153,72 @@ services:
       retries: 20
       start_period: 5s
 
-  # The identity provider. Realm "tiffin" is imported at start from infrastructure/keycloak; its users,
-  # roles and the one client secret are development values, documented in the README.
+  # Keycloak owns identity and credentials. Its source provider stores a transactionally consistent
+  # outbox beside Keycloak's own tables, then emits privacy-minimal lifecycle events to Kafka.
+  keycloak-migrate:
+    image: postgres:17.6-alpine
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: ${POSTGRES_USER:-tiffin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tiffin}
+    command: ["/bin/sh", "/product/migrate-postgres.sh"]
+    volumes:
+      - ${TIFFIN_KEYCLOAK_PRODUCT_DIR:-../../tiffin-keycloak/product/tiffin-local}/docker:/product:ro
+      - ${TIFFIN_KEYCLOAK_SOURCE_DIR:-../../tiffin-keycloak}/scripts:/source/scripts:ro
+      - ${TIFFIN_KEYCLOAK_SOURCE_DIR:-../../tiffin-keycloak}/db/migrations:/migrations:ro
+
+  # The identity provider image, realm, theme and provider come from the sibling Tiffin Keycloak repository.
   keycloak:
-    image: quay.io/keycloak/keycloak:26.7.3
+    image: tiffin-keycloak-source:local
+    build:
+      context: ${TIFFIN_KEYCLOAK_SOURCE_DIR:-../../tiffin-keycloak}
+      dockerfile: product/tiffin-local/docker/Dockerfile
     <<: *restart
-    command: ["start-dev", "--import-realm"]
+    command: ["start", "--optimized", "--import-realm"]
+    depends_on:
+      keycloak-migrate:
+        condition: service_completed_successfully
+      keycloak-topics:
+        condition: service_completed_successfully
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USER:-admin}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/tiffin_keycloak
+      KC_DB_USERNAME: ${POSTGRES_USER:-tiffin}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD:-tiffin}
       KC_HEALTH_ENABLED: "true"
       KC_HTTP_ENABLED: "true"
       # A token names its issuer, and whoever verifies it compares. The services ask Keycloak at
       # localhost, the edge asks it inside the compose network: both must be told the same name.
       KC_HOSTNAME: http://localhost:${KEYCLOAK_PORT:-38180}
       KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+      KAFKA_EVENT_EXPORT_ENABLED: "true"
+      KAFKA_EVENT_EXPORT_REQUIRED: "true"
+      KAFKA_RUNTIME_MODE: bundled
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_CLIENT_ID: tiffin-keycloak-identity-events
+      KAFKA_EVENT_SOURCE: http://localhost:${KEYCLOAK_PORT:-38180}/realms/tiffin
+      KAFKA_USER_TOPIC: tiffin.identity.user-events.v1
+      KAFKA_ADMIN_TOPIC: tiffin.identity.admin-events.v1
+      KAFKA_SECURITY_TOPIC: tiffin.identity.security-events.v1
+      KAFKA_DEAD_LETTER_TOPIC: tiffin.identity.dead-letter.v1
+      KAFKA_RUNTIME_EXPECTED_TOPIC_PARTITIONS: "3"
+      KAFKA_RUNTIME_EXPECTED_TOPIC_REPLICATION_FACTOR: "1"
+      KAFKA_SECURITY_PROTOCOL: PLAINTEXT
+      KAFKA_PRIVACY_IP_MODE: omit
     ports:
       - "${KEYCLOAK_PORT:-38180}:8080"
     volumes:
-      - ./keycloak:/opt/keycloak/data/import:ro
+      - ${TIFFIN_KEYCLOAK_PRODUCT_DIR:-../../tiffin-keycloak/product/tiffin-local}/import:/opt/keycloak/data/import:ro
+      - ${TIFFIN_KEYCLOAK_THEME_DIR:-../../tiffin-keycloak/themes}:/opt/keycloak/themes:ro
     healthcheck:
       # The image has no curl or wget; bash's /dev/tcp asks the management port's readiness probe.
-      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q '\"UP\"' <&3"]
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -m1 '\"status\"' <&3 | grep -q '\"UP\"'"]
       interval: 10s
       timeout: 5s
       retries: 30
@@ -183,7 +241,7 @@ services:
       start_period: 15s
 
   # The edge: Apache APISIX ends TLS and routes to the services, which run on the host.
-  # Its routes are a file (standalone mode), written by scripts/up.sh from apisix/apisix.template.yaml.
+  # Its routes come from the sibling Tiffin APISIX repository; generated TLS material stays local.
   apisix:
     image: apache/apisix:3.18.0-debian
     <<: *restart
@@ -194,7 +252,7 @@ services:
       keycloak:
         condition: service_healthy
     volumes:
-      - ./apisix/config.yaml:/usr/local/apisix/conf/config.yaml:ro
+      - ${TIFFIN_APISIX_PRODUCT_DIR:-../../tiffin-apisix/product/tiffin-local}/config.yaml:/usr/local/apisix/conf/config.yaml:ro
       - ./apisix/generated/apisix.yaml:/usr/local/apisix/conf/apisix.yaml:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"

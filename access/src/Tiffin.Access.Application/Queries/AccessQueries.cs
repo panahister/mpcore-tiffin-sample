@@ -24,57 +24,43 @@ public sealed record ListGrants(string? City, string? PersonId, int Page = 1, in
 public sealed record GetGrantableRoles : IQuery<Result<GrantableRoles>>;
 
 /// <summary>
-/// People are read from the identity provider, which is where they are; decisions are read from this
-/// service's own database, which is where they are. Nothing about a person is copied here.
+/// People are read from the local Keycloak-owned projection; decisions are read from this service's
+/// database. Credentials and identity mutation remain exclusively in Keycloak.
 /// </summary>
 public static class AccessQueriesHandler
 {
     public static async Task<Result<Page<PersonView>>> Handle(
-        ListPeople query, ICurrentActorAccessor actor, ITenantContext tenant, IIdentityDirectory directory, CancellationToken cancellationToken)
+        ListPeople query, ICurrentActorAccessor actor, ITenantContext tenant, IIdentityProjection projection, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(query);
         ArgumentNullException.ThrowIfNull(actor);
-        ArgumentNullException.ThrowIfNull(directory);
+        ArgumentNullException.ThrowIfNull(projection);
 
         if (CityOf(actor.Current, tenant, query.City) is not { IsSuccess: true } city)
         {
             return Result<Page<PersonView>>.FromFailure(Refusal(actor.Current));
         }
 
-        try
-        {
-            var people = await directory.PeopleOfAsync(city.Value, new PageRequest(query.Page, query.Size), cancellationToken).ConfigureAwait(false);
-            return Result<Page<PersonView>>.Success(new Page<PersonView>([.. people.Items.Select(AccessViews.Of)], people.Number, people.Size, people.Total));
-        }
-        catch (DirectoryUnavailableException)
-        {
-            return Result<Page<PersonView>>.FromFailure(AccessFailures.DirectoryUnavailable());
-        }
+        var people = await projection.PeopleOfAsync(city.Value, new PageRequest(query.Page, query.Size), cancellationToken).ConfigureAwait(false);
+        return Result<Page<PersonView>>.Success(new Page<PersonView>([.. people.Items.Select(AccessViews.Of)], people.Number, people.Size, people.Total));
     }
 
     public static async Task<Result<PersonView>> Handle(
-        GetPerson query, ICurrentActorAccessor actor, ITenantContext tenant, IIdentityDirectory directory, CancellationToken cancellationToken)
+        GetPerson query, ICurrentActorAccessor actor, ITenantContext tenant, IIdentityProjection projection, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(query);
         ArgumentNullException.ThrowIfNull(actor);
-        ArgumentNullException.ThrowIfNull(directory);
+        ArgumentNullException.ThrowIfNull(projection);
 
         if (CityOf(actor.Current, tenant, query.City) is not { IsSuccess: true } city)
         {
             return Result<PersonView>.FromFailure(Refusal(actor.Current));
         }
 
-        try
-        {
-            var person = await directory.FindAsync(query.PersonId, cancellationToken).ConfigureAwait(false);
-            return person is null || !string.Equals(person.City, city.Value, StringComparison.Ordinal)
-                ? Result<PersonView>.FromFailure(AccessFailures.PersonNotFound())
-                : Result<PersonView>.Success(AccessViews.Of(person));
-        }
-        catch (DirectoryUnavailableException)
-        {
-            return Result<PersonView>.FromFailure(AccessFailures.DirectoryUnavailable());
-        }
+        var person = await projection.FindAsync(query.PersonId, cancellationToken).ConfigureAwait(false);
+        return person is null || !string.Equals(person.City, city.Value, StringComparison.Ordinal)
+            ? Result<PersonView>.FromFailure(AccessFailures.PersonNotFound())
+            : Result<PersonView>.Success(AccessViews.Of(person));
     }
 
     public static async Task<Result<GrantView>> Handle(

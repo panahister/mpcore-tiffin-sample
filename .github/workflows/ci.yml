@@ -52,6 +52,9 @@ jobs:
       - name: The message files are what their tables say
         working-directory: mpcore-tiffin-sample
         run: scripts/tools/messages.sh --check
+      - name: Frontend authorization-code import contract
+        working-directory: mpcore-tiffin-sample
+        run: bash scripts/verify-frontend-client.sh
       - name: Build and test (warnings are errors)
         working-directory: mpcore-tiffin-sample
         run: scripts/test.sh --configuration Release -p:MPCoreSource=$MPCORE_SOURCE --logger "trx;LogFileName=results.trx"
@@ -90,6 +93,14 @@ jobs:
         with:
           repository: ${{ github.repository_owner }}/mpcore
           path: mpcore
+      - uses: actions/checkout@v7
+        with:
+          repository: ${{ github.repository_owner }}/tiffin-keycloak
+          path: tiffin-keycloak
+      - uses: actions/checkout@v7
+        with:
+          repository: ${{ github.repository_owner }}/tiffin-apisix
+          path: tiffin-apisix
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: mpcore-tiffin-sample/global.json

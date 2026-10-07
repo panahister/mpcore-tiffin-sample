@@ -1,14 +1,14 @@
 {
   "class": "AccessMessages",
-  "languages": ["en", "zh-Hans", "tr"],
+  "languages": ["en","zh-Hans","tr","ar"],
   "messages": {
-    "access.admin_required": ["Sign in as an admin of a city, or of the platform.", "请以城市管理员或平台管理员身份登录。", "Bir şehrin veya platformun yöneticisi olarak oturum açın."],
-    "access.city_required": ["Name the city you mean.", "请说明您指的是哪个城市。", "Kastettiğiniz şehri belirtin."],
-    "access.person_not_found": ["There is no such person in this city.", "这个城市没有此人。", "Bu şehirde böyle bir kişi yok."],
-    "access.grant_not_found": ["There is no such decision in this city.", "这个城市没有这项决定。", "Bu şehirde böyle bir karar yok."],
-    "access.directory_unavailable": ["The identity provider cannot be reached at the moment. Try again shortly.", "暂时无法连接身份提供方，请稍后再试。", "Kimlik sağlayıcısına şu anda ulaşılamıyor. Kısa süre sonra tekrar deneyin."],
-    "access.role_unknown": ["{role} is not a role of the platform.", "{role} 不是平台的角色。", "{role} platformun bir rolü değil."],
-    "access.role_not_yours_to_give": ["The role {role} is not yours to give or to take away.", "您无权授予或收回角色 {role}。", "{role} rolünü vermek veya almak sizin yetkinizde değil."],
-    "access.own_roles": ["Nobody changes their own roles.", "任何人都不能更改自己的角色。", "Hiç kimse kendi rollerini değiştiremez."]
+    "access.admin_required": ["Sign in as an admin of a city, or of the platform.","请以城市管理员或平台管理员身份登录。","Bir şehrin veya platformun yöneticisi olarak oturum açın.","سجل الدخول بصفتك مسؤول مدينة أو مسؤول المنصة."],
+    "access.city_required": ["Name the city you mean.","请说明您指的是哪个城市。","Kastettiğiniz şehri belirtin.","حدد المدينة المقصودة."],
+    "access.person_not_found": ["There is no such person in this city.","这个城市没有此人。","Bu şehirde böyle bir kişi yok.","لا يوجد هذا الشخص في هذه المدينة."],
+    "access.grant_not_found": ["There is no such decision in this city.","这个城市没有这项决定。","Bu şehirde böyle bir karar yok.","لا يوجد هذا القرار في هذه المدينة."],
+    "access.directory_unavailable": ["The identity provider cannot be reached at the moment. Try again shortly.","暂时无法连接身份提供方，请稍后再试。","Kimlik sağlayıcısına şu anda ulaşılamıyor. Kısa süre sonra tekrar deneyin.","يتعذر الوصول إلى مزود الهوية حالياً. حاول مرة أخرى بعد قليل."],
+    "access.role_unknown": ["{role} is not a role of the platform.","{role} 不是平台的角色。","{role} platformun bir rolü değil.","الدور {role} ليس من أدوار المنصة."],
+    "access.role_not_yours_to_give": ["The role {role} is not yours to give or to take away.","您无权授予或收回角色 {role}。","{role} rolünü vermek veya almak sizin yetkinizde değil.","ليس لديك صلاحية منح الدور {role} أو سحبه."],
+    "access.own_roles": ["Nobody changes their own roles.","任何人都不能更改自己的角色。","Hiç kimse kendi rollerini değiştiremez.","لا يمكن لأي شخص تغيير أدواره الخاصة."]
   }
 }

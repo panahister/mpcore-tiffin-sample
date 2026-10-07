@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MPCore.Audit.EntityFrameworkCore;
 using MPCore.Domain.Events;
+using MPCore.Idempotency.EntityFrameworkCore;
 using MPCore.Persistence.EntityFrameworkCore.PostgreSql;
 
 namespace Tiffin.Access.Infrastructure.Persistence;
@@ -15,6 +16,7 @@ public sealed class AppDbContext(
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
         modelBuilder.ApplyMPCoreAudit();
+        modelBuilder.ApplyMPCoreIdempotency();
         base.OnModelCreating(modelBuilder);
     }
 }
