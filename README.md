@@ -143,37 +143,59 @@ against PostgreSQL, TimescaleDB, Redis, RabbitMQ and Kafka. The hosts and adapte
 
 ## Run it
 
-You need the .NET SDK `10.0.400`, Docker with 10 GB of memory, `jq`, `curl` and `grpcurl`. On a Mac with
-Apple Silicon also `brew install protobuf grpc`, or Rosetta.
+Choose the workflow that matches the work you want to do. All three use the same identity, gateway,
+business services, US demo data, and default RustFS media profile.
 
-Tiffin uses MP Core `0.9.3`, from nuget.org. A clone of MP Core next to this repository is optional: when
-it is there, the build uses its source instead ([docs/running.md](docs/running.md)).
+| Workflow | Runs in Docker | Runs from source on the host | Best for |
+|---|---|---|---|
+| **Backend Developer** | Dependencies, identity, gateway, messaging, data, and media | Nine .NET services | Backend implementation, service debugging, and scenarios |
+| **Frontend Developer** | The complete seeded backend platform | Customer and Operations with Next.js hot reload, plus both host BFFs | Frontend implementation without local .NET orchestration |
+| **Full Demo** | The entire product | Nothing | Reviewers and developers who want the working product with one command |
 
-Clone the backend, identity, and edge repositories into one parent directory:
+Clone the four product boundaries into one parent directory:
 
 ```bash
 git clone https://github.com/panahister/mpcore-tiffin-sample.git
+git clone https://github.com/panahister/mpfrontend-tiffin-reference.git
 git clone https://github.com/panahister/tiffin-keycloak.git
 git clone https://github.com/panahister/tiffin-apisix.git
 ```
 
-```bash
-cd mpcore-tiffin-sample && scripts/up.sh && scripts/setup.sh
-```
+The fastest product evaluation requires only Git and Docker with at least 10 GB available:
 
 ```bash
+cd mpcore-tiffin-sample
+scripts/full-demo.sh up
+```
+
+Open Customer at `http://localhost:4411` and Operations at `http://localhost:4412`. The first run builds
+the source images and can take several minutes; later runs reuse Docker layers and persistent demo data.
+
+Frontend developers can keep that backend in Docker and run only the frontend source:
+
+```bash
+cd mpcore-tiffin-sample
+scripts/full-demo.sh up-backend
+
+cd ../mpfrontend-tiffin-reference
+pnpm install --frozen-lockfile
+pnpm dev:product
+```
+
+Backend developers retain the original host-debug workflow:
+
+```bash
+cd mpcore-tiffin-sample
+scripts/up.sh
+scripts/setup.sh
 scripts/run.sh all
-```
-
-```bash
 scripts/scenarios.sh
 ```
 
-`scripts/up.sh` starts what the services depend on, in Docker. `scripts/setup.sh` writes their addresses
-into each service's user secrets, outside the repository. `scripts/run.sh all` builds the nine services
-and runs them on this machine, where they can be debugged. `scripts/scenarios.sh` tells sixteen stories
-through real calls with real tokens, and fails if one of them does not end as it should.
-[docs/running.md](docs/running.md) has the rest: one service alone, the logs, the second store, the tests.
+Use `scripts/full-demo.sh down` to stop either containerized workflow without deleting data, or
+`scripts/full-demo.sh reset` when you intentionally want a clean demo database and media store.
+[The running guide](docs/running.md) explains prerequisites, commands, trade-offs, observability,
+SeaweedFS, one-service debugging, and stop/reset behavior for every workflow.
 
 ## What was run, and what it said
 

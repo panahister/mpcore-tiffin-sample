@@ -1,0 +1,413 @@
+# Full Demo Mode. Combine with compose.yaml through scripts/full-demo.sh.
+#
+# The existing hybrid developer mode deliberately keeps the nine .NET services on the host. This
+# overlay puts those services, the two web applications and both BFFs in containers while preserving
+# the same browser-visible localhost identity and media origins.
+
+x-backend-environment: &backend-environment
+  ASPNETCORE_ENVIRONMENT: Development
+  DOTNET_ENVIRONMENT: Development
+  Security__Authority: http://localhost:38180/realms/tiffin
+  Security__RequireHttpsMetadata: "false"
+  Messaging__Kafka__BootstrapServers: kafka:9092
+  Messaging__RabbitMq__ConnectionString: amqp://${RABBITMQ_USER:-tiffin}:${RABBITMQ_PASSWORD:-tiffin}@rabbitmq:5672
+  Observability__EnableOtlpExporter: ${FULL_DEMO_OTEL_ENABLED:-false}
+  Observability__Logs__Endpoint: http://otel-collector:4317
+  Observability__Metrics__Endpoint: http://otel-collector:4317
+  Observability__Traces__Endpoint: http://otel-collector:4317
+
+x-backend-service: &backend-service
+  image: tiffin-services:full-demo
+  build:
+    context: ..
+    dockerfile: Dockerfile
+    target: services
+  init: true
+  network_mode: service:demo-runtime
+  restart: unless-stopped
+
+x-frontend-environment: &frontend-environment
+  SESSION_PROFILE: redis-validation
+  SESSION_REDIS_URL: redis://redis:6379
+  SESSION_NAMESPACE: tiffin-full-demo
+  SESSION_KEY_FILE: /run/session-key/primary.key
+  NEXT_TELEMETRY_DISABLED: "1"
+
+x-frontend-service: &frontend-service
+  image: mpfrontend-tiffin-reference:full-demo
+  build:
+    context: ${TIFFIN_FRONTEND_SOURCE_DIR:-../../mpfrontend-tiffin-reference}
+    dockerfile: Dockerfile
+  init: true
+  restart: unless-stopped
+  volumes:
+    - session-key:/run/session-key:ro
+    - ./apisix/generated/localhost.crt:/workspace/bff/certs/gateway.crt:ro
+
+services:
+  # The .NET product services share this demo-only network namespace. It preserves the
+  # browser-visible Keycloak issuer (localhost:38180) inside containers without weakening issuer
+  # validation, and keeps the S3 presigned origin usable by both containers and the host browser.
+  demo-runtime:
+    image: alpine/socat:1.8.0.3@sha256:beb4a68d9e4fe6b0f21ea774a0fde6c31f580dde6368939ed70100c5385b015e
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        socat TCP-LISTEN:38180,bind=127.0.0.1,reuseaddr,fork TCP:keycloak:8080 &
+        socat TCP-LISTEN:39000,bind=127.0.0.1,reuseaddr,fork TCP:${FULL_DEMO_STORE_HOST:-rustfs}:${FULL_DEMO_STORE_PORT:-9000} &
+        wait
+    depends_on:
+      keycloak: {condition: service_healthy}
+    ports:
+      - "6100:6100"
+      - "6200:6200"
+      - "6300:6300"
+      - "6400:6400"
+      - "6401:6401"
+      - "6501:6501"
+      - "6600:6600"
+      - "6701:6701"
+      - "6800:6800"
+      - "6900:6900"
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 38180 && nc -z 127.0.0.1 39000"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  access:
+    <<: *backend-service
+    working_dir: /app/access
+    command: ["dotnet", "/app/access/Tiffin.Access.Api.dll"]
+    environment:
+      <<: *backend-environment
+      Kestrel__Endpoints__Rest__Url: http://0.0.0.0:6100
+      ConnectionStrings__PostgreSql: Host=postgres;Port=5432;Database=tiffin_access;Username=${POSTGRES_USER:-tiffin};Password=${POSTGRES_PASSWORD:-tiffin}
+      IdentityProvider__Administration: http://keycloak:8080/admin/realms/tiffin/
+      ServiceIdentity__ClientId: tiffin-access-service
+      ServiceIdentity__ClientSecret: lab-only-access-secret
+    depends_on:
+      demo-runtime: {condition: service_healthy}
+      postgres: {condition: service_healthy}
+      kafka: {condition: service_healthy}
+      keycloak: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:6100/health/ready >/dev/null"]
+      interval: 8s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  media:
+    <<: *backend-service
+    working_dir: /app/media
+    command: ["dotnet", "/app/media/Tiffin.Media.Api.dll"]
+    environment:
+      <<: *backend-environment
+      Kestrel__Endpoints__Rest__Url: http://0.0.0.0:6200
+      ConnectionStrings__PostgreSql: Host=postgres;Port=5432;Database=tiffin_media;Username=${POSTGRES_USER:-tiffin};Password=${POSTGRES_PASSWORD:-tiffin}
+      Store__Endpoint: http://localhost:39000
+      Store__AccessKey: ${MEDIA_S3_ACCESS_KEY:-tiffin-media}
+      Store__SecretKey: ${MEDIA_S3_SECRET_KEY:-tiffin-media-lab}
+      Store__BrowserOrigins__0: http://localhost:4412
+    depends_on:
+      demo-runtime: {condition: service_healthy}
+      postgres: {condition: service_healthy}
+      kafka: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:6200/health/ready >/dev/null"]
+      interval: 8s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  restaurants:
+    <<: *backend-service
+    working_dir: /app/restaurants
+    command: ["dotnet", "/app/restaurants/Tiffin.Restaurants.Api.dll"]
+    environment:
+      <<: *backend-environment
+      Kestrel__Endpoints__Rest__Url: http://0.0.0.0:6300
+      ConnectionStrings__PostgreSql: Host=postgres;Port=5432;Database=tiffin_restaurants;Username=${POSTGRES_USER:-tiffin};Password=${POSTGRES_PASSWORD:-tiffin}
+      ConnectionStrings__Redis: redis:6379,abortConnect=false
+    depends_on:
+      demo-runtime: {condition: service_healthy}
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      kafka: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:6300/health/ready >/dev/null"]
+      interval: 8s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  ordering:
+    <<: *backend-service
+    working_dir: /app/ordering
+    command: ["dotnet", "/app/ordering/Tiffin.Ordering.Api.dll"]
+    environment:
+      <<: *backend-environment
+      Kestrel__Endpoints__Rest__Url: http://0.0.0.0:6400
+      Kestrel__Endpoints__Grpc__Url: http://0.0.0.0:6401
+      Transport__RestPort: "6400"
+      Transport__GrpcPort: "6401"
+      ConnectionStrings__PostgreSql: Host=postgres;Port=5432;Database=tiffin_ordering;Username=${POSTGRES_USER:-tiffin};Password=${POSTGRES_PASSWORD:-tiffin}
+      Services__Restaurants: http://127.0.0.1:6300/
+      Services__Payments: http://127.0.0.1:6501
+      ServiceIdentity__ClientId: tiffin-ordering-service
+      ServiceIdentity__ClientSecret: lab-only-ordering-secret
+    depends_on:
+      demo-runtime: {condition: service_healthy}
+      postgres: {condition: service_healthy}
+      kafka: {condition: service_healthy}
+      rabbitmq: {condition: service_healthy}
+      restaurants: {condition: service_healthy}
+      payments: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:6400/health/ready >/dev/null"]
+      interval: 8s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  payments:
+    <<: *backend-service
+    working_dir: /app/payments
+    command: ["dotnet", "/app/payments/Tiffin.Payments.Api.dll"]
+    environment:
+      <<: *backend-environment
+      Kestrel__Endpoints__Grpc__Url: http://0.0.0.0:6501
+      ConnectionStrings__PostgreSql: Host=postgres;Port=5432;Database=tiffin_payments;Username=${POSTGRES_USER:-tiffin};Password=${POSTGRES_PASSWORD:-tiffin}
+      PaymentProvider__BaseAddress: http://wiremock:8080/paylane/
+    depends_on:
+      demo-runtime: {condition: service_healthy}
+      postgres: {condition: service_healthy}
+      rabbitmq: {condition: service_healthy}
+      wiremock: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; socket.create_connection(('127.0.0.1', 6501), 2).close()"]
+      interval: 8s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  kitchen:
+    <<: *backend-service
+    working_dir: /app/kitchen
+    command: ["dotnet", "/app/kitchen/Tiffin.Kitchen.Api.dll"]
+    environment:
+      <<: *backend-environment
+      Kestrel__Endpoints__Rest__Url: http://0.0.0.0:6600
+      ConnectionStrings__PostgreSql: Host=postgres;Port=5432;Database=tiffin_kitchen;Username=${POSTGRES_USER:-tiffin};Password=${POSTGRES_PASSWORD:-tiffin}
+    depends_on:
+      demo-runtime: {condition: service_healthy}
+      postgres: {condition: service_healthy}
+      kafka: {condition: service_healthy}
+      rabbitmq: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:6600/health/ready >/dev/null"]
+      interval: 8s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  dispatch:
+    <<: *backend-service
+    working_dir: /app/dispatch
+    command: ["dotnet", "/app/dispatch/Tiffin.Dispatch.Api.dll"]
+    environment:
+      <<: *backend-environment
+      Kestrel__Endpoints__Grpc__Url: http://0.0.0.0:6701
+      ConnectionStrings__PostgreSql: Host=postgres;Port=5432;Database=tiffin_dispatch;Username=${POSTGRES_USER:-tiffin};Password=${POSTGRES_PASSWORD:-tiffin}
+    depends_on:
+      demo-runtime: {condition: service_healthy}
+      postgres: {condition: service_healthy}
+      kafka: {condition: service_healthy}
+      rabbitmq: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; socket.create_connection(('127.0.0.1', 6701), 2).close()"]
+      interval: 8s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  tracking:
+    <<: *backend-service
+    working_dir: /app/tracking
+    command: ["dotnet", "/app/tracking/Tiffin.Tracking.Api.dll"]
+    environment:
+      <<: *backend-environment
+      Kestrel__Endpoints__Rest__Url: http://0.0.0.0:6800
+      ConnectionStrings__PostgreSql: Host=timescale;Port=5432;Database=tiffin_tracking;Username=${POSTGRES_USER:-tiffin};Password=${POSTGRES_PASSWORD:-tiffin}
+    depends_on:
+      demo-runtime: {condition: service_healthy}
+      timescale: {condition: service_healthy}
+      kafka: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:6800/health/ready >/dev/null"]
+      interval: 8s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  notifications:
+    <<: *backend-service
+    working_dir: /app/notifications
+    command: ["dotnet", "/app/notifications/Tiffin.Notifications.Api.dll"]
+    environment:
+      <<: *backend-environment
+      Kestrel__Endpoints__Rest__Url: http://0.0.0.0:6900
+      ConnectionStrings__PostgreSql: Host=postgres;Port=5432;Database=tiffin_notifications;Username=${POSTGRES_USER:-tiffin};Password=${POSTGRES_PASSWORD:-tiffin}
+    depends_on:
+      demo-runtime: {condition: service_healthy}
+      postgres: {condition: service_healthy}
+      kafka: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:6900/health/ready >/dev/null"]
+      interval: 8s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  demo-seed:
+    image: tiffin-seed:full-demo
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      target: seed
+    network_mode: service:demo-runtime
+    restart: "no"
+    depends_on:
+      access: {condition: service_healthy}
+      media: {condition: service_healthy}
+      restaurants: {condition: service_healthy}
+      ordering: {condition: service_healthy}
+
+  session-key-init:
+    <<: *frontend-service
+    profiles: [full-demo-frontend]
+    user: "0:0"
+    network_mode: none
+    restart: "no"
+    command: ["node", "/workspace/bff/init-validation-key.mjs"]
+    environment:
+      SESSION_PROFILE: redis-validation
+    volumes:
+      - session-key:/run/session-key
+
+  customer-bff:
+    <<: *frontend-service
+    profiles: [full-demo-frontend]
+    working_dir: /workspace
+    command: ["node", "bff/server.mjs"]
+    environment:
+      <<: [*frontend-environment]
+      APP_KIND: customer
+      BFF_BIND: 0.0.0.0
+      BFF_PORT: "4511"
+      PUBLIC_ORIGIN: http://localhost:4411
+      GATEWAY_ORIGIN: http://apisix:9080
+      OIDC_ISSUER: http://localhost:38180/realms/tiffin
+      OIDC_PROVIDER_ORIGIN: http://keycloak:8080
+    depends_on:
+      demo-seed: {condition: service_completed_successfully}
+      session-key-init: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+      apisix: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4511/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  admin-bff:
+    <<: *frontend-service
+    profiles: [full-demo-frontend]
+    working_dir: /workspace
+    command: ["node", "bff/server.mjs"]
+    environment:
+      <<: [*frontend-environment]
+      APP_KIND: admin
+      BFF_BIND: 0.0.0.0
+      BFF_PORT: "4512"
+      PUBLIC_ORIGIN: http://localhost:4412
+      GATEWAY_ORIGIN: http://apisix:9080
+      GRPC_GATEWAY_TARGET: apisix:9443
+      OIDC_ISSUER: http://localhost:38180/realms/tiffin
+      OIDC_PROVIDER_ORIGIN: http://keycloak:8080
+    depends_on:
+      demo-seed: {condition: service_completed_successfully}
+      session-key-init: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+      apisix: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4512/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  customer:
+    <<: *frontend-service
+    profiles: [full-demo-frontend]
+    working_dir: /workspace
+    command: ["node", "presentation/server.mjs"]
+    environment:
+      <<: [*frontend-environment]
+      APP_KIND: customer
+      APP_PORT: "4411"
+      PUBLIC_ORIGIN: http://localhost:4411
+      BFF_ORIGIN: http://customer-bff:4511
+      BACKEND_ORIGIN: http://apisix:9080
+      MEDIA_PUBLIC_ORIGIN: http://localhost:39000
+      ENABLE_API_DOCS: "true"
+    ports:
+      - "4411:4411"
+    depends_on:
+      customer-bff: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "node", "-e", "Promise.all([fetch('http://127.0.0.1:4411').then(r=>{if(!r.ok)throw Error()}),fetch('http://127.0.0.1:4411/api/catalog?search=seattle&page=1&size=1').then(async r=>{if(!r.ok||!Array.isArray((await r.json()).items))throw Error()})]).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 8s
+      retries: 20
+
+  admin:
+    <<: *frontend-service
+    profiles: [full-demo-frontend]
+    working_dir: /workspace
+    command: ["node", "presentation/server.mjs"]
+    environment:
+      <<: [*frontend-environment]
+      APP_KIND: admin
+      APP_PORT: "4412"
+      PUBLIC_ORIGIN: http://localhost:4412
+      BFF_ORIGIN: http://admin-bff:4512
+      BACKEND_ORIGIN: http://apisix:9080
+      MEDIA_PUBLIC_ORIGIN: http://localhost:39000
+      ENABLE_API_DOCS: "true"
+    ports:
+      - "4412:4412"
+    depends_on:
+      admin-bff: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4412').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 8s
+      retries: 20
+
+  apisix:
+    environment:
+      BACKEND_HOST: demo-runtime
+    depends_on:
+      keycloak: {condition: service_healthy}
+      access: {condition: service_healthy}
+      media: {condition: service_healthy}
+      restaurants: {condition: service_healthy}
+      ordering: {condition: service_healthy}
+      dispatch: {condition: service_healthy}
+      kitchen: {condition: service_healthy}
+      tracking: {condition: service_healthy}
+      notifications: {condition: service_healthy}
+
+volumes:
+  session-key:
