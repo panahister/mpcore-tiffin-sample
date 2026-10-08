@@ -5,6 +5,8 @@ when it makes that clearer or more true.
 
 ## What fits
 
+- A change that follows [Tiffin backend conventions](docs/BACKEND-CONVENTIONS.md) and keeps Domain,
+  Application, Infrastructure, API, and cross-service ownership explicit.
 - A defect: something that does not do what [docs/business.md](docs/business.md) says.
 - A scenario that shows a behaviour nobody can see yet.
 - A clearer name, a clearer document, a better source for a convention.

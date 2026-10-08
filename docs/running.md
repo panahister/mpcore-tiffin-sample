@@ -7,9 +7,9 @@ contracts; the difference is which runtimes stay editable on the host.
 
 | Workflow | Docker owns | Host owns | Required developer toolchain | Choose it when |
 |---|---|---|---|---|
-| **Backend Developer** | PostgreSQL, TimescaleDB, Kafka, RabbitMQ, Redis, Keycloak, APISIX, WireMock, and the selected S3 store | All nine .NET services | Docker, .NET `10.0.400`, `jq`, `curl`, `grpcurl`; protobuf tooling on Apple Silicon | You need breakpoints, service logs, migrations, or business-scenario work |
-| **Frontend Developer** | The complete seeded backend above, including all nine services | Customer, Operations, both BFFs, and presentation runtimes | Docker, Node.js `24.19.0`, pnpm `11.25.0` | You need frontend hot reload and debugging without running .NET locally |
-| **Full Demo** | Every backend and frontend runtime | Nothing | Git and Docker with at least 10 GB available | You want to evaluate the integrated product with the fewest steps |
+| **Hybrid Mode** | PostgreSQL, TimescaleDB, Kafka, RabbitMQ, Redis, Keycloak, APISIX, WireMock, selected S3 store, and frontend | All nine .NET services | Docker, .NET `10.0.400`, Node.js `24.19.0`, pnpm `11.25.0`, `jq`, `curl`, `grpcurl`; protobuf tooling on Apple Silicon | You need backend breakpoints, service logs, migrations, or business-scenario work |
+| **Frontend Mode** | The complete seeded backend above, including all nine services | Customer, Operations, both BFFs, and presentation runtimes | Docker, Node.js `24.19.0`, pnpm `11.25.0` | You need frontend hot reload and debugging without running .NET locally |
+| **Full Demo Mode** | Every backend and frontend runtime | Nothing | Git and Docker with at least 10 GB available | You want to evaluate the integrated product with the fewest steps |
 
 The containerized modes build from the checked-out source. They do not download a prebuilt Tiffin
 application image. RustFS is the default media store; `MEDIA_STORE=seaweedfs` selects the retained
@@ -37,7 +37,7 @@ git clone https://github.com/panahister/tiffin-apisix.git
 Advanced layouts may set `TIFFIN_FRONTEND_SOURCE_DIR`, `TIFFIN_KEYCLOAK_SOURCE_DIR`,
 `TIFFIN_KEYCLOAK_PRODUCT_DIR`, `TIFFIN_KEYCLOAK_THEME_DIR`, and `TIFFIN_APISIX_PRODUCT_DIR`.
 
-### Workflow A: Backend Developer
+### Mode 1: Hybrid Mode
 
 This is the most transparent path for a backend engineer. Infrastructure remains reproducible in
 Docker, while every .NET process runs under the host debugger or the repository launcher.
@@ -47,16 +47,36 @@ cd mpcore-tiffin-sample
 scripts/up.sh
 scripts/setup.sh
 scripts/run.sh all
-scripts/scenarios.sh
+python3 scripts/seed-us-poc.py
+
+cd ../mpfrontend-tiffin-reference
+node scripts/verify-core-artifacts.mjs
+pnpm install --frozen-lockfile
+docker compose -f compose.local.yaml up --detach --build --wait
 ```
 
 `scripts/setup.sh` writes local addresses and development values into .NET user secrets outside the
 repository. Open a service solution such as `ordering/Tiffin.Ordering.Backend.sln` to replace the
 launcher with IDE debugging. Use `scripts/run.sh stop` before an IDE starts the same ports.
 
+The mode is ready when both browser applications respond. Run the complete backend acceptance stories
+before review:
+
+```bash
+curl --fail --silent http://localhost:4411/ >/dev/null
+curl --fail --silent http://localhost:4412/ >/dev/null
+
+cd ../mpcore-tiffin-sample
+scripts/scenarios.sh
+```
+
 Stop without deleting infrastructure data:
 
 ```bash
+cd ../mpfrontend-tiffin-reference
+docker compose -f compose.local.yaml down
+
+cd ../mpcore-tiffin-sample
 scripts/run.sh stop
 scripts/down.sh
 ```
@@ -64,11 +84,15 @@ scripts/down.sh
 Delete the local dependency data only when a clean scenario baseline is intentional:
 
 ```bash
+cd ../mpfrontend-tiffin-reference
+docker compose -f compose.local.yaml down
+
+cd ../mpcore-tiffin-sample
 scripts/run.sh stop
 scripts/down.sh --volumes
 ```
 
-### Workflow B: Frontend Developer
+### Mode 2: Frontend Mode
 
 This path builds and starts identity, gateway, storage, messaging, the nine services, and the US demo
 dataset in Docker. Ports `4411` and `4412` remain free for the editable frontend source.
@@ -78,6 +102,7 @@ cd mpcore-tiffin-sample
 scripts/full-demo.sh up-backend
 
 cd ../mpfrontend-tiffin-reference
+node scripts/verify-core-artifacts.mjs
 pnpm install --frozen-lockfile
 pnpm dev:product
 ```
@@ -87,12 +112,20 @@ development mode, a shared local Redis validation profile, the generated local A
 the containerized backend at the same browser-visible origins used by Full Demo. Press `Ctrl+C` to stop
 the frontend processes; the backend and seeded data remain available.
 
+The mode is ready when the applications and a real seeded catalog request succeed:
+
+```bash
+curl --fail --silent http://localhost:4411/ >/dev/null
+curl --fail --silent http://localhost:4412/ >/dev/null
+curl --fail --silent 'http://localhost:4411/api/catalog?search=seattle&page=1&size=1' >/dev/null
+```
+
 ```bash
 cd ../mpcore-tiffin-sample
 scripts/full-demo.sh down
 ```
 
-### Workflow C: Full Demo
+### Mode 3: Full Demo Mode
 
 This is the evaluator path. One command builds every checked-out source boundary, waits for health,
 runs the idempotent US seed through product APIs, and starts both web applications.
@@ -100,6 +133,15 @@ runs the idempotent US seed through product APIs, and starts both web applicatio
 ```bash
 cd mpcore-tiffin-sample
 scripts/full-demo.sh up
+```
+
+The command prints `The complete Tiffin demo is ready.` only after health checks and the product-API
+seed succeed. Verify the public product surfaces with:
+
+```bash
+curl --fail --silent http://localhost:4411/ >/dev/null
+curl --fail --silent http://localhost:4412/ >/dev/null
+curl --fail --silent http://localhost:38180/realms/tiffin/.well-known/openid-configuration >/dev/null
 ```
 
 Open:
@@ -133,9 +175,21 @@ profile. To run either containerized workflow with SeaweedFS:
 MEDIA_STORE=seaweedfs scripts/full-demo.sh up
 ```
 
-Do not run Backend Developer services and a containerized workflow at the same time: they intentionally
+Do not run Hybrid Mode services and a containerized workflow at the same time: they intentionally
 use the same service ports. Similarly, stop Full Demo before starting the host frontend on `4411` and
 `4412`.
+
+### Troubleshooting the three modes
+
+| Symptom | First check | Safe action |
+|---|---|---|
+| A sibling source repository is missing | Confirm the four repositories share one parent directory | Restore the layout or set the documented `TIFFIN_*_SOURCE_DIR` override |
+| The first containerized start is slow | Read the active Docker build output | Let the source restore finish; later starts reuse layers |
+| A published port is occupied | Check whether another mode or local service is still running | Stop the other mode; do not change OIDC origins |
+| Full Demo or Frontend Mode does not become ready | Run `scripts/full-demo.sh status`, then `scripts/full-demo.sh logs` | Repair the unhealthy dependency; preserve data with `down` |
+| Frontend Mode cannot find the APISIX certificate | Confirm `up-backend` reached its ready message first | Restart `pnpm dev:product` after the backend is ready |
+
+Use `reset` or `scripts/down.sh --volumes` only when deleting local demo state is intentional.
 
 ## Frontend authorization-code client
 
@@ -164,7 +218,7 @@ Ordering 50, Payments 20, Kitchen 21, Dispatch 17, Tracking 21, Notifications 37
 Each missing Arabic satellite regression was first observed failing, as was the notification language defect.
 Remote CI and full live transport/journey acceptance are separate gates.
 
-## Backend Developer prerequisites
+## Hybrid Mode backend prerequisites
 
 | | |
 |---|---|
