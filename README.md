@@ -152,6 +152,18 @@ business services, US demo data, and default RustFS media profile.
 | **Frontend Developer** | The complete seeded backend platform | Customer and Operations with Next.js hot reload, plus both host BFFs | Frontend implementation without local .NET orchestration |
 | **Full Demo** | The entire product | Nothing | Reviewers and developers who want the working product with one command |
 
+Each workflow exposes the same product rather than a reduced mock:
+
+- **Backend Developer** gives service owners breakpoints across all nine .NET services, direct migration
+  and message-flow diagnostics, the complete S0-S15 scenario suite, and the real Keycloak/APISIX/frontend
+  boundary while infrastructure remains reproducible in Docker.
+- **Frontend Developer** gives UI and BFF contributors the real seeded APIs, identities, roles, media,
+  messaging, and gateway without requiring a local .NET toolchain. Both applications run from source,
+  presentations hot-reload, and BFF/session/security behavior remains available for host debugging.
+- **Full Demo** gives evaluators the complete US food-delivery reference—including identity, catalog,
+  menu media, ordering infrastructure, Customer, and Operations—after one health-checked command. It
+  requires no local Node.js or .NET installation and still builds every application from source.
+
 Clone the four product boundaries into one parent directory:
 
 ```bash
