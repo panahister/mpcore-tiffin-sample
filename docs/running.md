@@ -286,7 +286,7 @@ that `scripts/setup.sh` wrote are all it needs. The REST services describe thems
 
 | | |
 |---|---|
-| A clone of MP Core lies next to this repository | MP Core is built from its source. A fix in MP Core is picked up by the next build |
+| A clone of MP Core lies next to this repository | MP Core is built from its source. A fix in MP Core is picked up by the next build. Run `./eng/restore-api-baseline.sh` in that clone once first: a build of MP Core's source needs its API baseline, or stops with `MPCORE0005` |
 | There is none | the packages are restored from nuget.org |
 | `-p:MPCoreSource=NuGet` or `-p:MPCoreSource=Local` | says which, for one build |
 

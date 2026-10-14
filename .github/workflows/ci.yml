@@ -46,9 +46,17 @@ jobs:
         with:
           repository: ${{ github.repository_owner }}/mpcore
           path: mpcore
+          # The tags: the baseline is checked against the commit of its tag.
+          fetch-depth: 0
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: mpcore-tiffin-sample/global.json
+      # A build of MP Core's source needs the API baseline of its last published version, downloaded from
+      # nuget.org and checked (MP Core's ADR-010, addendum of 2026-10-12); without it the build fails with MPCORE0005.
+      - name: Restore and check MP Core's API baseline
+        if: env.MPCORE_SOURCE == 'Local'
+        working-directory: mpcore
+        run: ./eng/restore-api-baseline.sh
       - name: The message files are what their tables say
         working-directory: mpcore-tiffin-sample
         run: scripts/tools/messages.sh --check
@@ -93,6 +101,8 @@ jobs:
         with:
           repository: ${{ github.repository_owner }}/mpcore
           path: mpcore
+          # The tags: the baseline is checked against the commit of its tag.
+          fetch-depth: 0
       - uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/tiffin-keycloak
@@ -104,6 +114,12 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: mpcore-tiffin-sample/global.json
+      # A build of MP Core's source needs the API baseline of its last published version, downloaded from
+      # nuget.org and checked (MP Core's ADR-010, addendum of 2026-10-12); without it the build fails with MPCORE0005.
+      - name: Restore and check MP Core's API baseline
+        if: env.MPCORE_SOURCE == 'Local'
+        working-directory: mpcore
+        run: ./eng/restore-api-baseline.sh
       - name: Install grpcurl
         run: |
           curl -sSL https://github.com/fullstorydev/grpcurl/releases/download/v1.9.3/grpcurl_1.9.3_linux_x86_64.tar.gz | tar -xz -C "$RUNNER_TEMP" grpcurl
