@@ -32,7 +32,7 @@ two cities that never see each other, and sixteen scenarios that prove what is c
 </picture>
 
 > **State: work in progress.** Everything on this page was run; the section [What is not here yet](#what-is-not-here-yet)
-> says what was not. Tiffin is built with MP Core `0.9.3` from nuget.org.
+> says what was not. Tiffin is built with MP Core `1.0.0` from nuget.org.
 
 A tiffin is the lunch box that the dabbawalas of Mumbai carry from a kitchen to a desk, some two hundred
 thousand a day, by hand and by train, with next to no box lost. This sample is about the same thing:
@@ -126,7 +126,7 @@ stream catches up. Every case in the picture is a scenario of `scripts/scenarios
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/why-mpcore-dark.svg">
-  <img alt="Ten guarantees the platform needs: for each, what every team builds and proves without MP Core, the line Tiffin wrote with it, and the scenario that proves it; and the code counted: 3,353 lines of Tiffin's business against 5,021 lines in MP Core's 28 packages" src="docs/images/why-mpcore-light.svg" width="100%">
+  <img alt="Ten guarantees the platform needs: for each, what every team builds and proves without MP Core, the line Tiffin wrote with it, and the scenario that proves it; and the code counted: 3,458 lines of Tiffin's business against 6,482 lines in MP Core 1.0.0's 28 packages" src="docs/images/why-mpcore-light.svg" width="100%">
 </picture>
 
 Nine services need the same guarantees nine times: the city on every message and every call, a token of
@@ -138,9 +138,9 @@ scenario in the last column proves it against the running system.
 
 **How the code was counted.** Lines of C# that are neither blank, nor comments, nor a brace alone;
 migrations, `bin` and `obj` left out. Tiffin: the `Domain` and `Application` projects of the nine services.
-MP Core: the `src` of its 28 runtime packages at `0.9.3`; its tests are another 7,052 lines, 485 tests, run
+MP Core: the `src` of its 28 runtime packages at `1.0.0`; its tests are another 12,481 lines, 845 tests, run
 against PostgreSQL, TimescaleDB, Redis, RabbitMQ and Kafka. The hosts and adapters of Tiffin are another
-4,989 lines.
+5,233 lines.
 
 ## Run it
 
@@ -223,8 +223,8 @@ verification ladder, and worked Ordering and Media examples.
 
 ## What was run, and what it said
 
-The current publication candidate was rebuilt in Release mode against MP Core `0.9.3` from NuGet on
-2026-10-08. All 313 tests passed: 270 service tests across the nine services and 43 contract tests.
+On 2026-10-14 Tiffin was rebuilt in Release mode, warnings as errors, against MP Core `1.0.0` from nuget.org
+with an empty package cache. All 313 tests passed: 270 service tests across the nine services and 43 contract tests.
 The detailed split and exact command are in [the running guide](docs/running.md). This is source-level
 verification; it is not a production-readiness or package-release claim.
 
